@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ôn thi KTCT Mác-Lênin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#ececef;min-height:100vh}
+
+/* Header */
+.header{background:#1565C0;color:#fff;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-icon{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.header-title{font-size:17px;font-weight:600}
+.nop-bai{display:flex;align-items:center;gap:6px;background:#fff;border:none;border-radius:20px;padding:7px 14px;cursor:pointer;font-size:14px;font-weight:700;color:#1565C0;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all .15s;font-family:inherit}
+.nop-bai:hover{background:#f0f6ff;transform:scale(1.03)}
+
+/* Timer */
+.timer-bar{background:#1976D2;padding:6px 16px;display:flex;align-items:center;justify-content:space-between}
+.timer-txt{color:#fff;font-size:14px;font-weight:600;letter-spacing:0.5px}
+.progress-info{color:rgba(255,255,255,0.8);font-size:13px}
+
+/* Progress bar */
+.prog-bar-wrap{height:5px;background:#e0e0e0;display:flex}
+.prog-seg{height:5px;transition:background .3s}
+
+/* Tabs */
+.tabs-wrap{background:#fff;border-bottom:1px solid #e0e0e0;overflow-x:auto;display:flex;gap:0;position:sticky;top:44px;z-index:99}
+.tabs-wrap::-webkit-scrollbar{display:none}
+.tab-item{flex-shrink:0;padding:12px 16px;font-size:14px;font-weight:500;color:#666;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;position:relative}
+.tab-item.active{color:#1565C0;border-bottom-color:#1565C0;font-weight:700}
+.tab-item.answered-ok{color:#2e7d32}
+.tab-item.answered-ng{color:#c62828}
+.tab-item.answered-skip{color:#bbb}
+
+/* Question area */
+.q-wrap{padding:16px;max-width:700px;margin:0 auto}
+.q-number{font-size:14px;color:#1565C0;font-weight:600;margin-bottom:8px}
+.q-text{font-size:17px;font-weight:700;color:#1a1a1a;line-height:1.65;margin-bottom:18px}
+
+/* Options */
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-item{
+  display:flex;align-items:center;gap:14px;
+  padding:17px 16px;
+  border-radius:12px;
+  border:2px solid transparent;
+  cursor:pointer;
+  background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,0.07);
+  transition:background .15s, border-color .15s, box-shadow .15s;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.opt-item:not(.disabled):hover{background:#f0f4ff;border-color:#c5d8f8}
+.opt-item:not(.disabled):hover .opt-num{border-color:#1976D2;color:#1565C0}
+
+/* Pending */
+.opt-item.selected-pending{background:#e8f0fe;border-color:#1565C0}
+.opt-item.selected-pending .opt-num{border-color:#1565C0;color:#1565C0;background:#dce8fc}
+.opt-item.selected-pending .opt-text{color:#0d47a1;font-weight:600}
+
+/* Correct */
+.opt-item.selected-ok{background:#e8f5e9;border-color:#43a047}
+.opt-item.selected-ok .opt-num{background:#43a047;border-color:#43a047;color:#fff}
+.opt-item.selected-ok .opt-text{color:#2e7d32;font-weight:600}
+.opt-item.show-correct{background:#e8f5e9;border-color:#43a047}
+.opt-item.show-correct .opt-num{background:#43a047;border-color:#43a047;color:#fff}
+.opt-item.show-correct .opt-text{color:#2e7d32;font-weight:600}
+
+/* Wrong */
+.opt-item.selected-ng{background:#ffebee;border-color:#e53935}
+.opt-item.selected-ng .opt-num{background:#e53935;border-color:#e53935;color:#fff}
+.opt-item.selected-ng .opt-text{color:#c62828;font-weight:600}
+
+.opt-item.disabled{cursor:default;pointer-events:none}
+
+.opt-num{
+  width:36px;height:36px;border-radius:50%;
+  border:2px solid #d0d0d0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#888;
+  flex-shrink:0;
+  transition:all .15s;
+  background:#fff;
+}
+.opt-text{font-size:15px;color:#1a1a1a;line-height:1.5;flex:1}
+
+/* Explanation */
+.explain-box{margin-top:14px;padding:13px 14px;border-radius:12px;background:#fffde7;border-left:4px solid #f9a825;display:flex;gap:10px;align-items:flex-start}
+.explain-box.correct-box{background:#e8f5e9;border-left-color:#43a047}
+.explain-box.wrong-box{background:#ffebee;border-left-color:#e53935}
+.explain-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.explain-content{}
+.explain-label{font-size:13px;font-weight:700;color:#f57f17;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.explain-box.correct-box .explain-label{color:#2e7d32}
+.explain-box.wrong-box .explain-label{color:#c62828}
+.explain-text{font-size:15px;color:#333;line-height:1.6}
+
+/* Bottom nav */
+.fnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0e0e0;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:100;max-width:700px;margin:0 auto}
+.fnav-center{font-size:14px;color:#555;font-weight:500;display:flex;align-items:center;gap:6px;cursor:pointer}
+.fnav-center svg{color:#1565C0}
+.nav-btn{width:42px;height:42px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;transition:all .18s}
+.btn-prev{background:#f0f2f5;color:#444}
+.btn-prev:hover{background:#e0e0e0}
+.btn-next{background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.35)}
+.btn-next:hover{background:#0d47a1}
+.nav-btn:disabled{opacity:0.35;cursor:not-allowed}
+
+/* Summary */
+.sum-wrap{padding:24px 16px 100px;max-width:700px;margin:0 auto;text-align:center}
+.sum-emoji{font-size:56px;margin-bottom:8px}
+.sum-score{font-size:52px;font-weight:700;color:#1565C0;margin:4px 0}
+.sum-sub{font-size:14px;color:#666;margin-bottom:24px}
+.sum-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+.sum-card{background:#fff;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.sum-num{font-size:28px;font-weight:700}
+.sum-lbl{font-size:12px;color:#888;margin-top:4px}
+.ok-c{color:#43a047}.ng-c{color:#e53935}.skip-c{color:#f57c00}.pct-c{color:#1565C0}
+.sum-btn{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;margin-bottom:10px;font-family:inherit;transition:all .18s}
+.sum-btn-p{background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.3)}
+.sum-btn-p:hover{background:#0d47a1}
+.sum-btn-o{background:#fff;color:#1565C0;border:2px solid #1565C0}
+.sum-btn-o:hover{background:#f0f6ff}
+
+/* Grid dialog */
+.grid-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:flex-end}
+.grid-overlay.show{display:flex}
+.grid-modal{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-height:70vh;overflow-y:auto;max-width:700px;margin:0 auto}
+.grid-modal h3{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:14px;text-align:center}
+.q-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.q-dot{width:100%;aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;border:2px solid #e0e0e0;background:#f5f5f5;color:#666;transition:all .15s}
+.q-dot.cur{border-color:#1565C0;background:#e3f2fd;color:#1565C0}
+.q-dot.ok{background:#43a047;border-color:#43a047;color:#fff}
+.q-dot.ng{background:#e53935;border-color:#e53935;color:#fff}
+.q-dot.skip{background:#ff9800;border-color:#ff9800;color:#fff}
+.grid-close{width:100%;padding:12px;border-radius:10px;border:none;background:#f0f2f5;color:#333;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px;font-family:inherit}
+
+.pb-safe{height:70px}
+
+/* Confirm dialog */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:300;align-items:center;justify-content:center;padding:24px}
+.confirm-overlay.show{display:flex}
+.confirm-box{background:#fff;border-radius:20px;padding:28px 24px;width:100%;max-width:340px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.18)}
+.confirm-icon{font-size:44px;margin-bottom:12px}
+.confirm-title{font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:8px}
+.confirm-sub{font-size:14px;color:#777;line-height:1.5;margin-bottom:24px}
+.confirm-btns{display:flex;gap:10px}
+.confirm-btn{flex:1;padding:13px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
+.confirm-btn-cancel{background:#f0f2f5;color:#555}
+.confirm-btn-cancel:hover{background:#e0e0e0}
+.confirm-btn-ok{background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.3)}
+.confirm-btn-ok:hover{background:#0d47a1}
+
+.fab-answer{position:fixed;bottom:80px;right:16px;background:#1565C0;color:#fff;border:none;border-radius:50px;padding:11px 20px;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:99;font-family:inherit;transition:all .2s}
+.fab-answer:hover{background:#3a6b8a;transform:scale(1.04)}
+.fab-answer.hidden{display:none}
+</style>
+</head>
+<body>
+<div style="position:fixed;top:10px;left:10px;z-index:9999">
+  <a href="../index.html" style="display:flex;align-items:center;gap:6px;background:#1565C0;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-family:sans-serif"><body>#8592; Trang chủ</a>
+</div>
+
+
+
+
+
+<div class="timer-bar">
+  <span class="timer-txt" id="timer-txt">60:00</span>
+  <div class="nop-bai" onclick="openConfirm()">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="#1565C0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Nộp bài
+  </div>
+</div>
+<div class="prog-bar-wrap" id="prog-bar"></div>
+
+<div class="tabs-wrap" id="tabs-wrap"></div>
+
+<div id="main-content"></div>
+
+<!-- Floating answer button -->
+<button class="fab-answer hidden" id="fab-ans" onclick="showHint()">
+  <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  Đáp án
+</button>
+
+<!-- Confirm nộp bài -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">📝</div>
+    <div class="confirm-title">Nộp bài?</div>
+    <div class="confirm-sub" id="confirm-sub">Bạn chắc chắn muốn nộp bài không?</div>
+    <div class="confirm-btns">
+      <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirm()">Làm tiếp</button>
+      <button class="confirm-btn confirm-btn-ok" onclick="confirmFinish()">Nộp bài</button>
+    </div>
+  </div>
+</div>
+
+<!-- Grid dialog -->
+<div class="grid-overlay" id="grid-overlay" onclick="closeGrid(event)">
+  <div class="grid-modal">
+    <h3>Danh sách câu hỏi</h3>
+    <div class="q-grid" id="q-grid"></div>
+    <button class="grid-close" onclick="closeGridDirect()">Đóng</button>
+  </div>
+</div>
+
+<script>
+const Q=[
+{t:"\"Nền kinh tế vận hành theo các quy luật của thị trường, đồng thời góp phần hướng tới từng bước xác lập một xã hội mà ở đó dân giàu, nước mạnh, dân chủ, công bằng, văn minh có sự điều tiết của Nhà nước do Đảng cộng sản Việt Nam lãnh đạo\" là khái niệm về:",o:["kinh tế thị trường tư bản chủ nghĩa.","kinh tế thị trường có sự quản lý của nhà nước.","kinh tế thị trường hiện đại.","kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam."],c:3,g:"Đây là định nghĩa đầy đủ về mô hình kinh tế thị trường đặc thù của Việt Nam (Xem trang 170, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Quan điểm: “Kinh tế thị trường định hướng xã hội chủ nghĩa là mô hình kinh tế tổng quát của thời kỳ quá độ lên chủ nghĩa xã hội ở nước ta\" được khẳng định trong văn kiện Đại hội lần thứ mấy của Đảng?",o:["VIII.","IX.","X.","XI."],c:1,g:"Đại hội IX của Đảng đã chính thức khẳng định mô hình kinh tế tổng quát này (Xem trang 172, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Quan điểm: \"Nền kinh tế hàng hóa nhiều thành phần, vận hành theo cơ chế thị trường, có sự quản lý của Nhà nước, dưới sự lãnh đạo của Đảng Cộng sản Việt Nam\" được khẳng định rõ nhất tại Đại hội:",o:["VIII.","IX.","X.","XI."],c:3,g:"Văn kiện Đại hội XI của Đảng đã khẳng định và làm rõ thêm các yếu tố cấu thành nền kinh tế thị trường nước ta (Xem trang 172, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Nội dung nào sau đây KHÔNG thể hiện tính tất yếu khách quan của việc phát triển kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam?",o:["Phù hợp với tính quy luật phát triển khách quan.","Tính ưu việt của kinh tế thị trường trong thúc đẩy phát triển.","Mô hình kinh tế thị trường phù hợp với nguyện vọng của nhân dân.","Mô hình kinh tế này đã và đang là mục tiêu của nhân loại."],c:3,g:"Đây là sự lựa chọn riêng biệt phù hợp với con đường đi lên CNXH của Việt Nam, không phải mục tiêu chung của toàn nhân loại (Xem trang 173, 174, 175)."},
+{t:"Một trong những tính tất yếu khách quan của việc phát triển kinh tế thị trường định hướng XHCN ở Việt Nam là vì mô hình này:",o:["phù hợp với sự phát triển của quan hệ sản xuất.","được nhiều nước trên thế giới lựa chọn.","phù hợp với nguyện vọng của nhân dân.","đang được thử nghiệm theo mô hình kinh tế mới."],c:2,g:"Mô hình này hướng tới mục tiêu dân giàu, nước mạnh, dân chủ, công bằng, văn minh, phù hợp mong muốn nhân dân (Xem trang 176)."},
+{t:"Phát triển kinh tế thị trường định hướng XHCN ở Việt Nam là tất yếu khách quan vì nó:",o:["phù hợp với tính quy luật phát triển khách quan.","phù hợp với sự phát triển của quan hệ sản xuất.","được nhiều nước trên thế giới lựa chọn.","đang được thử nghiệm theo mô hình kinh tế mới."],c:0,g:"Phát triển kinh tế thị trường là xu thế tất yếu của thời đại và phù hợp với quy luật khách quan (Xem trang 173)."},
+{t:"Nội dung nào luận giải về tính tất yếu khách quan của việc phát triển kinh tế thị trường định hướng XHCN ở Việt Nam?",o:["phát triển theo mô hình kinh tế mới của thế giới.","tính ưu việt của kinh tế thị trường trong thúc đẩy phát triển.","đây là mô hình kinh tế nhiều nước trên thế giới lựa chọn.","thử nghiệm theo mô hình kinh tế mới."],c:1,g:"Kinh tế thị trường là phương thức hiệu quả để thúc đẩy sức sản xuất xã hội (Xem trang 175)."},
+{t:"Quan hệ nào sau đây KHÔNG phải là quan hệ lợi ích kinh tế cơ bản trong nền kinh tế thị trường?",o:["Quan hệ lợi ích giữa người lao động và người sử dụng lao động.","Quan hệ lợi ích giữa những người sử dụng lao động.","Quan hệ giữa lợi ích cá nhân, lợi ích nhóm và lợi ích xã hội.","Quan hệ giữa Đảng, Nhà nước và nhân dân."],c:3,g:"Quan hệ giữa Đảng, Nhà nước và nhân dân là quan hệ chính trị - xã hội, không thuộc quan hệ lợi ích kinh tế cơ bản (Xem trang 1)."},
+{t:"Trong nền kinh tế thị trường định hướng XHCN, các thành phần kinh tế nòng cốt để phát triển kinh tế là:",o:["bền vững.","độc lập, tự chủ.","tiến bộ.","tiên tiến, hiện đại."],c:1,g:"Kinh tế nhà nước, tập thể và tư nhân là nòng cốt để phát triển một nền kinh tế độc lập, tự chủ."},
+{t:"Nội dung nào sau đây KHÔNG phải là lý do phải hoàn thiện thể chế kinh tế thị trường định hướng XHCN ở Việt Nam?",o:["Thể chế còn chưa đồng bộ.","Thể chế kinh tế thị trường định hướng xã hội chủ nghĩa không phù hợp.","Hệ thống thể chế chưa đầy đủ.","Hệ thống thể chế còn kém hiệu lực, hiệu quả."],c:1,g:"Thể chế này hoàn toàn phù hợp, lý do cần hoàn thiện là vì nó còn chưa đồng bộ và kém hiệu quả (Xem trang 188, 189)."},
+{t:"Một trong những lý do phải hoàn thiện thể chế kinh tế thị trường định hướng XHCN ở Việt Nam là:",o:["còn chưa đồng bộ.","không phù hợp.","khác với các nước trên thế giới.","còn mới mẻ."],c:0,g:"Do hệ thống pháp luật và cơ chế vận hành hiện nay còn chồng chéo, chưa khớp nhau (Xem trang 188, 189)."},
+{t:"Hoàn thiện thể chế kinh tế thị trường là yêu cầu cấp thiết vì hệ thống thể chế hiện nay:",o:["không phù hợp.","chưa đầy đủ.","khác với các nước trên thế giới.","còn mới mẻ."],c:1,g:"Nhiều loại hình thị trường và yếu tố thị trường vẫn còn thiếu khung pháp lý điều chỉnh (Xem trang 188, 189)."},
+{t:"Đâu là lý do cần hoàn thiện thể chế kinh tế thị trường định hướng XHCN tại Việt Nam?",o:["Không phù hợp với điều kiện của đất nước.","Khác với các nước trên thế giới.","Còn kém hiệu lực, hiệu quả, thiếu các yếu tố thị trường và các loại thị trường.","Còn mới mẻ, chưa thật sự phù hợp với điều kiện kinh tế."],c:2,g:"Thể chế hiện tại chưa phát huy được tối đa các nguồn lực do thiếu các loại thị trường bộ phận (Xem trang 188, 189)."},
+{t:"Nội dung nào sau đây KHÔNG thuộc nhiệm vụ hoàn thiện thể chế kinh tế thị trường định hướng XHCN ở Việt Nam?",o:["Hoàn thiện thể chế về sở hữu, phát triển các thành phần kinh tế.","Hoàn thiện thể chế để phát triển đồng bộ các yếu tố thị trường.","Hoàn thiện thể chế mới cho phù hợp với điều kiện phát triển của đất nước.","Hoàn thiện thể chế, nâng cao năng lực lãnh đạo của Đảng."],c:2,g:"Việc hoàn thiện là trên nền tảng thể chế hiện có, không phải xây dựng một \"thể chế mới\" hoàn toàn khác (Xem trang 191 - 196)."},
+{t:"Một trong những nội dung trọng tâm để hoàn thiện thể chế kinh tế thị trường định hướng XHCN ở Việt Nam là:",o:["để phát triển đồng bộ các yếu tố thị trường và các loại thị trường.","cho phù hợp với điều kiện phát triển của đất nước.","để tăng trưởng kinh tế.","để phát triển văn hóa."],c:0,g:"Đây là nội dung quan trọng nhằm tạo môi trường kinh doanh thuận lợi (Xem trang 194)."},
+{t:"Hoàn thiện thể chế gắn kết tăng trưởng kinh tế với công bằng xã hội nhằm thúc đẩy:",o:["mở rộng hoạt động kinh tế đối ngoại.","nền sản xuất phát triển.","hội nhập quốc tế.","phát triển kinh tế, chính trị, văn hóa."],c:2,g:"Thúc đẩy hội nhập quốc tế là kết quả của việc hoàn thiện thể chế gắn với phát triển bền vững (Xem trang 195)."},
+{t:"Nội dung nào không thuộc nội dung hoàn thiện thể chế kinh tế thị trường định hướng XHCN?",o:["Hoàn thiện thể chế về sở hữu.","Hoàn thiện thể chế phát triển yếu tố thị trường.","Nâng cao năng lực lãnh đạo của Đảng và hệ thống chính trị.","Hoàn thiện thể chế kinh tế, chính trị, văn hoá, xã hội."],c:3,g:"Nhiệm vụ này chỉ tập trung vào thể chế kinh tế, không bao hàm tất cả các lĩnh vực xã hội khác (Xem trang 191 - 196)."},
+{t:"Hoàn thiện thể chế kinh tế thị trường bao gồm việc nâng cao vai trò của chủ thể nào?",o:["Nâng cao năng lực cạnh tranh.","Thúc đẩy sản xuất phát triển.","Nâng cao vị thế Việt Nam.","Đẩy mạnh, nâng cao năng lực lãnh đạo của Đảng và hệ thống chính trị."],c:3,g:"Đảng lãnh đạo là đặc trưng cốt lõi của định hướng XHCN tại Việt Nam (Xem trang 196)."},
+{t:"Nội dung nào sau đây là nội dung tiên quyết để hoàn thiện thể chế kinh tế thị trường định hướng XHCN?",o:["Sở hữu, phát triển các thành phần kinh tế, các loại hình doanh nghiệp.","Bảo đảm tạo việc làm cho người lao động.","Mở rộng hoạt động kinh tế đối ngoại.","Nâng cao năng lực cạnh tranh."],c:0,g:"Quan hệ sở hữu là nền tảng của mọi thể chế kinh tế (Xem trang 191)."},
+{t:"Quan điểm của Đảng và Nhà nước xác định vai trò của lợi ích kinh tế là:",o:["nguyện vọng của các chủ thể kinh tế.","trách nhiệm của các chủ thể kinh tế.","động lực trực tiếp của các chủ thể và hoạt động kinh tế xã hội.","quyền lợi của các chủ thể kinh tế."],c:2,g:"Lợi ích kinh tế thúc đẩy các cá nhân, doanh nghiệp nỗ lực hoạt động sản xuất (Xem trang 199, 200)."},
+{t:"Sự khác biệt cơ bản giữa kinh tế thị trường định hướng XHCN ở Việt Nam với kinh tế thị trường tư bản chủ nghĩa nằm ở:",o:["tồn tại nhiều hình thức sở hữu.","có sự điều tiết của Nhà nước.","tồn tại nhiều hình thức phân phối.","xây dựng trên nền tảng chế độ công hữu về những tư liệu sản xuất chủ yếu."],c:3,g:"Chế độ công hữu về tư liệu sản xuất chủ yếu đảm bảo phát triển vì lợi ích nhân dân."},
+{t:"Lý do trực tiếp dẫn đến sự tồn tại nhiều thành phần kinh tế hiện nay là vì:",o:["tồn tại nhiều hình thức sở hữu tư liệu sản xuất.","tồn tại nhiều hình thức phân phối.","sự phát triển của lực lượng sản xuất.","sự phát triển của quan hệ sản sản xuất."],c:0,g:"Hình thức sở hữu quyết định thành phần kinh tế tương ứng."},
+{t:"Vai trò chủ yếu của lợi ích kinh tế là:",o:["động lực trực tiếp của các chủ thể kinh tế và hoạt động kinh tế - xã hội.","nguyện vọng của các chủ thể kinh tế.","trách nhiệm trực tiếp của các chủ thể kinh tế.","quyền lợi của các chủ thể kinh tế."],c:0,g:"Lợi ích kinh tế là cơ sở thúc đẩy sự phát triển các lợi ích khác (Xem trang 199)."},
+{t:"Trong nền kinh tế thị trường định hướng XHCN ở Việt Nam, kinh tế nhà nước giữ vai trò:",o:["thống trị.","nền tảng.","chủ đạo.","quan trọng."],c:2,g:"Kinh tế nhà nước là lực lượng vật chất để Nhà nước điều tiết nền kinh tế (Xem trang 181)."},
+{t:"Trong nền kinh tế thị trường định hướng XHCN ở Việt Nam, kinh tế tư nhân:",o:["bị xem nhẹ và bị hạn chế phát triển.","có vai trò quan trọng (là một động lực quan trọng).","đóng vai trò chủ đạo.","là hình thức sở hữu thống trị."],c:1,g:"Đảng khẳng định kinh tế tư nhân là một động lực quan trọng của nền kinh tế (Xem trang 181)."},
+{t:"Đặc trưng phản ánh thuộc tính quan trọng mang tính định hướng xã hội chủ nghĩa tại Việt Nam là:",o:["Về mục tiêu.","Về quan hệ sở hữu và thành phần kinh tế.","Về quan hệ quản lý nền kinh tế và quan hệ phân phối.","Về quan hệ giữa gắn tăng trưởng kinh tế với công bằng xã hội."],c:3,g:"Đây là đặc trưng thể hiện bản chất nhân văn của chế độ (Xem trang 185)."},
+{t:"Những hình thức phân phối phản ánh định hướng xã hội chủ nghĩa của nền kinh tế thị trường Việt Nam là:",o:["Phân phối công bằng các yếu tố sản xuất.","Phân phối theo lao động và hiệu quả kinh tế, phân phối theo phúc lợi.","Phân phối theo vốn và tài sản.","Phân phối dựa trên nhu cầu."],c:1,g:"Đảm bảo công bằng thông qua lao động và an sinh xã hội (Xem trang 185)."},
+{t:"Nội dung nào sau đây KHÔNG đúng khi nói về vai trò chủ đạo của kinh tế nhà nước?",o:["Kinh tế nhà nước nắm giữ hầu hết các ngành, các lĩnh vực trong nền kinh tế quốc dân.","Kinh tế nhà nước là đòn bẩy thúc đẩy nền kinh tế tăng trưởng nhanh, bền vững.","Kinh tế nhà nước hướng dẫn, mở đường, hỗ trợ các thành phần kinh tế khác phát triển.","Là lực lượng vật chất để Nhà nước quản lý, điều tiết nền kinh tế."],c:0,g:"Kinh tế nhà nước chỉ nắm giữ các ngành then chốt, những lĩnh vực trọng yếu (Xem trang 214 - 220)."},
+{t:"Nhận định nào sai khi nói về vai trò chủ đạo của kinh tế nhà nước ở Việt Nam?",o:["Là đòn bẩy thúc đẩy nền kinh tế tăng trưởng nhanh.","Hướng dẫn, mở đường cho thành phần khác.","Là lực lượng vật chất để quản lý vĩ mô.","Sự tăng nhanh về quy mô, số lượng các doanh nghiệp nhà nước."],c:3,g:"Vai trò chủ đạo không đồng nghĩa với việc tăng mãi số lượng doanh nghiệp nhà nước (Xem trang 214 - 220)."},
+{t:"Lý do cần hoàn thiện thể chế kinh tế thị trường định hướng XHCN bao gồm:",o:["Thể chế chưa đồng bộ.","Hệ thống thể chế chưa đầy đủ.","Hiệu lực, hiệu quả còn kém.","Cả A, B và C đều đúng."],c:3,g:"Đây là tổng hợp các lý do chính được nêu trong giáo trình (Xem trang 188, 189)."}
+];
+// State
+// ans[i]: null = chưa làm, number = đã chọn, 'skip' = bỏ qua
+let cur = 0;
+let ans = new Array(Q.length).fill(null);
+let showSum = false;
+
+// Timer
+let totalSec = 60 * 60; // 60 phút
+let timerInterval = setInterval(()=>{
+  if(totalSec <= 0){ clearInterval(timerInterval); finishQuiz(); return; }
+  totalSec--;
+  const m = String(Math.floor(totalSec/60)).padStart(2,'0');
+  const s = String(totalSec%60).padStart(2,'0');
+  const el = document.getElementById('timer-txt');
+  if(el) el.textContent = m+':'+s;
+}, 1000);
+
+function getTabClass(i){
+  const a = ans[i];
+  const active = i===cur ? ' active' : '';
+  if(a === null) return 'tab-item'+active;
+  if(a === 'skip' || a === 'unanswered' || a === 'hint') return 'tab-item answered-skip'+active;
+  if(!a.revealed) return 'tab-item'+active; // đã chọn nhưng chưa reveal → coi như chưa làm
+  if(a.choice === Q[i].c) return 'tab-item answered-ok'+active;
+  return 'tab-item answered-ng'+active;
+}
+
+function renderTabs(){
+  const wrap = document.getElementById('tabs-wrap');
+  wrap.innerHTML = Q.map((_,i)=>`<div class="${getTabClass(i)}" onclick="goTo(${i})">Câu ${i+1}</div>`).join('');
+  setTimeout(()=>{
+    const tabs = wrap.querySelectorAll('.tab-item');
+    if(tabs[cur]) tabs[cur].scrollIntoView({block:'nearest',inline:'center'});
+  }, 30);
+}
+
+function renderProgress(){
+  const done = ans.filter(a=>a && (a==='skip' || a==='unanswered' || a==='hint' || a.revealed)).length;
+  const el = document.getElementById('prog-info');
+  if(el) el.textContent = done + ' / ' + Q.length + ' câu';
+  const bar = document.getElementById('prog-bar');
+  if(!bar) return;
+  // Mỗi câu một đoạn nhỏ: đúng=xanh lá, sai=đỏ, chưa làm/bỏ qua=xám nhạt
+  const segW = (100 / Q.length).toFixed(4) + '%';
+  bar.innerHTML = Q.map((_,i)=>{
+    const a = ans[i];
+    let color = '#e0e0e0'; // chưa làm / bỏ qua = trắng
+    if(a === 'unanswered'){
+      color = '#e53935'; // nộp bài mà chưa làm = đỏ
+    } else if(a && a !== 'skip' && a !== 'unanswered' && a !== 'hint' && a.revealed){
+      color = a.choice === Q[i].c ? '#43a047' : '#e53935';
+    }
+    return `<div class="prog-seg" style="width:${segW};background:${color}"></div>`;
+  }).join('');
+}
+
+function renderQ(){
+  if(showSum){ renderSum(); return; }
+  const q = Q[cur];
+  // ans[cur]: null = chưa làm, {choice: number, revealed: bool} = đã chọn, 'skip' = bỏ qua
+  const a = ans[cur];
+  const isSkip = a === 'unanswered';
+  const isHint = a === 'hint'; // bấm xem đáp án mà không chọn
+  const isChosen = a !== null && a !== 'skip' && a !== 'unanswered' && a !== 'hint';
+  const isRevealed = isChosen && a.revealed;
+  const choice = isChosen ? a.choice : null;
+
+  // Chỉ hiện đúng/sai khi đã revealed (tức đã bấm sang câu khác sau khi chọn)
+  let explain = '';
+  if(isRevealed){
+    if(choice === q.c){
+      explain = `<div class="explain-box correct-box"><span class="explain-icon">✅</span><div class="explain-content"><div class="explain-label">Chính xác!</div><div class="explain-text">${q.g}</div></div></div>`;
+    } else {
+      explain = `<div class="explain-box wrong-box"><span class="explain-icon">❌</span><div class="explain-content"><div class="explain-label">Chưa đúng — Đáp án: ${q.o[q.c]}</div><div class="explain-text">${q.g}</div></div></div>`;
+    }
+  } else if(isHint){
+    explain = `<div class="explain-box"><span class="explain-icon">💡</span><div class="explain-content"><div class="explain-label">Đáp án đúng</div><div class="explain-text"><strong>${q.o[q.c]}</strong><br>${q.g}</div></div></div>`;
+  }
+
+  // Lock options: nếu đã skip hoặc đã revealed thì không cho chọn nữa
+  // Nếu đã chọn nhưng chưa revealed: vẫn hiện lựa chọn nhưng chưa tô màu đúng/sai
+  const locked = isSkip || isRevealed || isHint;
+
+  const opts = q.o.map((o,i)=>{
+    let cls = 'opt-item';
+    if(locked) cls += ' disabled';
+    if(isRevealed){
+      if(i === q.c) cls += ' selected-ok';
+      else if(i === choice && choice !== q.c) cls += ' selected-ng';
+    } else if(isHint){
+      if(i === q.c) cls += ' show-correct';
+    } else if(isChosen && i === choice){
+      // Đã chọn nhưng chưa revealed: tô xanh nhạt nhưng chưa show đúng/sai
+      cls += ' selected-pending';
+    }
+    const click = !locked ? `onclick="pick(${i})"` : '';
+    const numLabel = ['1','2','3','4'][i];
+    return `<div class="${cls}" ${click}><div class="opt-num">${numLabel}</div><span class="opt-text">${o}</span></div>`;
+  }).join('');
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="q-wrap">
+      <div class="q-number">Câu ${cur+1} / ${Q.length}</div>
+      <div class="q-text">${q.t}</div>
+      <div class="options">${opts}</div>
+      ${explain}
+      <div class="pb-safe"></div>
+    </div>
+    <div class="fnav">
+      <button class="nav-btn btn-prev" onclick="prev()" ${cur===0?'disabled':''}>
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="fnav-center" onclick="toggleGrid()">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/></svg>
+        Câu ${cur+1} / ${Q.length}
+      </div>
+      <button class="nav-btn btn-next" onclick="next()">
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  `;
+
+  renderTabs();
+  renderProgress();
+  // Hiện nút Đáp án chỉ khi câu chưa làm/chưa revealed và chưa hint
+  const fab = document.getElementById('fab-ans');
+  if(fab){
+    const _a = ans[cur];
+    const canHint = !showSum && (_a === null || (_a && _a !== 'skip' && _a !== 'unanswered' && _a !== 'hint' && !_a.revealed));
+    fab.classList.toggle('hidden', !canHint);
+  }
+  setTimeout(renderMath, 50);
+}
+
+function renderSum(){
+  const ok = ans.filter((a,i)=>a && a!=='skip' && a.revealed && a.choice===Q[i].c).length;
+  const ng = ans.filter((a,i)=>a && a!=='skip' && a.revealed && a.choice!==Q[i].c).length;
+  const sk = ans.filter(a=>a===null||a==='skip'||a==='unanswered'||a==='hint').length;
+  const pct = Math.round(ok/Q.length*100);
+  const pass = ok >= Math.ceil(Q.length*0.8);
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="sum-wrap">
+      <div class="sum-emoji">${pass?'🎉':'📖'}</div>
+      <div class="sum-score">${ok}/${Q.length}</div>
+      <div class="sum-sub">${pass?'Xuất sắc! Bạn nắm vững nội dung.':'Cần ôn thêm để nắm chắc hơn nhé.'}</div>
+      <div class="sum-grid">
+        <div class="sum-card"><div class="sum-num ok-c">${ok}</div><div class="sum-lbl">Câu đúng</div></div>
+        <div class="sum-card"><div class="sum-num ng-c">${ng}</div><div class="sum-lbl">Câu sai</div></div>
+        <div class="sum-card"><div class="sum-num skip-c">${sk}</div><div class="sum-lbl">Bỏ qua</div></div>
+        <div class="sum-card"><div class="sum-num pct-c">${pct}%</div><div class="sum-lbl">Điểm số</div></div>
+      </div>
+      <button class="sum-btn sum-btn-p" onclick="restart()">Làm lại từ đầu</button>
+      <button class="sum-btn sum-btn-o" onclick="review()">Xem lại câu trả lời</button>
+    </div>
+  `;
+  renderTabs();
+  renderProgress();
+}
+
+// Helper: reveal câu hiện tại (đánh dấu đã chuyển câu)
+function revealCurrent(){
+  const a = ans[cur];
+  if(a && a !== 'skip' && a !== 'unanswered' && a !== 'hint' && !a.revealed){
+    ans[cur] = {choice: a.choice, revealed: true};
+  }
+}
+
+// Helper: skip câu nếu chưa chọn gì
+function skipIfEmpty(){
+  if(ans[cur] === null) ans[cur] = 'skip';
+  // hint = đã xem đáp án, giữ nguyên (không skip)
+}
+
+function pick(i){
+  const a = ans[cur];
+  if(a && a !== 'skip' && a !== 'unanswered' && a !== 'hint' && a.revealed) return;
+  ans[cur] = {choice: i, revealed: false};
+  renderQ();
+}
+
+function prev(){
+  if(cur === 0) return;
+  // Reveal câu hiện tại nếu đã chọn, skip nếu chưa
+  revealCurrent();
+  cur--;
+  showSum = false;
+  renderQ();
+}
+
+function next(){
+  // Reveal câu hiện tại nếu đã chọn, skip nếu chưa
+  revealCurrent();
+  if(cur < Q.length - 1){
+    cur++;
+    renderQ();
+  } else {
+    showSum = true;
+    renderSum();
+  }
+}
+
+function goTo(i){
+  if(i === cur && !showSum){ closeGridDirect(); return; }
+  revealCurrent();
+  skipIfEmpty();
+  cur = i;
+  showSum = false;
+  renderQ();
+  closeGridDirect();
+}
+
+function openConfirm(){
+  const done = ans.filter(a => a !== null && a !== 'skip').length;
+  const skip = ans.filter(a => a === null || a === 'skip').length;
+  const sub = document.getElementById('confirm-sub');
+  if(skip > 0){
+    sub.innerHTML = `Đã làm <strong>${done}/${Q.length}</strong> câu, còn <strong>${skip}</strong> câu chưa trả lời.`;
+  } else {
+    sub.innerHTML = `Đã hoàn thành <strong>tất cả ${Q.length} câu</strong>. Sẵn sàng nộp!`;
+  }
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+function closeConfirm(){
+  document.getElementById('confirm-overlay').classList.remove('show');
+}
+function confirmFinish(){
+  closeConfirm();
+  finishQuiz();
+}
+
+function finishQuiz(){
+  revealCurrent();
+  ans = ans.map(a => {
+    if(a === null) return 'unanswered'; // chưa làm → đỏ trên thanh
+    if(a === 'skip') return 'skip';     // bỏ qua → trắng
+    if(!a.revealed) return {choice: a.choice, revealed: true};
+    return a;
+  });
+  showSum = true;
+  renderSum();
+}
+
+function restart(){
+  ans = new Array(Q.length).fill(null);
+  cur = 0; showSum = false;
+  totalSec = 60*60;
+  renderQ();
+}
+
+function review(){
+  showSum = false; cur = 0; renderQ();
+}
+
+function showHint(){
+  const q = Q[cur];
+  const a = ans[cur];
+  // Nếu đã chọn rồi thì reveal luôn, nếu chưa thì đánh dấu hint
+  if(a && a !== 'skip' && a !== 'unanswered' && !a.revealed){
+    ans[cur] = {choice: a.choice, revealed: true};
+  } else if(a === null){
+    ans[cur] = 'hint'; // xem đáp án mà không chọn
+  }
+  renderQ();
+}
+
+function toggleGrid(){
+  const ov = document.getElementById('grid-overlay');
+  const grid = document.getElementById('q-grid');
+  grid.innerHTML = Q.map((_,i)=>{
+    const a = ans[i];
+    let cls = 'q-dot';
+    if(i===cur && !showSum) cls += ' cur';
+    else if(a===null) cls += '';
+    else if(a==='skip') cls += ' skip';
+    else if(!a.revealed) cls += ''; // chọn rồi nhưng chưa qua câu
+    else if(a.choice===Q[i].c) cls += ' ok';
+    else cls += ' ng';
+    return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+  }).join('');
+  ov.classList.add('show');
+}
+
+function closeGrid(e){
+  if(e.target === document.getElementById('grid-overlay')) closeGridDirect();
+}
+
+function closeGridDirect(){
+  document.getElementById('grid-overlay').classList.remove('show');
+}
+
+function renderMath(){
+  if(typeof renderMathInElement === 'function'){
+    renderMathInElement(document.getElementById('main-content'), {
+      delimiters: [{left:"$",right:"$",display:false}],
+      throwOnError: false
+    });
+  }
+}
+
+// Init
+renderQ();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "appId": "site.sngedu.ktct",
+  "appName": "KTCT Trắc Nghiệm",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "backgroundColor": "#f0f4fa"
+  }
+}
