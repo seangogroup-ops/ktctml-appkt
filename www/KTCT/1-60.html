@@ -165,9 +165,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#ececef;min-height:100vh
 </style>
 </head>
 <body>
-<div style="position:fixed;top:10px;left:10px;z-index:9999">
-  <a href="../index.html" style="display:flex;align-items:center;gap:6px;background:#1565C0;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-family:sans-serif"><body>#8592; Trang chủ</a>
-</div>
+
 
 
 
@@ -579,6 +577,20 @@ function renderMath(){
 
 // Init
 renderQ();
+</script>
+
+<script>
+// Bắt nút back vật lý Android (Capacitor/Cordova)
+document.addEventListener('deviceready', function() {
+  document.addEventListener('backbutton', function(e) {
+    e.preventDefault();
+    window.location.href = '../index.html';
+  }, false);
+}, false);
+// Fallback: nếu không có deviceready (browser), popstate sẽ xử lý
+window.addEventListener('popstate', function() {
+  window.location.href = '../index.html';
+});
 </script>
 </body>
 </html>
