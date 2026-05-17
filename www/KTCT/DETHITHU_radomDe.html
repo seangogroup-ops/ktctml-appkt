@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ôn thi KTCT Mác-Lênin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563EB;--blue-dark:#1D4ED8;--blue-light:#EFF6FF;
+  --green:#16A34A;--green-light:#F0FDF4;
+  --red:#DC2626;--red-light:#FEF2F2;
+  --gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;--gray-900:#0F172A;
+  --radius:14px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+}
+body{font-family:'Inter',sans-serif;background:var(--gray-100);min-height:100vh;color:var(--gray-900)}
+
+/* ===== SPLASH ===== */
+.splash{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:24px;background:linear-gradient(160deg,#1E40AF 0%,#2563EB 60%,#3B82F6 100%)}
+.splash-inner{width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center}
+.splash-logo{font-size:56px;margin-bottom:16px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.25))}
+.splash-title{font-size:24px;font-weight:800;color:#fff;text-align:center;letter-spacing:-.3px;margin-bottom:4px}
+.splash-sub{font-size:14px;color:rgba(255,255,255,.65);text-align:center;margin-bottom:28px}
+
+.splash-card{width:100%;background:rgba(255,255,255,.1);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:20px 22px;margin-bottom:22px}
+.sc-label{font-size:13px;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:12px;text-transform:uppercase;letter-spacing:.6px}
+.count-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:0}
+.count-btn{padding:11px 6px;border-radius:12px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .18s;text-align:center}
+.count-btn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.5)}
+.count-btn.active{background:#fff;color:var(--blue);border-color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+
+.meta-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.15)}
+.meta-item{text-align:center;flex:1}
+.meta-val{font-size:18px;font-weight:700;color:#fff}
+.meta-lbl{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
+.meta-divider{width:1px;height:32px;background:rgba(255,255,255,.2)}
+
+.btn-start{width:100%;max-width:380px;background:#fff;color:var(--blue);border:none;border-radius:16px;padding:17px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 6px 24px rgba(0,0,0,.22);transition:all .2s;letter-spacing:-.1px}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.28)}
+.btn-start:active{transform:translateY(0)}
+
+/* ===== APP ===== */
+#app{display:none;min-height:100vh}
+
+/* Header */
+.hdr{background:var(--blue);color:#fff;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(37,99,235,.4)}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-back{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.hdr-back:hover{background:rgba(255,255,255,.25)}
+.hdr-title{font-size:15px;font-weight:700;letter-spacing:-.2px}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.65);margin-top:1px}
+.hdr-submit{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 13px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;font-family:inherit;transition:all .15s}
+.hdr-submit:hover{background:rgba(255,255,255,.25)}
+
+/* Timer strip */
+.timer-strip{background:var(--blue-dark);display:flex;align-items:center;justify-content:space-between;padding:5px 14px}
+.timer-txt{font-size:13px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.timer-warn{color:#FCD34D}
+.prog-dots{display:flex;align-items:center;gap:5px}
+.prog-dot-ok{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);display:inline-block}
+
+/* Progress bar */
+.pbar{height:4px;background:var(--gray-200);display:flex}
+.pbar-seg{height:4px;transition:background .3s}
+
+/* Tabs */
+.tabs{background:#fff;border-bottom:1px solid var(--gray-200);overflow-x:auto;display:flex;position:sticky;top:54px;z-index:99;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:10px 13px;font-size:12px;font-weight:500;color:var(--gray-400);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .2s;white-space:nowrap}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:700}
+.tab.ok{color:var(--green)}
+.tab.ng{color:var(--red)}
+.tab.skip{color:var(--gray-200)}
+
+/* Question */
+.qwrap{padding:16px 14px 90px;max-width:680px;margin:0 auto}
+.qnum{font-size:12px;font-weight:600;color:var(--blue);letter-spacing:.3px;margin-bottom:8px;text-transform:uppercase}
+.qtext{font-size:16px;font-weight:700;color:var(--gray-900);line-height:1.7;margin-bottom:16px}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--radius);border:2px solid var(--gray-200);cursor:pointer;background:#fff;transition:all .17s;-webkit-tap-highlight-color:transparent;user-select:none;box-shadow:var(--shadow)}
+.opt:not(.locked):hover{border-color:var(--blue);background:var(--blue-light)}
+.opt:not(.locked):hover .obadge{border-color:var(--blue);color:var(--blue)}
+.opt.pending{border-color:var(--blue);background:var(--blue-light)}
+.opt.pending .obadge{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.opt.pending .otext{color:var(--blue);font-weight:600}
+.opt.correct{border-color:var(--green);background:var(--green-light)}
+.opt.correct .obadge{background:var(--green);border-color:var(--green);color:#fff}
+.opt.correct .otext{color:var(--green);font-weight:600}
+.opt.wrong{border-color:var(--red);background:var(--red-light)}
+.opt.wrong .obadge{background:var(--red);border-color:var(--red);color:#fff}
+.opt.wrong .otext{color:var(--red);font-weight:600}
+.opt.locked{cursor:default;pointer-events:none}
+.obadge{width:34px;height:34px;border-radius:50%;border:2px solid var(--gray-200);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gray-400);flex-shrink:0;transition:all .17s;background:#fff}
+.otext{font-size:14px;color:var(--gray-900);line-height:1.5;flex:1}
+
+/* Explain */
+.explain{margin-top:12px;padding:13px;border-radius:var(--radius);display:flex;gap:10px;align-items:flex-start}
+.explain.correct{background:var(--green-light);border:1px solid #BBF7D0}
+.explain.wrong{background:var(--red-light);border:1px solid #FECACA}
+.explain.hint{background:#FFFBEB;border:1px solid #FDE68A}
+.explain-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.explain-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.explain.correct .explain-lbl{color:var(--green)}
+.explain.wrong .explain-lbl{color:var(--red)}
+.explain.hint .explain-lbl{color:#D97706}
+.explain-body{font-size:14px;color:var(--gray-600);line-height:1.6}
+
+/* Bottom nav */
+.fnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--gray-200);padding:10px 14px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;z-index:100;max-width:680px;margin:0 auto}
+.nav-btn{width:44px;height:44px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s;flex-shrink:0}
+.nav-prev{background:var(--gray-100);color:var(--gray-600)}
+.nav-prev:hover{background:var(--gray-200)}
+.nav-next{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.4)}
+.nav-next:hover{background:var(--blue-dark)}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed}
+.nav-center{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;padding:8px}
+.nav-center-txt{font-size:13px;font-weight:600;color:var(--gray-600)}
+
+/* Hint FAB */
+.fab{position:fixed;bottom:76px;right:14px;background:var(--blue);color:#fff;border:none;border-radius:50px;padding:10px 16px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,.4);z-index:99;font-family:inherit;transition:all .2s}
+.fab:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.fab.hidden{display:none}
+
+/* Grid overlay */
+.grid-ov{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:200;align-items:flex-end;backdrop-filter:blur(2px)}
+.grid-ov.show{display:flex}
+.grid-modal{background:#fff;border-radius:24px 24px 0 0;padding:20px 16px 30px;width:100%;max-height:72vh;overflow-y:auto;max-width:680px;margin:0 auto}
+.grid-title{font-size:15px;font-weight:700;text-align:center;color:var(--gray-900);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px}
+.gdot{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid var(--gray-200);background:var(--gray-50);color:var(--gray-400);transition:all .15s}
+.gdot.cur{border-color:var(--blue);background:var(--blue-light);color:var(--blue)}
+.gdot.ok{background:var(--green);border-color:var(--green);color:#fff}
+.gdot.ng{background:var(--red);border-color:var(--red);color:#fff}
+.grid-close{width:100%;padding:13px;border-radius:13px;border:none;background:var(--gray-100);color:var(--gray-600);font-size:14px;font-weight:600;cursor:pointer;margin-top:14px;font-family:inherit;transition:background .15s}
+.grid-close:hover{background:var(--gray-200)}
+
+/* Confirm overlay */
+.conf-ov{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:300;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
+.conf-ov.show{display:flex}
+.conf-box{background:#fff;border-radius:22px;padding:28px 22px;width:100%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.conf-icon{font-size:44px;margin-bottom:12px}
+.conf-title{font-size:18px;font-weight:800;color:var(--gray-900);margin-bottom:8px}
+.conf-sub{font-size:14px;color:var(--gray-400);line-height:1.5;margin-bottom:22px}
+.conf-btns{display:flex;gap:10px}
+.conf-btn{flex:1;padding:13px;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
+.conf-cancel{background:var(--gray-100);color:var(--gray-600)}
+.conf-cancel:hover{background:var(--gray-200)}
+.conf-ok{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.3)}
+.conf-ok:hover{background:var(--blue-dark)}
+
+/* Summary */
+.sum-wrap{padding:24px 14px 100px;max-width:680px;margin:0 auto}
+.sum-hero{text-align:center;margin-bottom:24px}
+.sum-emoji{font-size:60px;margin-bottom:8px}
+.sum-score{font-size:56px;font-weight:800;color:var(--blue);letter-spacing:-2px;line-height:1}
+.sum-grade{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;padding:4px 14px;border-radius:20px;background:var(--blue-light);color:var(--blue)}
+.sum-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+.sum-card{background:#fff;border-radius:var(--radius);padding:16px;text-align:center;box-shadow:var(--shadow)}
+.sum-card-num{font-size:30px;font-weight:800}
+.sum-card-lbl{font-size:12px;color:var(--gray-400);margin-top:3px;font-weight:500}
+.c-ok{color:var(--green)}.c-ng{color:var(--red)}.c-sk{color:#F59E0B}.c-pct{color:var(--blue)}
+.sum-actions{display:flex;flex-direction:column;gap:9px}
+.sum-btn{width:100%;padding:15px;border-radius:var(--radius);font-size:15px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .18s;letter-spacing:-.1px}
+.sb-primary{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.3)}
+.sb-primary:hover{background:var(--blue-dark)}
+.sb-outline{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.sb-outline:hover{background:var(--blue-light)}
+.sb-ghost{background:var(--gray-100);color:var(--gray-600)}
+.sb-ghost:hover{background:var(--gray-200)}
+
+/* Back header */
+.top-header{background:#1565C0;color:#fff;height:52px;display:flex;align-items:center;padding:0 12px;position:sticky;top:0;z-index:200;box-shadow:0 2px 6px rgba(0,0,0,0.25)}
+.back-btn{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.15);border:none;cursor:pointer;color:#fff;flex-shrink:0}
+.back-btn svg{display:block}
+.top-header-title{font-size:15px;font-weight:600;margin-left:10px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+</style>
+</head>
+<body>
+
+
+<!-- ===== SPLASH ===== -->
+<div class="splash" id="splash">
+  <div class="splash-inner">
+    <div class="splash-logo">📚</div>
+    <div class="splash-title">KTCT Mác-Lênin</div>
+
+
+    <div class="splash-card">
+      <div class="sc-label">Chọn số câu</div>
+      <div class="count-grid">
+        <button class="count-btn" onclick="setCount(20,this)">20 câu</button>
+        <button class="count-btn" onclick="setCount(40,this)">40 câu</button>
+        <button class="count-btn active" onclick="setCount(60,this)">60 câu</button>
+        <button class="count-btn" onclick="setCount(100,this)">100 câu</button>
+        <button class="count-btn" onclick="setCount(200,this)">200 câu</button>
+        <button class="count-btn" onclick="setCount(473,this)">Tất cả</button>
+      </div>
+      <div class="meta-row">
+        <div class="meta-item">
+          <div class="meta-val" id="meta-count">60</div>
+          <div class="meta-lbl">Số câu</div>
+        </div>
+        <div class="meta-divider"></div>
+        <div class="meta-item">
+          <div class="meta-val" id="meta-time">60</div>
+          <div class="meta-lbl">Phút</div>
+        </div>
+
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="startExam()">Bắt đầu làm bài →</button>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="hdr">
+    <div class="hdr-left">
+      <button class="hdr-back" onclick="backToSplash()">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M19 12H5M5 12l7-7M5 12l7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div>
+        <div class="hdr-title">KTCT Mác-Lênin</div>
+        <div class="hdr-sub" id="hdr-sub">Đang tải...</div>
+      </div>
+    </div>
+    <button class="hdr-submit" onclick="openConfirm()">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Nộp bài
+    </button>
+  </div>
+
+  <div class="timer-strip">
+    <span class="timer-txt" id="timer-txt">60:00</span>
+    <span style="font-size:12px;color:rgba(255,255,255,.5)" id="prog-info"></span>
+  </div>
+  <div class="pbar" id="prog-bar"></div>
+  <div class="tabs" id="tabs-wrap"></div>
+  <div id="main-content"></div>
+
+  <button class="fab hidden" id="fab-ans" onclick="showHint()">💡 Xem đáp án</button>
+</div>
+
+<!-- Confirm -->
+<div class="conf-ov" id="confirm-overlay">
+  <div class="conf-box">
+    <div class="conf-icon">📋</div>
+    <div class="conf-title">Nộp bài?</div>
+    <div class="conf-sub" id="confirm-sub"></div>
+    <div class="conf-btns">
+      <button class="conf-btn conf-cancel" onclick="closeConfirm()">Làm tiếp</button>
+      <button class="conf-btn conf-ok" onclick="confirmFinish()">Nộp bài</button>
+    </div>
+  </div>
+</div>
+
+<!-- Grid -->
+<div class="grid-ov" id="grid-overlay" onclick="closeGrid(event)">
+  <div class="grid-modal">
+    <div class="grid-title">Danh sách câu hỏi</div>
+    <div class="grid" id="q-grid"></div>
+    <button class="grid-close" onclick="closeGridDirect()">Đóng</button>
+  </div>
+</div>
+
+<script>
+const BANK = [
+{t:"Thuật ngữ Kinh tế chính trị xuất hiện lần đầu tiên vào năm nào sau đây?",o:["1605","1615","1625","1635"],c:1,g:"Thuật ngữ kinh tế chính trị xuất hiện lần đầu tiên vào năm 1615 (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học nào sau đây là người đầu tiên đưa ra thuật ngữ Kinh tế chính trị?",o:["A. Montchretien","W. Petty","A. Smith","D. Ricardo"],c:0,g:"Nhà kinh tế học Autoine de Montchrétien là người đầu tiên đưa ra thuật ngữ kinh tế chính trị (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Thuật ngữ Kinh tế chính trị xuất hiện đầu tiên trong tác phẩm nào sau đây?",o:["Lý luận về kinh tế chính trị.","Bàn về kinh tế chính trị.","Khoa học về kinh tế chính trị.","Chuyên luận về kinh tế chính trị."],c:3,g:"Thuật ngữ Kinh tế chính trị xuất hiện đầu tiên trong tác phẩm Chuyên luận về kinh tế chính trị (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tác phẩm nào sau đây được coi là phác thảo ban đầu về môn học kinh tế chính trị?",o:["Lý luận về kinh tế chính trị.","Chuyên luận về kinh tế chính trị.","Thảo luận về kinh tế chính trị.","Bàn luận về kinh tế chính trị."],c:1,g:"Chuyên luận về kinh tế chính trị được coi là phác thảo ban đầu về môn học kinh tế chính trị (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Trong lịch sử kinh tế chính trị học, từ cuối thế kỷ XVIII đến nửa đầu thế kỷ XIX là giai đoạn phát triển của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Kinh tế chính trị cổ điển Anh được hình thành và phát triển từ cuối thế kỷ XVIII đến nửa đầu thế kỷ XIX (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học nào sau đây là đại biểu tiêu biểu của Chủ nghĩa trọng thương?",o:["A. Montchretien.","Boisguillebert.","F. Quesney.","Turgot."],c:0,g:"A. Montchrétien là đại biểu tiêu biểu của chủ nghĩa trọng thương (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học nào sau đây là đại biểu tiêu biểu của Chủ nghĩa trọng nông?",o:["Starford.","Thomas Mun.","A. Montchretien.","F. Quesney."],c:3,g:"F. Quesney là đại biểu tiêu biểu của chủ nghĩa trọng nông (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học nào sau đây là đại biểu tiêu biểu của Kinh tế chính trị cổ điển Anh?",o:["A. Montchretien.","F. Quesney.","Turgot.","D. Ricardo."],c:3,g:"David Ricardo là đại biểu tiêu biểu của Kinh tế chính trị cổ điển Anh (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chủ nghĩa trọng thương hình thành và phát triển trong giai đoạn nào sau đây?",o:["Từ thời cổ đại đến thế kỷ thứ XV.","Từ giữa thế kỷ thứ XV đến giữa thế kỷ thứ XVII.","Từ giữa thế kỷ thứ XVII đến giữa thế kỷ XVIII.","Từ giữa thế kỷ thứ XVIII đến cuối thế kỷ XIX."],c:1,g:"Chủ nghĩa trọng thương hình thành và phát triển trong giai đoạn từ giữa thế kỷ XV đến giữa thế kỷ XVII (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chủ nghĩa trọng nông hình thành và phát triển trong giai đoạn nào sau đây?",o:["Từ thời cổ đại đến thế kỷ thứ XV.","Từ thế kỷ thứ XV đến cuối thế kỷ thứ XVII.","Từ nửa cuối thế kỷ thứ XVII đến nửa đầu thế kỷ thứ XVIII.","Từ giữa thế kỷ thứ XVIII đến cuối thế kỷ XIX."],c:2,g:"Chủ nghĩa trọng nông được hình thành và phát triển trong thời kỳ từ nửa cuối thế kỷ XVII đến nửa đầu thế kỷ XVIII (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị cổ điển Anh hình thành và phát triển trong giai đoạn nào sau đây?",o:["Từ thời cổ đại đến thế kỷ thứ XV.","Từ thế kỷ thứ XV đến cuối thế kỷ XVII.","Từ giữa thế kỷ thứ XVII đến nửa đầu thế kỷ XVIII.","Từ cuối thế kỷ thứ XVIII đến nửa đầu thế kỷ thứ XIX."],c:3,g:"Kinh tế chính trị cổ điển Anh được hình thành và phát triển từ cuối thế kỷ XVIII đến nửa đầu thế kỷ XIX (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học A. Montchretien là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:0,g:"Nhà kinh tế học A. Montchrétien là đại biểu tiêu biểu của chủ nghĩa trọng thương (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học Turgot là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:1,g:"Nhà kinh tế học Turgot là đại biểu tiêu biểu của chủ nghĩa trọng nông (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học W. Petty là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Nhà kinh tế học W. Petty là đại biểu tiêu biểu của kinh tế chính trị cổ điển Anh (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học F. Quesney là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:1,g:"Nhà kinh tế học F. Quesney là đại biểu tiêu biểu của chủ nghĩa trọng nông (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"“Chuyên luận về kinh tế chính trị” được coi là phác thảo ban đầu về môn học:",o:["lý luận chính trị.","khoa học chính trị.","kinh tế chính trị.","hệ thống chính trị."],c:2,g:"“Chuyên luận về kinh tế chính trị” được coi là phác thảo ban đầu về môn học kinh tế chính trị (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lý luận kinh tế chính trị của C. Mác và Ph. Ăngghen được thể hiện tập trung và cô đọng nhất trong tác phẩm nào sau đây?",o:["Bộ Tư bản.","Hệ tư tưởng Đức.","Tuyên ngôn của Đảng Cộng sản.","Biện chứng của tự nhiên."],c:0,g:"Lý luận kinh tế chính trị của C. Mác và Ph. Ăngghen được thể hiện tập trung và cô đọng nhất trong bộ Tư bản (Xem trang 16, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học A. Smith là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Nhà kinh tế học A. Smith là đại biểu tiêu biểu của kinh tế chính trị cổ điển Anh (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học D. Ricardo là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Nhà kinh tế học D. Ricardo là đại biểu tiêu biểu của kinh tế chính trị cổ điển Anh (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học Thomas Mun là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:0,g:"Nhà kinh tế học Thomas Mun là đại biểu tiêu biểu của chủ nghĩa trọng thương (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị Mác - Lênin đã kế thừa trực tiếp những giá trị khoa học của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Kinh tế chính trị Mác – Lênin kế thừa và phát triển trực tiếp những giá trị khoa học của kinh tế chính trị tư sản cổ điển Anh (Xem trang 18, 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"C. Mác đã kế thừa trực tiếp giá trị của Kinh tế chính trị cổ điển Anh để phát triển lý luận về phương thức sản xuất:",o:["Chiếm hữu nô lệ.","Phong kiến.","Tư bản chủ nghĩa.","Cộng sản chủ nghĩa."],c:2,g:"C. Mác kế thừa để phát triển lý luận kinh tế chính trị về phương thức sản xuất tư bản chủ nghĩa (Xem trang 16, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chủ nghĩa trọng thương là hệ thống lý luận kinh tế chính trị đầu tiên nghiên cứu nền sản xuất:",o:["Chiếm hữu nô lệ.","Phong kiến.","Tư bản chủ nghĩa.","Cộng sản chủ nghĩa."],c:2,g:"Chủ nghĩa trọng thương được ghi nhận là hệ thống lý luận bước đầu nghiên cứu về nền sản xuất tư bản chủ nghĩa (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hệ thống lý luận kinh tế chính trị đầu tiên nghiên cứu về nền sản xuất tư bản chủ nghĩa là:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:0,g:"Chủ nghĩa trọng thương là hệ thống lý luận kinh tế chính trị bước đầu nghiên cứu về nền sản xuất tư bản chủ nghĩa (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hệ thống lý luận nhấn mạnh vai trò sản xuất nông nghiệp, coi trọng sở hữu tư nhân và tự do kinh tế là:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:1,g:"Chủ nghĩa trọng nông nhấn mạnh vai trò nông nghiệp, coi trọng sở hữu tư nhân và tự do kinh tế."},
+{t:"Hệ thống trình bày một cách hệ thống các phạm trù kinh tế thị trường để rút ra quy luật vận động là:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Kinh tế chính trị cổ điển Anh trình bày hệ thống các phạm trù để rút ra các quy luật kinh tế (Xem trang 15, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chủ nghĩa trọng nông rút ra lý luận kinh tế chính trị từ trong lĩnh vực:",o:["sản xuất.","lưu thông.","phân phối.","tiêu dùng."],c:0,g:"Chủ nghĩa trọng nông hướng việc nghiên cứu vào lĩnh vực sản xuất (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chủ nghĩa trọng thương rút ra lý luận kinh tế chính trị từ trong lĩnh vực:",o:["sản xuất.","lưu thông.","phân phối.","tiêu dùng."],c:1,g:"Chủ nghĩa trọng thương dành trọng tâm vào nghiên cứu lĩnh vực lưu thông (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Học thuyết giá trị thặng dư của C. Mác là cơ sở khoa học luận chứng cho vai trò lịch sử của:",o:["chiếm hữu nô lệ.","phong kiến.","tư bản chủ nghĩa.","cộng sản chủ nghĩa."],c:2,g:"Học thuyết giá trị thặng dư luận chứng về vai trò lịch sử của phương thức sản xuất tư bản chủ nghĩa (Xem trang 17, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị trở thành môn khoa học hệ thống với các phạm trù chuyên ngành với sự xuất hiện lý luận của:",o:["F. Quesney.","W. Petty.","A. Smith.","D. Ricardo."],c:2,g:"Kinh tế chính trị trở thành môn khoa học hệ thống từ Adam Smith (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Đối tượng nghiên cứu của kinh tế chính trị theo quan điểm của Chủ nghĩa trọng thương là:",o:["sản xuất.","lưu thông.","phân phối.","tiêu dùng."],c:1,g:"Chủ nghĩa trọng thương phát hiện đối tượng nghiên cứu trong lĩnh vực lưu thông (Xem trang 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Đối tượng nghiên cứu của kinh tế chính trị theo quan điểm của Chủ nghĩa trọng nông là:",o:["sản xuất nông nghiệp.","sản xuất công nghiệp.","ngoại thương.","dịch vụ."],c:0,g:"Chủ nghĩa trọng nông chuyển đối tượng nghiên cứu sang lĩnh vực nông nghiệp (Xem trang 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị cổ điển Anh mở đầu từ William Petty, tiếp đến là A. Smith và kết thúc ở:",o:["F. Quesney.","A. Montchretien.","D. Ricardo.","Thomas Mun."],c:2,g:"Hệ thống lý luận có nhiều giá trị khoa học nhất kết thúc ở David Ricardo (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Đối tượng nghiên cứu của Kinh tế chính trị Mác – Lênin là:",o:["quan hệ sản xuất.","lực lượng sản xuất.","các quan hệ xã hội của sản xuất và tiêu dùng.","các quan hệ xã hội của sản xuất và trao đổi."],c:3,g:"Đối tượng nghiên cứu là các quan hệ của sản xuất và trao đổi (Xem trang 20, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Mục đích nghiên cứu của Kinh tế chính trị Mác – Lênin nhằm phát hiện quy luật chi phối con người trong:",o:["sản xuất.","lưu thông.","sản xuất và trao đổi.","sản xuất và tiêu dùng."],c:2,g:"Mục đích cao nhất là phát hiện quy luật chi phối quan hệ người - người trong sản xuất và trao đổi (Xem trang 24, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Các quan hệ xã hội của sản xuất và trao đổi là đối tượng nghiên cứu của:",o:["Kinh tế chính trị cổ điển Anh.","Kinh tế chính trị tiểu tư sản.","Kinh tế chính trị tầm thường.","Kinh tế chính trị Mác – Lênin."],c:3,g:"Đối tượng nghiên cứu của kinh tế chính trị Mác – Lênin là các quan hệ của sản xuất và trao đổi (Xem trang 20, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hệ thống lý luận từ W. Petty đến A. Smith và kết thúc ở D. Ricardo là:",o:["Kinh tế chính trị cổ điển Anh.","Kinh tế chính trị tiểu tư sản.","Kinh tế chính trị tầm thường.","Kinh tế chính trị Mác – Lênin."],c:0,g:"Đây là dòng chảy phát triển của kinh tế chính trị cổ điển Anh (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Sản xuất nông nghiệp là đối tượng nghiên cứu của kinh tế chính trị theo quan điểm của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị tư sản cổ điển Anh."],c:1,g:"Chủ nghĩa trọng nông chuyển đối tượng nghiên cứu sang lĩnh vực nông nghiệp (Xem trang 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lưu thông là đối tượng nghiên cứu của kinh tế chính trị theo quan điểm của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị tư sản cổ điển Anh."],c:0,g:"Chủ nghĩa trọng thương phát hiện đối tượng nghiên cứu trong lĩnh vực lưu thông (Xem trang 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Quy luật kinh tế tồn tại khách quan, con người không thể thủ tiêu nhưng có thể:",o:["phát hiện và hoàn thiện quy luật kinh tế.","thay đổi quy luật kinh tế.","bỏ qua quy luật kinh tế.","nhận thức và vận dụng quy luật kinh tế."],c:3,g:"Con người có thể nhận thức và vận dụng quy luật kinh tế để phục vụ lợi ích của mình (Xem trang 26, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khi chính sách kinh tế không phù hợp quy luật khách quan, chủ thể ban hành có thể:",o:["ban hành chính sách khác để thay thế.","điều chỉnh quy luật kinh tế cho phù hợp.","thủ tiêu quy luật kinh tế.","thay đổi quy luật kinh tế."],c:0,g:"Chủ thể có thể thay thế bằng chính sách khác chứ không thay đổi được quy luật (Xem trang 26, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị Mác – Lênin phát triển liên tục kể từ:",o:["XVI.","XVII.","XVIII.","XIX."],c:3,g:"Kinh tế chính trị Mác – Lênin phát triển không ngừng từ giữa thế kỷ XIX (Xem trang 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị Mác – Lênin tìm quy luật chi phối con người tương ứng với trình độ phát triển của:",o:["lực lượng sản xuất.","xã hội.","quan hệ sản xuất.","kinh tế."],c:0,g:"Kinh tế chính trị nghiên cứu sự vận động gắn liền với các trình độ phát triển của xã hội."},
+{t:"Quan hệ sản xuất và trao đổi đặt trong liên hệ biện chứng với lực lượng sản xuất và kiến trúc thượng tầng của:",o:["tư liệu sản xuất.","phương thức sản xuất nhất định.","quá trình sản xuất.","cơ sở hạ tầng nhất định."],c:1,g:"Đối tượng nghiên cứu gắn với phương thức sản xuất nhất định (Xem trang 23, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Quy luật kinh tế tác động vào động cơ lợi ích, từ đó giúp con người điều chỉnh:",o:["quy luật kinh tế.","hành vi kinh tế.","nền sản xuất.","cơ chế thị trường."],c:1,g:"Quy luật kinh tế điều chỉnh hành vi của con người trong hoạt động kinh tế (Xem trang 25, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chính sách kinh tế là sản phẩm chủ quan của con người được hình thành trên cơ sở:",o:["thay đổi các quy luật kinh tế.","bỏ qua các quy luật kinh tế.","vận dụng các quy luật kinh tế.","thủ tiêu các quy luật kinh tế."],c:2,g:"Chính sách kinh tế dựa trên việc vận dụng các quy luật (Xem trang 26, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Những mối liên hệ phản ánh bản chất, khách quan, lặp đi lặp lại của các hiện tượng kinh tế gọi là:",o:["chu kỳ kinh tế.","hiện tượng kinh tế.","quy luật kinh tế.","quá trình kinh tế."],c:2,g:"Đây là định nghĩa về quy luật kinh tế (Xem trang 25, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Phương pháp nghiên cứu quan trọng nhất của Kinh tế chính trị Mác – Lênin là:",o:["lôgic kết hợp với lịch sử.","trừu tượng hóa khoa học.","quan sát thống kê.","hệ thống hóa."],c:1,g:"Trừu tượng hoá khoa học là phương pháp nghiên cứu quan trọng nhất (Xem trang 27, 28, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Quy luật kinh tế là mối liên hệ phản ánh bản chất, khách quan của các:",o:["hiện tượng và quá trình kinh tế.","nền kinh tế.","giai đoạn và chu kỳ kinh tế.","chế độ kinh tế."],c:0,g:"Quy luật kinh tế phản ánh bản chất các hiện tượng và quá trình kinh tế (Xem trang 25, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Sự tác động của chính sách kinh tế vào các quan hệ lợi ích mang tính:",o:["khách quan.","phổ biến.","chủ quan.","đa dạng."],c:2,g:"Tác động của chính sách kinh tế mang tính chủ quan vì do con người ban hành (Xem trang 25, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"\"Kinh tế học tuyệt nhiên không nghiên cứu sản xuất, mà nghiên cứu quan hệ xã hội giữa người với người\" là của:",o:["C. Mác.","Ph. Ăngghen.","V.I. Lênin.","Hêghen."],c:2,g:"Đây là quan điểm nhấn mạnh của V.I. Lênin (Xem trang 22, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khi vận dụng không phù hợp với quy luật kinh tế, con người cần phải:",o:["thủ tiêu quy luật kinh tế.","thay đổi hành vi.","thay đổi quy luật kinh tế.","thay đổi thói quen."],c:1,g:"Khi không phù hợp, con người phải thay đổi hành vi chứ quy luật không thay đổi (Xem trang 26, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nghiên cứu mặt xã hội của sản xuất và trao đổi phản ánh đúng thực tiễn sự vận động của:",o:["kinh tế tự nhiên.","kinh tế kế hoạch hóa tập trung.","kinh tế thị trường.","kinh tế tri thức."],c:2,g:"Quan điểm này phản ánh đúng thực tiễn vận động của kinh tế thị trường (Xem trang 24, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Gạt bỏ yếu tố ngẫu nhiên để tách ra hiện tượng bền vững, điển hình nhằm nắm được bản chất là nội dung của:",o:["Lôgic kết hợp với lịch sử.","Trừu tượng hóa khoa học.","Quan sát thống kê.","Hệ thống hóa."],c:1,g:"Đây là định nghĩa về phương pháp trừu tượng hoá khoa học (Xem trang 28, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tiếp cận bản chất gắn với tiến trình hình thành, phát triển của các quan hệ xã hội là nội dung của phương pháp:",o:["Lôgic kết hợp với lịch sử.","Trừu tượng hóa khoa học.","Quan sát thống kê.","Hệ thống hóa."],c:0,g:"Phương pháp Lôgic - Lịch sử nghiên cứu hiện tượng theo tiến trình thời gian để rút ra quy luật."},
+{t:"Chức năng mở rộng sự hiểu biết về quan hệ kinh tế, triển vọng và xu hướng phát triển là chức năng:",o:["Nhận thức.","Thực tiễn.","Tư tưởng.","Phương pháp luận."],c:0,g:"Chức năng nhận thức giúp mở rộng sự hiểu biết của chủ thể (Xem trang 30, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chức năng giúp thực hiện hoạt động kinh tế phù hợp với quy luật khách quan là chức năng:",o:["Nhận thức.","Thực tiễn.","Tư tưởng.","Phương pháp luận."],c:1,g:"Vận dụng vào đời sống và hoạt động thực tế thuộc về chức năng thực tiễn (Xem trang 31, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Cung cấp nền tảng lý luận khoa học cho việc tiếp cận các khoa học kinh tế khác là chức năng:",o:["Nhận thức.","Thực tiễn.","Tư tưởng.","Phương pháp luận."],c:3,g:"Kinh tế chính trị là nền tảng lý luận cho các môn kinh tế chuyên ngành (Xem trang 32, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Góp phần xây dựng thế giới quan khoa học, hướng tới giải phóng con người là chức năng:",o:["Nhận thức.","Thực tiễn.","Tư tưởng.","Phương pháp luận."],c:2,g:"Xây dựng niềm tin và hướng tới xã hội tốt đẹp thuộc chức năng tư tưởng (Xem trang 31, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chức năng phương pháp luận của Kinh tế chính trị Mác – Lênin thể hiện ở:",o:["Nền tảng lý luận khoa học cho việc tiếp cận các khoa học kinh tế khác.","Cơ sở lý luận để phát triển các ngành kinh tế.","Cơ sở khoa học để đánh giá các bộ môn khoa học khác.","Kiến thức kinh tế cơ bản để vận dụng vào thực tiễn cuộc sống."],c:0,g:"Đây là biểu hiện cốt lõi của chức năng phương pháp luận (Xem trang 32, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khi tiền thực hiện chức năng thước đo giá trị thì được ngầm hiểu đó là:",o:["bitcoin.","tiền vàng.","tiền điện tử.","tiền giấy."],c:1,g:"Để thực hiện chức năng đo lường giá trị, không nhất thiết phải là tiền mặt mà chỉ cần so sánh với một lượng vàng nhất định một cách tưởng tượng (Xem trang 49, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Theo yêu cầu của quy luật giá trị, người sản xuất muốn bán được hàng hóa trên thị trường, muốn được xã hội thừa nhận sản phẩm thì lượng giá trị của một hàng hóa cá biệt phải phù hợp với thời gian lao động:",o:["cá biệt cần thiết.","trừu tượng cần thiết.","tư nhân cần thiết.","xã hội cần thiết."],c:3,g:"Quy luật giá trị đòi hỏi việc sản xuất và trao đổi phải dựa trên cơ sở hao phí lao động xã hội cần thiết (Xem trang 67, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Yêu cầu của quy luật giá trị, việc sản xuất và trao đổi hàng hóa phải được tiến hành trên cơ sở của hao phí lao động:",o:["xã hội cần thiết.","trừu tượng cần thiết.","cá biệt cần thiết.","tư nhân cần thiết."],c:0,g:"Việc sản xuất và trao đổi hàng hóa phải được tiến hành trên cơ sở của hao phí lao động xã hội cần thiết (Xem trang 67, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lao động xã hội của người sản xuất đã hao phí để sản xuất ra hàng hóa kết tinh trong hàng hóa ấy là:",o:["giá trị của hàng hóa.","giá trị sử dụng của hàng hóa.","giá trị thị trường.","giá trị thặng dư."],c:0,g:"Giá trị hàng hoá là lao động xã hội của người sản xuất hàng hoá kết tinh trong hàng hoá. Giá trị sử dụng là công dụng của vật phẩm (Xem trang 39, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá trị hàng hóa biểu hiện mối quan hệ giữa những người:",o:["tiêu dùng hàng hóa.","phân phối hàng hóa.","sản xuất, trao đổi hàng hóa.","phân phối, tiêu dùng hàng hóa."],c:2,g:"Giá trị hàng hoá biểu hiện mối quan hệ kinh tế giữa những người sản xuất và trao đổi hàng hoá (Xem trang 39, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khối lượng tiền cần thiết cho lưu thông tỷ lệ thuận với tổng số giá cả hàng hóa được đưa ra thị trường và tỷ lệ nghịch với:",o:["lượng tiền cất trữ.","tốc độ lưu thông của tiền tệ.","mức thanh toán mua hàng.","tốc độ lưu thông của hàng hóa."],c:1,g:"Khối lượng tiền cần thiết tỷ lệ thuận với tổng giá cả và tỷ lệ nghịch với tốc độ lưu thông của tiền tệ (Xem trang 71, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lao động cụ thể phản ánh tính chất nào sau đây của lao động sản xuất hàng hóa?",o:["Trừu tượng.","Xã hội.","Tư nhân.","Cụ thể."],c:2,g:"Lao động cụ thể phản ánh tính chất tư nhân, trong khi lao động trừu tượng phản ánh tính chất xã hội của lao động sản xuất hàng hoá (Xem trang 41, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tiền được dùng làm phương tiện mua bán, thanh toán quốc tế giữa các nước với nhau là thực hiện chức năng:",o:["thước đo giá trị.","phương tiện lưu thông.","phương tiện cất trữ.","tiền tệ thế giới."],c:3,g:"Khi tiền thực hiện chức năng mua bán, thanh toán quốc tế thì đó là chức năng tiền tệ thế giới (Xem trang 51, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lượng thời gian hao phí lao động xã hội cần thiết để sản xuất ra đơn vị hàng hóa là:",o:["lượng giá trị của hàng hóa.","thời gian lao động tất yếu.","lượng giá trị cá biệt của hàng hóa.","thời gian lao động thặng dư."],c:0,g:"Lượng giá trị của hàng hoá chính là lượng thời gian hao phí lao động xã hội cần thiết để sản xuất ra sản phẩm đó."},
+{t:"Yêu cầu của quy luật giá trị, trong lĩnh vực trao đổi phải tiến hành theo nguyên tắc ngang giá, dựa trên cơ sở:",o:["giá trị cá biệt.","giá trị trao đổi.","giá thị thặng dư.","giá trị xã hội."],c:3,g:"Trao đổi phải dựa trên cơ sở giá trị xã hội, tức là dựa trên hao phí lao động xã hội cần thiết (Xem trang 67, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Các nhân tố ảnh hưởng đến lượng giá trị của hàng hóa bao gồm năng suất lao động và:",o:["trình độ phát triển của lực lượng sản xuất.","năng lực lao động.","tính chất phức tạp hay giản đơn của lao động.","cường độ lao động."],c:2,g:"Lượng giá trị hàng hóa chịu ảnh hưởng bởi năng suất lao động và tính chất của lao động (phức tạp hay giản đơn) (Xem trang 43, 45 giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hàng hóa không thể cất trữ, việc sản xuất và tiêu dùng diễn ra đồng thời là:",o:["bản quyền.","chứng quyền.","thương hiệu.","dịch vụ."],c:3,g:"Dịch vụ là hàng hoá vô hình, không thể cất trữ, quá trình sản xuất và tiêu dùng diễn ra đồng thời (Xem trang 52, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lượng giá trị trong một đơn vị hàng hóa sẽ giảm xuống khi tăng:",o:["tốc độ chu chuyển của tư bản.","cường độ lao động.","thời gian chu chuyển của tư bản.","năng suất lao động."],c:3,g:"Năng suất lao động tăng lên làm hao phí lao động trên một đơn vị sản phẩm giảm đi, do đó lượng giá trị giảm (Xem trang 44, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Một trong những chức năng của tiền là phương tiện:",o:["phát triển.","vận hành.","đầu tư.","lưu thông."],c:3,g:"Tiền làm môi giới trong trao đổi hàng hóa thực hiện chức năng phương tiện lưu thông (Xem trang 50, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Thời gian để sản xuất ra một giá trị sử dụng nào đó trong những điều kiện bình thường của xã hội với trình độ thành thạo trung bình, cường độ lao động trung bình là:",o:["thời gian lao động xã hội cần thiết.","thời gian lao động tất yếu.","thời gian lao động cá biệt cần thiết.","thời gian lao động thặng dư."],c:0,g:"Đây là định nghĩa về thời gian lao động xã hội cần thiết (Xem trang 43, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Người đầu tiên phát hiện ra tính chất hai mặt của lao động sản xuất hàng hóa là:",o:["C. Mác.","D. Ricardo.","A. Smith.","V. I. Lênin."],c:0,g:"C. Mác là người đầu tiên phát hiện ra tính hai mặt (cụ thể và trừu tượng) của lao động sản xuất hàng hóa (Xem trang 41, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Để nền kinh tế hàng hóa có thể hình thành và phát triển, C. Mác cho rằng cần có sự tách biệt về mặt kinh tế của các chủ thể sản xuất và:",o:["phân công lao động cụ thể.","phân công lao động cá biệt.","phân công lao động xã hội.","phân công lao động trừu tượng."],c:2,g:"Hai điều kiện ra đời của sản xuất hàng hóa là phân công lao động xã hội và sự tách biệt kinh tế (Xem trang 35, 36, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Một trong những đặc trưng chung của kinh tế thị trường là giá cả được hình thành:",o:["theo nguyên tắc thị trường.","bởi người mua.","bởi người bán.","theo quy định của nhà nước."],c:0,g:"Trong kinh tế thị trường, giá cả do cung - cầu và cạnh tranh trên thị trường quyết định (Xem trang 62, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Quy luật kinh tế nào sau đây là quy luật kinh tế cơ bản của sản xuất hàng hoá?",o:["Giá trị.","Lưu thông tiền tệ.","Cung - cầu.","Cạnh tranh."],c:0,g:"Quy luật giá trị là quy luật kinh tế cơ bản của sản xuất hàng hoá (Xem trang 67, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tiền được dùng để biểu hiện và đo lượng giá trị của tất cả các hàng hóa khác nhau là thực hiện chức năng:",o:["thước đo giá trị.","phương tiện lưu thông.","phương tiện thanh toán.","tiền tệ thế giới."],c:0,g:"Khi dùng để đo lường giá trị của các hàng hóa khác, tiền thực hiện chức năng thước đo giá trị (Xem trang 49, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Trong cùng một đơn vị thời gian, so với lao động giản đơn, lao động phức tạp sẽ tạo ra:",o:["nhiều lượng giá trị hơn.","bằng lượng giá trị.","tương đương lượng giá trị.","ít lượng giá trị hơn."],c:0,g:"Lao động phức tạp là lao động giản đơn được nhân bội lên, tạo ra nhiều giá trị hơn (Xem trang 45, 46, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Sản phẩm của lao động chỉ mang hình thái hàng hóa khi thỏa mãn một nhu cầu nào đó của con người và thông qua:",o:["tiêu dùng và tích lũy.","đầu tư.","tích lũy.","trao đổi, mua bán."],c:3,g:"Sản phẩm chỉ trở thành hàng hóa khi được đưa ra trao đổi, mua bán trên thị trường (Xem trang 37, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Thời gian lao động xã hội cần thiết là thời gian để sản xuất ra một giá trị sử dụng nào đó trong những điều kiện:",o:["bình thường của xã hội.","xấu của xã hội.","đặc biệt của xã hội.","tốt của xã hội."],c:0,g:"Thời gian lao động xã hội cần thiết gắn với các điều kiện sản xuất bình thường (Xem trang 43, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hàng hóa có hai thuộc tính là do lao động của người sản xuất hàng hóa có tính hai mặt là:",o:["lao động cụ thể và lao động trừu tượng.","lao động cá biệt và lao động xã hội.","lao động tư nhân và lao động cá biệt.","lao động tư nhân và lao động xã hội."],c:0,g:"Lao động cụ thể tạo ra giá trị sử dụng, lao động trừu tượng tạo ra giá trị (Xem trang 40, 41, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lao động cụ thể tạo ra:",o:["giá trị trao đổi của hàng hóa.","giá trị xã hội của hàng hóa.","giá trị của hàng hóa.","giá trị sử dụng của hàng hóa."],c:3,g:"Lao động cụ thể là lao động có ích dưới hình thức chuyên môn nhất định, tạo ra công dụng (giá trị sử dụng) (Xem trang 40, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tiền có mấy chức năng?",o:["Sáu.","Năm.","Bốn.","Ba."],c:1,g:"Tiền có 5 chức năng: Thước đo giá trị, Phương tiện lưu thông, Phương tiện cất giữ, Phương tiện thanh toán, Tiền tệ thế giới (Xem trang 49-51, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Các hình thức lao động cụ thể ngày càng phong phú, đa dạng do sự phát triển của khoa học kỹ thuật và:",o:["tăng năng suất lao động.","phân công lao động xã hội.","tăng cường độ lao động.","trình độ của người lao động."],c:1,g:"Phân công lao động xã hội càng sâu sắc thì lao động cụ thể càng đa dạng (Xem trang 41, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Quy luật cung cầu có tác dụng điều tiết quan hệ giữa sản xuất và lưu thông hàng hóa, làm biến đổi cơ cấu và dung lượng thị trường, quyết định:",o:["giá cả thị trường.","nhu cầu của xã hội.","mục đích của chủ thể kinh tế.","giá trị của hàng hóa."],c:0,g:"Cung - cầu quyết định giá cả thị trường xoay quanh trục giá trị (Xem trang 70, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Cơ chế thị trường là hệ thống các quan hệ mang tính tự điều chỉnh tuân theo yêu cầu của:",o:["nhà nước.","người mua.","người bán.","các quy luật kinh tế."],c:3,g:"Cơ chế thị trường vận hành khách quan theo các quy luật kinh tế (Xem trang 61, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Quy luật giá trị điều tiết sản xuất và lưu thông thông qua sự biến động của:",o:["giá trị thặng dư.","giá cả hàng hóa.","giá trị sử dụng.","giá cả sản xuất."],c:1,g:"Quy luật giá trị điều tiết thông qua tín hiệu giá cả trên thị trường."},
+{t:"Theo C. Mác, sản xuất hàng hóa là kiểu tổ chức kinh tế mà ở đó, những người sản xuất ra sản phẩm nhằm phục vụ mục đích:",o:["tích lũy.","trao đổi, mua bán.","tiêu dùng.","cho, tặng."],c:1,g:"Mục đích của sản xuất hàng hóa là để trao đổi, bán cho người khác (Xem trang 35, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lao động trừu tượng phản ánh tính chất nào sau đây của lao động sản xuất hàng hóa?",o:["Trừu tượng.","Cụ thể.","Xã hội.","Tư nhân."],c:2,g:"Lao động trừu tượng phản ánh tính chất xã hội, trong khi lao động cụ thể phản ánh tính chất tư nhân (Xem trang 41, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Một trong những chức năng của tiền là thước đo:",o:["giá cả thị trường.","giá trị.","giá trị thị trường.","giá cả."],c:1,g:"Thước đo giá trị là chức năng đầu tiên của tiền tệ (Xem trang 49, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá cả thị trường dựa trên cơ sở:",o:["giá trị thặng dư.","giá trị sử dụng.","giá trị thị trường.","giá trị trao đổi."],c:2,g:"Giá trị thị trường là cơ sở của giá cả thị trường."},
+{t:"Cơ chế tác động của quy luật giá trị là giá cả thị trường lên xuống xoay quanh:",o:["giá trị sử dụng.","giá trị xã hội.","giá trị trao đổi.","giá trị hàng hóa."],c:3,g:"Quy luật giá trị làm cho giá cả dao động quanh giá trị hàng hóa (Xem trang 67, 68, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tiền là kết quả của quá trình phát triển sản xuất và trao đổi hàng hóa, là sản phẩm của sự phát triển các hình thái:",o:["giá trị từ thấp đến cao.","biểu hiện của giá trị thặng dư.","tồn tại của tư bản.","giá trị sử dụng từ thấp đến cao."],c:0,g:"Tiền ra đời từ sự phát triển của 4 hình thái giá trị (Xem trang 46-48, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Sự hoạt động của quy luật giá trị biểu hiện thông qua sự vận động của yếu tố nào sau đây trên thị trường?",o:["Giá trị thặng dư.","Giá cả sản xuất.","Giá trị sử dụng.","Giá cả thị trường."],c:3,g:"Quy luật giá trị biểu hiện sự tồn tại của mình qua biến động giá cả (Xem trang 68, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Con người phát hiện ra nhiều giá trị sử dụng khác nhau của hàng hóa nhờ vào:",o:["Cơ chế kinh tế.","những điều kiện tự nhiên và thể chế kinh tế.","sự phát triển của nền sản xuất và khoa học, công nghệ.","thể chế chính trị."],c:2,g:"Khoa học công nghệ giúp phát hiện thêm nhiều công dụng của sản phẩm (Xem trang 37, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lao động trừu tượng tạo ra:",o:["giá trị của hàng hóa.","giá trị trao đổi của hàng hóa.","giá trị sử dụng của hàng hóa.","giá trị xã hội của hàng hóa."],c:0,g:"Lao động trừu tượng kết tinh tạo thành giá trị (Xem trang 41, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Căn cứ vào tính chất và cơ chế vận hành của thị trường, có thể chia thị trường thành:",o:["thị trường tư liệu sản xuất và thị trường tư liệu tiêu dùng.","thị trường các yếu tố đầu vào và thị trường hàng hóa đầu ra.","thị trường trong nước và thị trường thế giới.","thị trường tự do, thị trường có điều tiết."],c:3,g:"Cách phân chia dựa trên cơ chế vận hành là tự do hoặc có điều tiết (Xem trang 58, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khi thực hiện chức năng cất trữ, tiền được rút khỏi lưu thông đi vào cất trữ dưới hình thái:",o:["bitcoin.","tiền ký hiệu giá trị (tiền giấy).","tiền vàng.","tiền điện tử."],c:2,g:"Để cất trữ thì tiền phải có đủ giá trị, thường là tiền vàng, bạc (Xem trang 50, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Để đứng vững trong cạnh tranh, người sản xuất phải luôn tìm cách làm cho giá trị cá biệt hàng hóa của mình nhỏ hơn hoặc bằng:",o:["giá trị xã hội.","giá trị trao đổi.","giá trị thặng dư.","giá trị sử dụng."],c:0,g:"Nếu giá trị cá biệt lớn hơn giá trị xã hội, người sản xuất sẽ gặp thua lỗ (Xem trang 68, 69, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Căn cứ vào phạm vi hoạt động, có thể chia thị trường thành:",o:["thị trường các yếu tố đầu vào và thị trường hàng hóa đầu ra.","thị trường tư liệu sản xuất và thị trường tư liệu tiêu dùng.","thị trường tự do và thị trường có điều tiết.","thị trường trong nước và thị trường thế giới."],c:3,g:"Cách chia theo không gian/phạm vi là trong nước và quốc tế (Xem trang 58, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tiền được dùng để trả nợ, trả tiền mua chịu hàng hóa là thực hiện chức năng:",o:["phương tiện thanh toán.","thước đo giá trị.","tiền tệ thế giới.","phương tiện lưu thông."],c:0,g:"Thanh toán các khoản nợ, mua chịu thuộc chức năng phương tiện thanh toán (Xem trang 51, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lượng giá trị của một đơn vị hàng hóa được sản xuất ra bao hàm hao phí lao động quá khứ và hao phí:",o:["lao động thực tế.","lao động sống.","lao động mới kết tinh thêm.","lao động hiện tại."],c:2,g:"Giá trị hàng hóa gồm giá trị cũ (lao động quá khứ) và giá trị mới (lao động sống kết tinh) (Xem trang 43, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá trị sử dụng của hàng hóa do thuộc tính nào sau đây của yếu tố tham gia cấu thành nên hàng hóa đó quy định?",o:["Đa dạng.","Xã hội.","Lịch sử.","Tự nhiên."],c:3,g:"Giá trị sử dụng do thuộc tính tự nhiên của vật quyết định (Xem trang 37, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lao động có ích dưới một hình thức cụ thể của những nghề nghiệp chuyên môn nhất định là:",o:["lao động giản đơn.","lao động trừu tượng.","lao động cụ thể.","lao động phức tạp."],c:2,g:"Định nghĩa về lao động cụ thể tạo ra giá trị sử dụng (Xem trang 40, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Sự hao phí sức lao động nói chung của người sản xuất hàng hóa về cơ bắp, thần kinh, trí óc là:",o:["lao động phức tạp.","lao động trừu tượng.","lao động cụ thể.","lao động giản đơn."],c:1,g:"Định nghĩa về lao động trừu tượng tạo ra giá trị hàng hóa (Xem trang 41, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Các doanh nghiệp tự do di chuyển nguồn lực của mình từ ngành này sang ngành khác, vào các ngành sản xuất kinh doanh khác nhau là biện pháp cạnh tranh:",o:["giữa các nền kinh tế.","giữa các ngành.","trong cùng đơn vị sản xuất.","trong nội bộ ngành."],c:1,g:"Biện pháp cạnh tranh giữa các ngành là các doanh nghiệp tự do di chuyển nguồn lực của mình từ ngành này sang ngành khác, vào các ngành sản xuất kinh doanh khác nhau (Xem trang 74, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Căn cứ vào đầu vào và đầu ra của quá trình sản xuất, có thể chia thị trường thành:",o:["thị trường tư liệu sản xuất và thị trường tư liệu tiêu dùng.","thị trường tự do, thị trường có điều tiết.","thị trường trong nước và thị trường thế giới.","thị trường các yếu tố đầu vào và thị trường hàng hóa đầu ra."],c:2,g:"Căn cứ vào đầu vào, đầu ra của quá trình sản xuất, có thể chia thành thị trường tư liệu sản xuất (đầu vào), thị trường tư liệu tiêu dùng (đầu ra) (Xem trang 58, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Căn cứ vào tính chuyên biệt của thị trường, có thể chia thị trường thành:",o:["thị trường cạnh tranh hoàn hảo, thị trường cạnh tranh không hoàn hảo.","thị trường trong nước và thị trường thế giới.","các loại thị trường gắn với các lĩnh vực khác nhau.","thị trường tư liệu sản xuất và thị trường tư liệu tiêu dùng."],c:2,g:"Chuyên biệt tức là tập trung vào một lĩnh vực nào đó. Đáp án C là phương án phân chia dựa trên tính chuyên biệt của các quan hệ kinh tế theo lĩnh vực cụ thể."},
+{t:"Cơ chế thị trường là hệ thống các quan hệ kinh tế mang đặc tính tự điều chỉnh các cân đối của nền kinh tế theo yêu cầu của:",o:["người sản xuất.","người tiêu dùng.","các quy luật kinh tế.","các chính sách kinh tế."],c:2,g:"Cơ chế thị trường là hệ thống các quan hệ kinh tế mang đặc tính tự điều chỉnh các cân đối của nền kinh tế theo yêu cầu của các quy luật kinh tế (Xem trang 61, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Một trong những đặc trưng chung của kinh tế thị trường là thị trường đóng vai trò quyết định trong việc phân bổ các nguồn lực xã hội thông qua hoạt động của các:",o:["thị trường bộ phận.","chủ thể sản xuất.","chủ thể trung gian.","thị trường đầu vào."],c:0,g:"Thị trường đóng vai trò quyết định trong việc phân bổ các nguồn lực xã hội thông qua hoạt động của các thị trường bộ phận (Xem trang 62, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Một trong những đặc trưng chung của kinh tế thị trường là giá cả được hình thành theo:",o:["nguyên tắc tập trung.","mệnh lệnh nhà nước.","nguyên tắc thị trường.","nhu cầu người tiêu dùng."],c:2,g:"Một trong những đặc trưng chung của kinh tế thị trường là giá cả được hình thành theo nguyên tắc thị trường (Xem trang 62, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế thị trường là:",o:["nền kinh tế phát triển cao.","nền kinh tế hiện đại.","nền kinh tế hàng hóa.","kinh tế hàng hóa phát triển cao."],c:3,g:"Nền kinh tế thị trường là nền kinh tế hàng hoá phát triển cao (Xem trang 61, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Biện pháp cạnh tranh trong nội bộ ngành là:",o:["di chuyển nguồn lực từ ngành này sang ngành khác.","cải tiến kỹ thuật, đổi mới công nghệ.","chuyển hướng đầu tư sang ngành nghề khác.","mở rộng ngành nghề kinh doanh."],c:1,g:"Biện pháp cạnh tranh trong nội bộ ngành là các doanh nghiệp ra sức cải tiến kỹ thuật, đổi mới công nghệ (Xem trang 73, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kết quả cạnh tranh trong nội bộ ngành là hình thành:",o:["giá trị cá biệt của tất cả hàng hóa.","giá trị sử dụng của tất cả hàng hóa.","giá trị thị trường của từng loại hàng hóa.","giá trị thặng dư của từng loại hàng hóa."],c:2,g:"Kết quả của cạnh tranh trong nội bộ ngành là hình thành giá trị thị trường của từng loại hàng hoá (Xem trang 73, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá cả thị trường là hình thức biểu hiện bằng tiền của:",o:["giá trị cá biệt.","giá trị trao đổi.","giá trị thặng dư.","giá trị thị trường."],c:3,g:"Giá cả thị trường là hình thức biểu hiện bằng tiền của giá trị thị trường."},
+{t:"Giá trị trung bình của những hàng hóa được sản xuất ra trong một khu vực sản xuất nào đó, là:",o:["giá trị cá biệt.","giá trị sử dụng.","giá trị thặng dư.","giá trị thị trường."],c:3,g:"Theo C. Mác, “Một mặt, phải coi giá trị thị trường là giá trị trung bình của những hàng hoá được sản xuất ra trong một khu vực nào đó\" (Xem trang 73, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Biện pháp cạnh tranh giữa các ngành là các doanh nghiệp:",o:["tự do di chuyển nguồn lực của mình từ ngành này sang ngành khác.","tăng cường độ lao động.","tăng năng suất lao động.","cải tiến kỹ thuật, đổi mới công nghệ."],c:0,g:"Biện pháp cạnh tranh giữa các ngành là các doanh nghiệp tự do di chuyển nguồn lực của mình từ ngành này sang ngành khác, vào các ngành sản xuất kinh doanh khác nhau (Xem trang 74, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Một trong những phương thức để thực hiện lợi ích của doanh nghiệp trong cùng một ngành sản xuất là cạnh tranh:",o:["giữa các nền kinh tế.","giữa các ngành.","trong nội bộ ngành.","trong cùng đơn vị sản xuất."],c:2,g:"Cạnh tranh trong nội bộ ngành là một trong những phương thức để thực hiện lợi ích của doanh nghiệp trong cùng một ngành sản xuất (Xem trang 73, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tìm nơi đầu tư có lợi nhất là mục đích của cạnh tranh:",o:["giữa các nền kinh tế.","giữa các ngành.","trong nội bộ ngành.","trong cùng đơn vị sản xuất."],c:1,g:"Mục đích cạnh tranh giữa các ngành là nhằm tìm nơi đầu tư có lợi nhất (Xem trang 74, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Các doanh nghiệp cải tiến kỹ thuật, đổi mới công nghệ là biện pháp cạnh tranh:",o:["giữa các nền kinh tế.","giữa các ngành.","trong nội bộ ngành.","trong cùng đơn vị sản xuất."],c:2,g:"Trong cạnh tranh trong nội bộ ngành, biện pháp cạnh tranh là các doanh nghiệp ra sức cải tiến kỹ thuật, đổi mới công nghệ, hợp lý hoá sản xuất, tăng năng suất lao động để hạ thấp giá trị cá biệt của hàng hoá."},
+{t:"Các doanh nghiệp tự do di chuyển nguồn lực của mình từ ngành này sang ngành khác là biện pháp cạnh tranh:",o:["giữa các nền kinh tế.","giữa các ngành.","trong nội bộ ngành.","trong cùng đơn vị sản xuất."],c:1,g:"Biện pháp cạnh tranh giữa các ngành là các doanh nghiệp tự do di chuyển nguồn lực của mình từ ngành này sang ngành khác, vào các ngành sản xuất kinh doanh khác nhau (Xem trang 74, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá trị hàng hóa là:",o:["hình thức biểu hiện ra bên ngoài của giá trị trao đổi.","nội dung, là cơ sở của trao đổi.","nội dung, cơ sở của giá trị sử dụng.","hình thức biểu hiện ra bên ngoài của giá trị sử dụng."],c:1,g:"Giá trị hàng hóa là hình thức biểu hiện ra bên ngoài của giá trị; giá trị là nội dung, là cơ sở của trao đổi (Xem trang 39, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Việc phát hiện ra tính hai mặt của lao động sản xuất hàng hóa, giúp C. Mác luận giải triệt để và khoa học về:",o:["nguồn gốc, bản chất của giá trị.","nguồn gốc, bản chất của tiền.","mối quan hệ giữa hai thuộc tính của hàng hóa.","hai thuộc tính của hàng hóa."],c:0,g:"Việc phát hiện ra tính hai mặt của lao động sản xuất hàng hoá là phát kiến quan trọng của C. Mác, giúp ông luận giải triệt để và khoa học về nguồn gốc, bản chất của giá trị (Xem trang 81, 82, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Gắn kết nền kinh tế thành một chỉnh thể, gắn kết nền kinh tế quốc gia với nền kinh tế thế giới là vai trò của:",o:["doanh nghiệp.","thị trường.","nhà đầu tư.","người tiêu dùng."],c:1,g:"Thị trường gắn kết nền kinh tế thành một chỉnh thể, gắn kết nền kinh tế quốc gia với nền kinh tế thế giới (Xem trang 59, 60, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nền sản xuất phát triển, khoa học, công nghệ càng tiên tiến, càng giúp con người phát hiện ra nhiều:",o:["giá trị sử dụng.","giá trị trao đổi.","giá trị thị trường.","giá trị cá biệt."],c:0,g:"Nền sản xuất phát triển, khoa học – công nghệ càng hiện đại, càng giúp con người phát hiện thêm các giá trị sử dụng của sản phẩm (Xem trang 37, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá trị hàng hóa là phạm trù có tính:",o:["tự nhiên.","phổ biến.","lịch sử.","phức tạp."],c:2,g:"Giá trị hàng hoá biểu hiện mối quan hệ kinh tế giữa những người sản xuất, trao đổi hàng hoá và là phạm trù có tính lịch sử (Xem trang 39, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hàng hóa ở nơi có giá cả thấp được thu hút, chảy đến nơi có giá cả cao hơn, góp phần làm cho cung cầu hàng hóa giữa các vùng cân bằng thông qua mệnh lệnh của:",o:["giá trị hàng hóa.","giá trị sử dụng.","giá cả thị trường.","giá cả sản xuất."],c:2,g:"Thông qua mệnh lệnh của giá cả thị trường, hàng hoá ở nơi có giá cả thấp được thu hút, chảy đến nơi có giá cả cao hơn, góp phần làm cho cung – cầu hàng hoá giữa các vùng được cân bằng (Xem trang 68, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khi sản phẩm do những người sản xuất hàng hóa riêng biệt tạo ra không phù hợp với nhu cầu của xã hội thì xuất hiện mâu thuẫn giữa lao động cụ thể và:",o:["lao động quá khứ.","lao động hiện tại.","lao động sống.","lao động trừu tượng."],c:3,g:"Mâu thuẫn giữa lao động cụ thể và lao động trừu tượng xuất hiện khi sản phẩm do những người sản xuất hàng hoá riêng biệt tạo ra không phù hợp với nhu cầu xã hội (Xem trang 42, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khi mức tiêu hao lao động cá biệt cao hơn mức tiêu hao mà xã hội có thể chấp nhận được thì xuất hiện mâu thuẫn giữa lao động cụ thể và:",o:["lao động trừu tượng.","lao động quá khứ.","lao động hiện tại.","lao động sống."],c:0,g:"Mâu thuẫn giữa lao động cụ thể và lao động trừu tượng xuất hiện khi sản phẩm không phù hợp hoặc mức hao phí cá biệt cao hơn xã hội chấp nhận (Xem trang 42, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khi giá trị của đơn vị hàng hóa được đại biểu bằng một số tiền nhất định thì số tiền đó được gọi là:",o:["giá cả thị trường.","giá cả hàng hóa.","giá cả xã hội.","giá cả cá biệt."],c:1,g:"Giá trị hàng hoá được biểu hiện bằng tiền gọi là giá cả hàng hoá (Xem trang 49, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khi thực hiện chức năng phương tiện lưu thông, tiền được dùng:",o:["làm môi giới cho quá trình trao đổi hàng hóa.","rút khỏi lưu thông đi vào cất trữ.","trả nợ, trả tiền mua chịu hàng hóa.","để đo lượng giá trị của tất cả các hàng hóa khác nhau."],c:0,g:"Khi thực hiện chức năng phương tiện lưu thông, tiền được dùng làm môi giới cho quá trình trao đổi hàng hoá (Xem trang 50, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Cạnh tranh giữa các chủ thể kinh doanh trong cùng một ngành, cùng sản xuất một loại hàng hóa là cạnh tranh:",o:["trong nội bộ ngành.","giữa các ngành khác nhau.","trong nội bộ doanh nghiệp.","trong cùng đơn vị sản xuất kinh doanh."],c:0,g:"Cạnh tranh trong nội bộ ngành là cạnh tranh giữa các chủ thể kinh doanh trong cùng một ngành hàng hoá (Xem trang 73, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Mâu thuẫn giữa lao động cụ thể và lao động trừu tượng xuất hiện khi mức độ tiêu hao lao động cá biệt cao hơn mức tiêu hao mà xã hội có thể chấp nhận được là mầm mống của:",o:["suy thoái.","khủng hoảng thiếu.","khủng hoảng thừa.","hưng thịnh."],c:2,g:"Khi đó hàng hoá không bán được (thừa hàng), gây nên mầm mống của khủng hoảng thừa (Xem trang 42, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Một trong những vai trò của thị trường là:",o:["kết nối, thông tin trong các quan hệ mua bán.","thỏa mãn nhu cầu hiện tại của xã hội.","thực hiện quản trị phát triển nền kinh tế.","thông tin, định hướng cho mọi nhu cầu sản xuất kinh doanh."],c:3,g:"Thị trường có vai trò thông tin, định hướng cho mọi nhu cầu sản xuất kinh doanh (Xem trang 59, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá cả thị trường do yếu tố nào sau đây quyết định?",o:["Giá trị thị trường.","Giá trị hàng hóa.","Giá trị trao đổi.","Giá trị cá biệt."],c:0,g:"Giá cả thị trường là hình thức biểu hiện bằng tiền của giá trị thị trường, lấy giá trị thị trường làm cơ sở khách quan."},
+{t:"Giá trị cá biệt của những hàng hóa được sản xuất trong những điều kiện trung bình của khu vực và chiếm đại bộ phận trong tổng số những hàng hóa của khu vực đó là:",o:["giá trị hàng hóa.","giá trị thị trường.","giá trị cá biệt.","giá trị trao đổi."],c:1,g:"Giá trị thị trường là giá trị cá biệt của những hàng hoá được sản xuất ra trong những điều kiện trung bình của khu vực đó (Xem trang 73, 74, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Trong lưu thông, quy luật giá trị điều tiết hàng hóa từ nơi có:",o:["giá cả thấp đến nơi có giá cả cao.","cung nhỏ hơn cầu đến nơi có cung lớn hơn cầu.","giá cả cao đến nơi có giá cả thấp.","cung bằng cầu đến nơi có cung lớn hơn cầu."],c:0,g:"Trong lưu thông, quy luật giá trị điều tiết hàng hoá từ nơi có giá cả thấp đến nơi có giá cả cao (Xem trang 68, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Mối quan hệ tỷ lệ về lượng giữa các giá trị sử dụng khác nhau là:",o:["giá trị hàng hóa.","giá trị cá biệt.","giá trị trao đổi.","giá trị thị trường."],c:2,g:"Tỷ lệ trao đổi giữa các giá trị sử dụng khác nhau này được gọi là giá trị trao đổi (Xem trang 1, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Năng suất lao động tỷ lệ nghịch với:",o:["lượng giá trị trong một đơn vị hàng hóa.","lượng giá trị sử dụng trong một đơn vị hàng hóa.","lượng giá trị trao đổi trong một đơn vị hàng hóa.","lượng giá trị thặng dư trong một đơn vị hàng hóa."],c:0,g:"Năng suất lao động tăng lên sẽ làm cho lượng giá trị trong một đơn vị sản xuất hàng hoá giảm xuống (Xem trang 44, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"C. Mác gọi lao động giản đơn được nhân bội lên là:",o:["lao động phức tạp.","lao động cá biệt.","lao động cụ thể.","lao động trừu tượng."],c:0,g:"Lao động phức tạp là lao động giản đơn được nhân bội lên (Xem trang 46, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Dịch vụ là hàng hóa:",o:["dùng để cất trữ.","dạng vật thể.","hữu hình.","không thể cất trữ."],c:3,g:"Dịch vụ là hàng hoá không thể cất trữ (Xem trang 52, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Dịch vụ là một loại hàng hóa:",o:["vô hình.","hữu hình.","có thể cất trữ.","dạng vật thể."],c:0,g:"Dịch vụ là một loại hàng hoá, nhưng đó là loại hàng hoá vô hình (Xem trang 51, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Những hoạt động lao động yêu cầu phải trải qua một quá trình đào tạo về kỹ năng, nghiệp vụ theo yêu cầu nhất định, gọi là:",o:["lao động cụ thể.","lao động giản đơn.","lao động trừu tượng.","lao động phức tạp."],c:0,g:"Lao động cụ thể là lao động có ích dưới một hình thức cụ thể của những nghề nghiệp chuyên môn nhất định (Xem trang 40, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Mục đích của việc cung ứng dịch vụ là nhằm thỏa mãn nhu cầu của người:",o:["có nhu cầu cung ứng dịch vụ đó.","tạo ra dịch vụ đó.","có nhu cầu về loại hình dịch vụ đó.","môi giới dịch vụ."],c:2,g:"Mục đích của việc cung ứng dịch vụ là nhằm thỏa mãn nhu cầu của người có nhu cầu về loại hình dịch vụ đó (Xem trang 52, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Những người kết nối giữa sản xuất và tiêu dùng, làm cho sản xuất và tiêu dùng trở nên ăn khớp với nhau là:",o:["các chủ thể trung gian trong thị trường.","người tiêu dùng.","người sản xuất hàng hóa.","chủ doanh nghiệp."],c:0,g:"Các chủ thể trung gian làm tăng sự kết nối giữa sản xuất và tiêu dùng (Xem trang 79, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Những người mua hàng hóa, dịch vụ trên thị trường để thỏa mãn nhu cầu tiêu dùng là:",o:["người tiêu dùng.","các chủ thể trung gian trong thị trường.","chủ doanh nghiệp.","người sản xuất hàng hóa."],c:0,g:"Người tiêu dùng là những người mua hàng hóa, dịch vụ trên thị trường để thỏa mãn nhu cầu tiêu dùng (Xem trang 78, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Những người sử dụng các yếu tố đầu vào để sản xuất, kinh doanh và thu lợi nhuận là:",o:["người tiêu dùng.","các chủ thể trung gian trong thị trường.","người sản xuất hàng hóa.","hộ gia đình."],c:2,g:"Người sản xuất là những người sử dụng các yếu tố đầu vào để sản xuất, kinh doanh và thu lợi nhuận (Xem trang 78, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Thực hiện quản trị phát triển nền kinh tế thông qua việc tạo lập môi trường kinh tế tốt nhất cho các chủ thể và khắc phục các khuyết tật của thị trường là vai trò của:",o:["nhà nước.","người tiêu dùng.","người sản xuất.","các chủ thể trung gian."],c:0,g:"Trong nền kinh tế thị trường, nhà nước thực hiện quản trị phát triển nền kinh tế và khắc phục các khuyết tật (Xem trang 80, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tăng cơ hội thực hiện giá trị của hàng hóa cũng như thỏa mãn nhu cầu của người tiêu dùng là vai trò của:",o:["các chủ thể trung gian trong thị trường.","người tiêu dùng.","nhà nước.","người sản xuất."],c:0,g:"Hoạt động của các chủ thể trung gian trong thị trường làm tăng cơ hội thực hiện giá trị và thỏa mãn nhu cầu người tiêu dùng (Xem trang 79, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Định hướng sản xuất là vai trò của:",o:["người tiêu dùng.","nhà nước.","các chủ thể trung gian.","người sản xuất."],c:0,g:"Người tiêu dùng có vai trò rất quan trọng trong định hướng sản xuất (Xem trang 78, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Không chỉ làm thỏa mãn nhu cầu hiện tại mà còn tạo ra và phục vụ cho nhu cầu tương lai là vai trò của:",o:["người sản xuất.","người tiêu dùng.","hộ gia đình.","các chủ thể trung gian."],c:0,g:"Nhiệm vụ của người sản xuất không chỉ làm thoả mãn nhu cầu hiện tại mà còn tạo nhu cầu trong tương lai (Xem trang 78, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Cung cấp hàng hoá, dịch vụ không làm tổn hại tới sức khoẻ và lợi ích xã hội là trách nhiệm của:",o:["người sản xuất.","người tiêu dùng.","nhà nước.","các chủ thể trung gian."],c:0,g:"Người sản xuất cần phải có trách nhiệm cung cấp những hàng hoá, dịch vụ không gây tổn hại (Xem trang 78, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Một trong những vai trò của các chủ thể trung gian trong thị trường là:",o:["kết nối, trao đổi thông tin trong các quan hệ mua, bán.","thực hiện quản trị phát triển nền kinh tế.","làm thỏa mãn nhu cầu hiện tại của xã hội.","kết nối các nhà sản xuất, định hướng sản xuất."],c:0,g:"Một trong những vai trò của các chủ thể trung gian trong thị trường là kết nối, trao đổi thông tin (Xem trang 79, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tiền trong nền sản xuất hàng hóa giản đơn vận động theo công thức:",o:["$H - T - H$","$T - H - T$","$T - H - T'$","$H - T - H'$"],c:0,g:"Tiền trong nền sản xuất hàng hoá giản đơn vận động theo quan hệ $H - T - H$ (Xem trang 85, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Bộ phận tư bản tồn tại dưới hình thái tư liệu sản xuất mà giá trị được lao động cụ thể của công nhân làm thuê bảo tồn và chuyển nguyên vẹn vào giá trị sản phẩm được C. Mác gọi là:",o:["tư bản khả biến.","tư bản lưu động.","tư bản bất biến.","tư bản cố định."],c:2,g:"Bộ phận tư bản tồn tại dưới hình thái tư liệu sản xuất mà giá trị không biến đổi trong quá trình sản xuất được gọi là tư bản bất biến (ký hiệu là $c$) (Xem trang 92, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Công thức chung của tư bản là:",o:["$T - H - T$","$H - T - H$","$T - H - T'$","$H - T - H'$"],c:2,g:"Tư bản vận động theo công thức: $T - H - T'$ (đây là công thức chung của tư bản) (Xem trang 85, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Toàn bộ những năng lực thể chất và tinh thần tồn tại trong cơ thể, trong một con người sống và được người đó đem vào vận dụng trong sản xuất là:",o:["sức lao động.","lao động.","hàng hóa sức lao động.","hàng hóa lao động."],c:0,g:"C. Mác viết: “Sức lao động hay năng lực lao động là toàn bộ những năng lực thể chất và tinh thần tồn tại trong cơ thể... đem vào vận dụng mỗi khi sản xuất ra một giá trị sử dụng nào đó” (Xem trang 86, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Ba giai đoạn vận động tuần hoàn của tư bản là:",o:["lưu thông - lưu thông - trao đổi.","sản xuất - lưu thông - lưu thông.","lưu thông - lưu thông - sản xuất.","lưu thông - sản xuất - lưu thông."],c:3,g:"Ba giai đoạn vận động tuần hoàn của tư bản là lưu thông – sản xuất – lưu thông."},
+{t:"Bộ phận giá trị mới dôi ra ngoài giá trị sức lao động do công nhân tạo ra, là kết quả của lao động không công của công nhân cho nhà tư bản là:",o:["giá trị thặng dư.","giá trị của hàng hóa sức lao động.","giá trị trao đổi.","giá trị sử dụng của hàng hóa sức lao động."],c:0,g:"Giá trị thặng dư là bộ phận giá trị mới dôi ra ngoài giá trị sức lao động do công nhân tạo ra (Xem trang 90, 91, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Trong sản xuất giá trị thặng dư, ngày lao động của công nhân gồm thời gian lao động tất yếu và:",o:["thời gian lao động phức tạp.","thời gian lao động thặng dư.","thời gian lao động giản đơn.","thời gian lao động hiện tại."],c:1,g:"Trong sản xuất giá trị thặng dư, ngày lao động của công nhân gồm thời gian lao động tất yếu và thời gian lao động thặng dư (Xem trang 88, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"C. Mác ký hiệu giá trị thặng dư là:",o:["$P$","$M$","$m'$","$m$"],c:3,g:"Ký hiệu của giá trị thặng dư là $m$ (Xem trang 91, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"C. Mác ký hiệu tư bản bất biến là:",o:["$c$","$v$","$m'$","$m$"],c:0,g:"Ký hiệu của tư bản bất biến là $c$ (Xem trang 92, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"C. Mác ký hiệu tư bản khả biến là:",o:["$c$","$v$","$m'$","$G$"],c:1,g:"Ký hiệu của tư bản khả biến là $v$ (Xem trang 93, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tiền công trong nền kinh tế thị trường là giá cả của:",o:["hàng hóa.","hàng hóa lao động.","lao động.","hàng hóa sức lao động."],c:3,g:"Tiền công trong nền kinh tế thị trường là giá cả của hàng hoá sức lao động (Xem trang 94, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Sự vận động của tư bản lần lượt trải qua ba giai đoạn dưới ba hình thái kế tiếp nhau gắn với thực hiện những chức năng tương ứng và quay trở về hình thái ban đầu là:",o:["tuần hoàn của tư bản.","tuần hoàn của sản xuất.","chu chuyển của tư bản.","chu chuyển của sản xuất."],c:0,g:"Tuần hoàn của tư bản là sự vận động qua 3 giai đoạn (tiền tệ, sản xuất, hàng hoá) gắn với các chức năng tương ứng và quay về hình thái ban đầu cùng giá trị thặng dư (Xem trang 95, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Ba hình thái kế tiếp nhau của tư bản trong tuần hoàn của tư bản là:",o:["tư bản sản xuất, tư bản tiền tệ, tư bản hàng hóa.","tư bản tiền tệ, tư bản sản xuất, tư bản hàng hóa.","tư bản bất biến, tư bản khả biến, tư bản sản xuất.","tư bản sản xuất, tư bản bất biến, tư bản khả biến."],c:1,g:"Tuần hoàn của tư bản trải qua 3 giai đoạn: tư bản tiền tệ, tư bản sản xuất, tư bản hàng hoá (Xem trang 95, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tuần hoàn của tư bản được xét với tư cách là quá trình định kỳ, thường xuyên lặp đi lặp lại và đổi mới theo thời gian là:",o:["chu chuyển của hàng hóa.","chu chuyển của tư liệu sản xuất.","chu chuyển của tư bản.","chu chuyển của sản xuất."],c:2,g:"Chu chuyển của tư bản là tuần hoàn của tư bản được xét với tư cách là quá trình định kỳ, thường xuyên lặp đi lặp lại (Xem trang 96, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hao mòn tư bản cố định gồm:",o:["hao mòn hữu hình và hao mòn tự nhiên.","hao mòn hữu hình và hao mòn vô hình.","hao mòn hữu hình và hao mòn do sử dụng.","hao mòn hữu hình và hao mòn vật chất."],c:1,g:"Hao mòn tư bản cố định gồm hao mòn vô hình và hao mòn hữu hình (Xem trang 97, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chu chuyển của tư bản được đo lường bằng thời gian chu chuyển của tư bản hoặc:",o:["tốc độ chu chuyển tư bản.","tốc độ lưu thông của tư bản.","thời gian lưu thông của tư bản.","thời gian sản xuất của tư bản."],c:0,g:"Chu chuyển của tư bản được đo lường bằng thời gian chu chuyển hoặc tốc độ chu chuyển (Xem trang 1, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Phương thức chu chuyển giá trị của tư bản lưu động vào giá trị sản phẩm khi kết thúc từng quá trình sản xuất là chuyển:",o:["một lần, toàn phần.","nhiều lần, từng phần.","từng phần.","nhiều lần."],c:0,g:"Giá trị của tư bản lưu động được chuyển một lần, toàn phần vào giá trị sản phẩm khi kết thúc từng quá trình sản xuất (Xem trang 98, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tỷ lệ phần trăm giữa giá trị thặng dư và tư bản khả biến là:",o:["tỷ suất lợi nhuận.","tỷ suất giá trị thặng dư.","khối lượng lợi nhuận.","khối lượng giá trị thặng dư."],c:1,g:"Tỷ suất giá trị thặng dư ($m'$) là tỷ lệ phần trăm giữa giá trị thặng dư ($m$) và tư bản khả biến ($v$) để sản xuất ra giá trị thặng dư đó (Xem trang 100, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Công thức tính khối lượng giá trị thặng dư là:",o:["$M = m \cdot V$","$M = m'$","$M = m' \cdot V$","$M = m \cdot C$"],c:2,g:"Công thức tính khối lượng giá trị thặng dư là $M = m' \cdot V$ ($M$ là khối lượng $m$, $m'$ là tỷ suất $m$, $V$ là tổng tư bản khả biến) (Xem trang 100, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hàng hóa sức lao động có các thuộc tính là:",o:["giá trị và giá trị trao đổi.","giá trị và giá trị sử dụng.","giá trị trao đổi và giá trị sử dụng.","giá trị trao đổi và giá trị cá biệt."],c:1,g:"Hàng hoá sức lao động có hai thuộc tính gồm: giá trị và giá trị sử dụng (Xem trang 87, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Mục đích trong lưu thông hàng hoá giản đơn là:",o:["giá trị và giá trị sử dụng.","giá trị và giá trị trao đổi.","giá trị sử dụng.","giá trị thặng dư."],c:2,g:"Mục đích trong lưu thông hàng hóa giản đơn là giá trị sử dụng (Xem trang 85, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Mục đích trong lưu thông tư bản là:",o:["giá trị và giá trị sử dụng.","giá trị trao đổi.","giá trị sử dụng.","giá trị lớn hơn."],c:3,g:"Mục đích trong lưu thông tư bản là giá trị lớn hơn ($T' > T$) (Xem trang 85, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá trị thặng dư thu được nhờ rút ngắn thời gian lao động tất yếu, do đó kéo dài thời gian lao động thặng dư trong khi độ dài ngày lao động không thay đổi là:",o:["giá trị thặng dư tương đối.","giá trị thặng dư siêu ngạch.","giá trị thặng dư tuyệt đối.","giá trị thặng dư đặc biệt."],c:0,g:"Giá trị thặng dư tương đối thu được nhờ rút ngắn thời gian lao động tất yếu thông qua tăng năng suất lao động xã hội (Xem trang 102, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá trị thặng dư thu được do kéo dài ngày lao động vượt quá thời gian lao động tất yếu, trong khi năng suất lao động không thay đổi là:",o:["giá trị thặng dư tương đối.","giá trị thặng dư siêu ngạch.","giá trị thặng dư tuyệt đối.","giá trị thặng dư đặc biệt."],c:2,g:"Giá trị thặng dư tuyệt đối thu được do kéo dài tuyệt đối ngày lao động trong khi các điều kiện khác không đổi (Xem trang 101, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Xét toàn bộ xã hội tư bản thì giá trị thặng dư siêu ngạch là một hiện tượng tồn tại:",o:["tạm thời.","thường xuyên.","vĩnh viễn.","bất biến."],c:1,g:"Xét toàn bộ xã hội tư bản thì giá trị thặng dư siêu ngạch là hiện tượng tồn tại thường xuyên (Xem trang 103, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Xét trong từng trường hợp đơn vị sản xuất cá biệt, giá trị thặng dư siêu ngạch là một hiện tượng:",o:["tạm thời.","thường xuyên.","vĩnh viễn.","bất biến."],c:0,g:"Xét trong từng trường hợp đơn vị sản xuất cá biệt, giá trị thặng dư siêu ngạch là một hiện tượng tạm thời (Xem trang 103, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hàng hóa sức lao động mang yếu tố:",o:["tinh thần và tự nhiên.","vật chất và tinh thần.","vật chất và lịch sử.","tinh thần và lịch sử."],c:3,g:"Hàng hoá sức lao động là loại hàng hoá đặc biệt, mang yếu tố tinh thần và lịch sử (Xem trang 88, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"C. Mác khẳng định, nguồn gốc của giá trị thặng dư là do hao phí:",o:["thể lực của người lao động.","trí lực của người lao động.","sức lao động.","lao động cụ thể."],c:2,g:"Giá trị thặng dư là kết quả của sự hao phí sức lao động trong quá trình tạo ra và làm tăng giá trị (Xem trang 98, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá trị sử dụng của hàng hóa sức lao động, khi sử dụng sẽ tạo ra:",o:["lượng giá trị sử dụng mới nhỏ hơn giá trị bản thân nó.","lượng giá trị mới lớn hơn giá trị bản thân nó.","lượng giá trị mới nhỏ hơn giá trị bản thân nó.","lượng giá trị sử dụng mới lớn hơn giá trị bản thân nó."],c:1,g:"Trong khi sử dụng sức lao động, giá trị của nó không những được bảo tồn mà còn tạo ra được lượng giá trị lớn hơn (Xem trang 88, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Bộ phận tư bản tồn tại dưới hình thái tư liệu sản xuất, giá trị của nó không biến đổi trong quá trình sản xuất là:",o:["tư bản bất biến.","tư bản khả biến.","tư bản hàng hóa.","tư bản lưu động."],c:0,g:"Bộ phận tư bản tồn tại dưới hình thái tư liệu sản xuất mà giá trị không biến đổi trong quá trình sản xuất, được gọi là tư bản bất biến (Xem trang 92, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Bộ phận tư bản tồn tại dưới hình thái sức lao động, giá trị của nó tăng lên trong quá trình sản xuất là:",o:["tư bản bất biến.","tư bản khả biến.","tư bản hàng hóa.","tư bản lưu động."],c:1,g:"Bộ phận tư bản tồn tại dưới hình thái sức lao động, giá trị của nó tăng lên trong quá trình sản xuất là tư bản khả biến (Xem trang 93, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Căn cứ để phân chia tư bản thành tư bất biến và tư bản khả biến là vai trò của các bộ phận tư bản trong quá trình sản xuất:",o:["giá trị hàng hóa.","giá trị sử dụng.","giá trị xã hội.","giá trị thặng dư."],c:3,g:"Căn cứ để phân chia là vai trò của chúng trong việc tạo ra giá trị thặng dư (Xem trang 91, 92, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Giá trị thặng dư được tạo ra:",o:["trong lưu thông và do hao phí sức lao động.","trong lưu thông và do mua rẻ bán đắt.","trong sản xuất và do hao phí tư liệu sản xuất.","trong sản xuất và do hao phí sức lao động."],c:3,g:"Giá trị thặng dư được tạo ra trong sản xuất và do hao phí sức lao động (Xem trang 98, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Thời gian chu chuyển của tư bản gồm:",o:["thời gian sản xuất + thời gian dự trữ sản xuất.","thời gian sản xuất + thời gian lưu thông.","thời gian sản xuất + thời gian vận chuyển.","thời gian dự trữ sản xuất + thời gian lưu thông."],c:1,g:"Thời gian chu chuyển của tư bản bao gồm thời gian sản xuất và thời gian lưu thông (Xem trang 97, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tốc độ chu chuyển của từng bộ phận tư bản được xác định bằng thời gian của một năm chia cho:",o:["thời gian tuần hoàn của tư bản.","thời gian sản xuất.","thời gian một vòng chu chuyển của tư bản.","thời gian lưu thông."],c:2,g:"Công thức tính tốc độ chu chuyển là: $n = CH / ch$ ($CH$ là thời gian một năm, $ch$ là thời gian một vòng chu chuyển) (Xem trang 97, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Xét theo phương thức chu chuyển giá trị của tư bản sản xuất vào giá trị sản phẩm, tư bản được chia thành:",o:["tư bản cố định và tư bản lưu thông.","tư bản lưu thông và tư bản sản xuất.","tư bản sản xuất và tư bản lưu động.","tư bản cố định và tư bản lưu động."],c:3,g:"Xét theo phương thức chu chuyển giá trị, tư bản được chia thành: tư bản cố định và tư bản lưu động (Xem trang 97, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tỷ suất giá trị thặng dư có thể tính theo tỷ lệ phần trăm giữa thời gian lao động thặng dư và thời gian lao động:",o:["tất yếu.","quá khứ.","thiết yếu.","hiện tại."],c:0,g:"Tỷ suất giá trị thặng dư cũng có thể tính theo tỷ lệ giữa thời gian lao động thặng dư và thời gian lao động tất yếu (Xem trang 100, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khoảng thời gian mà một tư bản kể từ khi ứng ra dưới một hình thái nhất định đến khi quay trở về dưới hình thái đó là thời gian:",o:["dự trữ sản xuất.","gián đoạn lao động.","chu chuyển tư bản.","chu chuyển sản xuất."],c:2,g:"Chu chuyển tư bản là khoảng thời gian tư bản ứng ra cho đến khi quay về dưới hình thái đó cùng giá trị thặng dư."},
+{t:"Các phương pháp sản xuất giá trị thặng dư trong nền kinh tế thị trường tư bản chủ nghĩa là sản xuất giá trị thặng dư:",o:["siêu ngạch và tuyệt đối.","tuyệt đối và tương đối.","siêu ngạch và tương đối.","tương đối và siêu lợi nhuận."],c:1,g:"Hai phương pháp cơ bản là sản xuất giá trị thặng dư tuyệt đối và tương đối (Xem trang 101, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Quá trình sản xuất giá trị thặng dư là sự thống nhất của quá trình tạo ra và làm tăng:",o:["chi phí.","giá trị sử dụng.","giá trị.","lợi nhuận."],c:2,g:"Quá trình sản xuất giá trị thặng dư là sự thống nhất của quá trình tạo ra và làm tăng giá trị (Xem trang 88, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"C. Mác ký hiệu tỷ suất lợi nhuận là",o:["P","V","p'","m"],c:2,g:"Ký hiệu của tỷ suất lợi nhuận là p' (Xem trang 113, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Các hình thức cơ bản của địa tô là",o:["địa tô chênh lệch, địa tô tuyệt đối","địa tô chênh lệch II, địa tô tuyệt đối","địa tô chênh lệch I, địa tô chênh lệch II","địa tô chênh lệch I, địa tô tuyệt đối"],c:0,g:"Địa tô gồm 2 hình thức cơ bản: địa tô chênh lệch và địa tô tuyệt đối (Xem trang 120, 121, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Phần giá trị thặng dư còn lại sau khi đã khấu trừ đi phần lợi nhuận bình quân mà các nhà tư bản kinh doanh trên lĩnh vực nông nghiệp phải trả cho địa chủ là",o:["tỷ suất lợi nhuận","lợi tức","địa tô","tỷ suất lợi nhuận bình quân"],c:2,g:"Địa tô là phần giá trị thặng dư còn lại sau khi đã khấu trừ đi phần lợi nhuận bình quân mà các nhà tư bản kinh doanh nông nghiệp trả cho địa chủ (Trang 120)."},
+{t:"Cạnh tranh giữa các ngành là cơ chế cho sự hình thành",o:["tỷ suất lợi nhuận bình quân","tỷ suất lợi nhuận","lợi nhuận bình quân","lợi nhuận thương nghiệp"],c:2,g:"Cạnh tranh giữa các ngành là cơ chế dẫn đến sự hình thành lợi nhuận bình quân (Xem trang 114, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Ông A vay ông B số tiền 100.000.000 đồng với tỷ suất lợi tức 3% một tháng. Vậy lợi tức ông A trả cho ông B một tháng là bao nhiêu?",o:["3.000.000 đồng","6.000.000 đồng","5.000.000 đồng","4.000.000 đồng"],c:0,g:"Lợi tức (z) = Số tiền vay x Tỷ suất lợi tức = 100.000.000 x 3% = 3.000.000 đồng."},
+{t:"C. Mác ký hiệu lợi nhuận là",o:["V","M","C","p"],c:3,g:"Ký hiệu của lợi nhuận là p (Xem trang 111, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"C. Mác ký hiệu địa tô là",o:["P","z","R","M"],c:2,g:"Ký hiệu của địa tô là R (Xem trang 120, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Khi hàng hóa bán bằng chi phí sản xuất thì",o:["lợi nhuận cao","không có lợi nhuận","lợi nhuận thấp","lợi nhuận bằng chi phí sản xuất"],c:1,g:"Trong trường hợp bán hàng hoá với giá cả đúng bằng chi phí sản xuất thì không có lợi nhuận (Trang 112)."},
+{t:"Lợi nhuận bình quân được hình thành do cạnh tranh",o:["trong nội bộ ngành","không lành mạnh","giữa các ngành","trong nội bộ doanh nghiệp"],c:2,g:"Cạnh tranh giữa các ngành tất yếu dẫn tới hình thành lợi nhuận bình quân (Xem trang 116, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Khi hàng hóa bán thấp hơn giá trị nhưng cao hơn chi phí sản xuất thì",o:["không có lợi nhuận","có lợi nhuận","lợi nhuận bằng chi phí sản xuất","lợi nhuận bằng giá trị thặng dư"],c:1,g:"Bán thấp hơn giá trị nhưng cao hơn chi phí sản xuất vẫn có thể thu được lợi nhuận (Trang 112)."},
+{t:"Công thức vận động của tư bản cho vay là",o:["T-H-T'","T-T'","H-T-H'","H-T"],c:1,g:"Tư bản cho vay vận động theo công thức T-T' (Xem trang 119, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Tỷ lệ phần trăm giữa lợi nhuận và toàn bộ giá trị của tư bản ứng trước là",o:["tỷ suất lợi tức","tỷ suất lợi nhuận bình quân","tỷ suất lợi nhuận","tỷ suất giá trị thặng dư"],c:2,g:"Tỷ suất lợi nhuận là tỷ lệ phần trăm giữa lợi nhuận và toàn bộ giá trị tư bản ứng trước (Trang 113)."},
+{t:"Một phần giá trị thặng dư mà tư bản sản xuất trả cho nhà tư bản thương nghiệp là",o:["lợi nhuận thương nghiệp","lợi tức","địa tô","lợi nhuận bình quân"],c:0,g:"Nguồn gốc của lợi nhuận thương nghiệp là một phần giá trị thặng dư do nhà tư bản sản xuất trả cho nhà tư bản thương nghiệp (Trang 117)."},
+{t:"Giá mảnh đất 100 m2 tăng từ 500.000.000 đồng lên 800.000.000 đồng, lãi suất tiền vay giảm từ 5% xuống 4%. Vậy địa tô thay đổi như thế nào?",o:["Từ 25.000.000 đồng tăng lên 32.000.000 đồng","Từ 25.000.000 đồng tăng lên 30.000.000 đồng","Từ 32.000.000 đồng giảm xuống 25.000.000 đồng","Từ 30.000.000 đồng giảm xuống 25.000.000 đồng"],c:0,g:"Địa tô = Giá cả đất đai x Lãi suất. Ban đầu: 500tr x 5% = 25tr. Lúc sau: 800tr x 4% = 32tr."},
+{t:"Khi hàng hóa bán đúng giá trị thì lợi nhuận",o:["nhỏ hơn giá trị thặng dư","lớn hơn giá trị thặng dư","bằng giá trị","bằng giá trị thặng dư"],c:3,g:"Khi giá cả bằng đúng giá trị, nhà tư bản thực hiện được toàn bộ giá trị thặng dư dưới hình thái lợi nhuận (p = m)."},
+{t:"Ông A vay 100.000.000 đồng, sau 1 tháng phải trả 103.000.000 đồng. Vậy tỷ suất lợi tức là bao nhiêu?",o:["4%","2%","3%","1%"],c:2,g:"Tiền lợi tức = 103tr - 100tr = 3tr. Tỷ suất z' = (3tr / 100tr) x 100% = 3%."},
+{t:"C. Mác ký hiệu lợi tức là",o:["M","V","P","z"],c:3,g:"Ký hiệu lợi tức là z."},
+{t:"Giá cả sản xuất bằng chi phí sản xuất cộng",o:["giá trị thặng dư","lợi nhuận bình quân","tỷ suất lợi nhuận bình quân","lợi nhuận"],c:1,g:"Giá cả sản xuất (GCSX) = k + p_ngang (Xem trang 116, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Có 3 ngành sản xuất: I (900C+100V), II (3100C+900V), III (8000C+2000V). Tỷ suất giá trị thặng dư 100%. Tỷ suất lợi nhuận bình quân là:",o:["15%","10%","20%","25%"],c:2,g:"Tổng p = Tổng m = 3000. Tổng tư bản (C+V) = 15000. Tỷ suất lợi nhuận bình quân = (3000/15000) x 100% = 20%."},
+{t:"Một trong những đặc điểm cơ bản của tư bản cho vay là quyền sử dụng",o:["gắn liền quyền thừa kế","tách khỏi quyền quản lý","gắn liền quyền sở hữu","tách khỏi quyền sở hữu"],c:3,g:"Tư bản cho vay có đặc điểm là quyền sử dụng tách khỏi quyền sở hữu (Xem trang 118, 119)."},
+{t:"Xí nghiệp A đầu tư 400.000.000 đồng, c/v = 3/2, m' = 50%. Trong điều kiện cung bằng cầu lợi nhuận là bao nhiêu?",o:["80.000.000 đồng","20.000.000 đồng","50.000.000 đồng","40.000.000 đồng"],c:0,g:"v = 160tr. m = 50% x 160tr = 80tr. Khi cung = cầu, p = m = 80.000.000 đồng."},
+{t:"Địa tô mà địa chủ thu được trên mảnh đất cho thuê, không kể độ màu mỡ tự nhiên thuận lợi hay do thâm canh là",o:["địa tô chênh lệch I","địa tô tương đối","địa tô tuyệt đối","địa tô chênh lệch II"],c:2,g:"Địa tô tuyệt đối là địa tô thu được trên mảnh đất cho thuê bất kể chất lượng đất (Trang 121)."},
+{t:"Địa tô mà địa chủ thu được trên những loại ruộng đất tốt, độ màu mỡ cao và điều kiện tự nhiên thuận lợi là",o:["địa tô chênh lệch I","địa tô tuyệt đối","địa tô chênh lệch II","địa tô tương đối"],c:0,g:"Địa tô chênh lệch I thu được do điều kiện tự nhiên thuận lợi và độ màu mỡ cao (Trang 120)."},
+{t:"C. Mác ký hiệu lợi nhuận bình quân là",o:["P","P'","p (có gạch ngang đầu)","m"],c:2,g:"Ký hiệu của lợi nhuận bình quân là p có gạch ngang trên đầu (Trang 115)."},
+{t:"3 ngành sản xuất đầu tư cùng lượng vốn 100.000.000 đồng, cấu tạo hữu cơ lần lượt 4/1, 3/2, 7/3, m' = 100%. Lợi nhuận bình quân từng ngành là:",o:["80.000.000 đồng","40.000.000 đồng","20.000.000 đồng","30.000.000 đồng"],c:3,g:"Tổng m của 3 ngành là 90tr. Tổng tư bản là 300tr. p' ngang = 30%. p ngang = 30% x 100tr = 30tr đồng."},
+{t:"Xí nghiệp A đầu tư 800.000.000 đồng, lợi nhuận 8.000.000 đồng. Vậy tỷ suất lợi nhuận là:",o:["0,1%","10%","1%","2%"],c:2,g:"p' = (8.000.000 / 800.000.000) x 100% = 1%."},
+{t:"Kết quả cạnh tranh giữa các ngành hình thành",o:["giá cả thị trường","lợi nhuận bình quân","giá cả sản xuất","giá trị thị trường"],c:1,g:"Cạnh tranh giữa các ngành tất yếu dẫn tới hình thành lợi nhuận bình quân (Trang 116)."},
+{t:"Tổng giá trị hàng hóa tháng 650.000.000 đồng, m thu được 100.000.000 đồng. Vậy chi phí sản xuất (k) là:",o:["550.000.000 đồng","300.000.000 đồng","450.000.000 đồng","500.000.000 đồng"],c:0,g:"k = G - m = 650tr - 100tr = 550.000.000 đồng."},
+{t:"Lợi nhuận thương nghiệp là số chênh lệch giữa",o:["giá bán và giá mua hàng hóa","giá cả và giá trị hàng hóa","giá trị và chi phí sản xuất","giá cả và chi phí sản xuất"],c:0,g:"Lợi nhuận thương nghiệp là số chênh lệch giữa giá bán và giá mua (Trang 117)."},
+{t:"C. Mác ký hiệu tỷ suất lợi nhuận bình quân là",o:["p' (có gạch ngang đầu)","P","P'","M"],c:0,g:"Ký hiệu của tỷ suất lợi nhuận bình quân là p' có gạch ngang trên đầu (Trang 115)."},
+{t:"C. Mác ký hiệu tỷ suất lợi tức là",o:["m","z'","P","z"],c:1,g:"Ký hiệu của tỷ suất lợi tức là z' (Xem trang 119)."},
+{t:"Chi phí sản xuất (k) bao gồm",o:["m và v","c và m","c và v","c, v và m"],c:2,g:"Chi phí sản xuất bao gồm tư bản bất biến (c) và tư bản khả biến (v) (Trang 111)."},
+{t:"Tỷ suất lợi tức là tỷ lệ phần trăm giữa",o:["lợi tức và giá trị thặng dư","lợi nhuận bình quân và giá trị thặng dư","lợi tức và tư bản cho vay","giá trị thặng dư và tư bản cho vay"],c:2,g:"Tỷ suất lợi tức là tỷ lệ phần trăm giữa lợi tức và tư bản cho vay (Trang 119)."},
+{t:"Địa tô mà địa chủ thu được trên những mảnh đất do đầu tư thâm canh và làm tăng độ màu mỡ là",o:["địa tô tương đối","địa tô chênh lệch II","địa tô tuyệt đối","địa tô chênh lệch I"],c:1,g:"Địa tô chênh lệch II thu được do đầu tư thâm canh làm tăng độ màu mỡ (Trang 120)."},
+{t:"Phần giá trị bù lại giá cả tư liệu sản xuất và sức lao động đã sử dụng để sản xuất hàng hóa là",o:["chi phí chu chuyển tư bản","chi phí tuần hoàn tư bản","chi phí tư bản bất biến","chi phí sản xuất tư bản chủ nghĩa"],c:3,g:"Đây là định nghĩa về chi phí sản xuất tư bản chủ nghĩa (Trang 111)."},
+{t:"Có 3 ngành A, B, C đầu tư cùng vốn 100tr, cấu tạo hữu cơ 4/1, 3/2, 7/3, m' = 100%. Tỷ suất lợi nhuận bình quân là:",o:["20%","30%","25%","10%"],c:1,g:"Tổng m của 3 ngành là 90tr. Tổng tư bản là 300tr. p' ngang = 90/300 x 100% = 30%."},
+{t:"Điểm giống nhau giữa địa tô chênh lệch và địa tô tuyệt đối là đều có nguồn gốc từ",o:["giá trị thặng dư","giá trị sử dụng","giá trị trao đổi","giá trị"],c:0,g:"Các hình thức địa tô đều có nguồn gốc từ giá trị thặng dư (Trang 120)."},
+{t:"Xí nghiệp A đầu tư 800tr, lợi nhuận 8tr, chu chuyển 6 tháng/vòng. Tỷ suất lợi nhuận trong năm là:",o:["0,2%","0,1%","1%","2%"],c:3,g:"Một năm có 2 vòng chu chuyển. Tổng lợi nhuận năm là 16tr. p' = (16/800) x 100% = 2%."},
+{t:"Về bản chất lợi nhuận và giá trị thặng dư đều là",o:["lao động của người lao động làm thuê","lao động cụ thể của người làm thuê","lao động phức tạp của người làm thuê","lao động không công của người lao động làm thuê"],c:3,g:"Cả hai đều có nguồn gốc duy nhất là lao động không công của công nhân."},
+{t:"Một phần lợi nhuận bình quân mà người đi vay phải trả cho người cho vay vì sử dụng lượng tiền nhàn rỗi là",o:["lợi nhuận bình quân","lợi tức","địa tô","lợi nhuận thương nghiệp"],c:1,g:"Lợi tức là một phần lợi nhuận bình quân mà người vay trả cho chủ nợ (Trang 118)."},
+{t:"Xí nghiệp A có lượng tư bản đầu tư lần thứ nhất 200.000.000 đồng, cấu tạo hữu cơ của tư bản 4/1, tỷ suất giá trị thặng dư 100%, giá trị thặng dư được tư bản hóa 50%. Vậy lượng tư bản đầu tư lần thứ hai là bao nhiêu?",o:["220.000.000 đồng.","225.000.000 đồng.","235.000.000 đồng.","230.000.000 đồng."],c:0,g:"Ta có c=4v, c+v=200tr => v=40tr. m=100%*v=40tr. Lượng tích lũy = 50%*m=20tr. Lượng tư bản lần hai = 200tr + 20tr = 220.000.000 đồng."},
+{t:"Mối quan hệ tỷ lệ giữa số lượng tư liệu sản xuất và số lượng sức lao động là:",o:["cấu tạo giá trị sử dụng của tư bản.","cấu tạo hữu cơ của tư bản.","cấu tạo kỹ thuật của tư bản.","cấu tạo giá trị của tư bản."],c:2,g:"Quan sát qua hình thái hiện vật, tỷ lệ giữa số lượng tư liệu sản xuất và số lượng sức lao động được gọi là cấu tạo kỹ thuật (Trang 107)."},
+{t:"Sự tăng thêm quy mô của tư bản cá biệt bằng cách tư bản hóa giá trị thặng dư là:",o:["phát triển tư bản.","đầu tư tư bản.","tích tụ tư bản.","tập trung tư bản."],c:2,g:"Tích tụ tư bản là sự tăng thêm quy mô tư bản cá biệt bằng cách tư bản hóa giá trị thặng dư (Trang 108)."},
+{t:"Trong tái sản xuất giản đơn, toàn bộ giá trị thặng dư đã được nhà tư bản tiêu dùng cho:",o:["tư bản bất biến.","tư bản khả biến.","sản xuất.","cá nhân."],c:3,g:"Trong tái sản xuất giản đơn, toàn bộ giá trị thặng dư được nhà tư bản tiêu dùng cho cá nhân (Trang 105)."},
+{t:"Xí nghiệp A có thời gian chu chuyển một vòng của tư bản 6 tháng. Vậy tốc độ chu chuyển tư bản là bao nhiêu?",o:["1 vòng/năm.","2 vòng/năm.","4 vòng/năm.","3 vòng/năm."],c:1,g:"Tốc độ chu chuyển n = CH/ch = 12 tháng / 6 tháng = 2 (vòng/năm)."},
+{t:"Để tái sản xuất sức lao động cần tiêu dùng: ăn uống 50.000 đồng/ngày, đồ gia dụng 29.200.000 đồng/năm, văn hóa 900.000 đồng/tháng. Vậy giá trị sức lao động trong ngày là bao nhiêu?",o:["160.000 đồng.","170.000 đồng.","180.000 đồng.","200.000 đồng."],c:0,g:"Chi phí một ngày = 50.000 + (29.200.000/365) + (900.000/30) = 50.000 + 80.000 + 30.000 = 160.000 đồng."},
+{t:"Cấu tạo kỹ thuật của tư bản phản ánh mối quan hệ tỷ lệ giữa số lượng tư liệu sản xuất và số lượng:",o:["lao động.","lực lượng sản xuất.","sức lao động.","quan hệ sản xuất."],c:2,g:"Theo hình thái hiện vật, cấu tạo kỹ thuật phản ánh tỷ lệ giữa số lượng tư liệu sản xuất và số lượng sức lao động (Trang 107)."},
+{t:"Xí nghiệp A có lượng tư bản đầu tư 200.000.000 đồng, cấu tạo hữu cơ 4/1, tỷ suất m' 100%, tỷ suất tích lũy tư bản 80%. Hỏi khối lượng giá trị thặng dư tư bản hóa là bao nhiêu?",o:["30.000.000 đồng.","35.000.000 đồng.","32.000.000 đồng.","20.000.000 đồng."],c:2,g:"v=40tr, m=40tr. Lượng tư bản hóa = m * tỷ suất tích lũy = 40tr * 80% = 32.000.000 đồng."},
+{t:"Tăng cấu tạo hữu cơ tư bản là một trong những hệ quả của:",o:["chu chuyển tư bản.","tích lũy tư bản.","tuần hoàn tư bản.","tiết kiệm tư bản."],c:1,g:"Một trong các hệ quả của tích lũy tư bản là làm tăng cấu tạo hữu cơ của tư bản (Trang 107, 108)."},
+{t:"Tích tụ tư bản và tập trung tư bản giống nhau ở điểm nào sau đây?",o:["Có chung hình thức biểu hiện.","Làm tăng quy mô tư bản xã hội.","Làm tăng quy mô tư bản cá biệt.","Có chung nguồn gốc tích lũy."],c:2,g:"Cả tích tụ và tập trung tư bản đều làm tăng quy mô tư bản cá biệt (Trang 108)."},
+{t:"Công ty A có 10 người lao động, giá trị sức lao động mỗi tháng của một công nhân 5.000.000 đồng, chi phí tư bản bất biến 90.000.000 đồng, tỷ suất m' 50%. Vậy tổng giá trị hàng hóa là bao nhiêu?",o:["190.000.000 đồng.","195.000.000 đồng.","185.000.000 đồng.","165.000.000 đồng."],c:3,g:"v = 10 * 5tr = 50tr. m = 50% * v = 25tr. Tổng giá trị G = c + v + m = 90tr + 50tr + 25tr = 165.000.000 đồng."},
+{t:"Xí nghiệp A có lượng tư bản đầu tư 10 tỷ đồng, c gấp bốn lần v, khối lượng giá trị thặng dư thu được 1.000.000.000 đồng. Vậy tỷ suất giá trị thặng dư là bao nhiêu?",o:["150%.","100%.","200%.","50%."],c:3,g:"c+v=10 tỷ, c=4v => v=2 tỷ. m'= m/v * 100% = 1 tỷ / 2 tỷ * 100% = 50%."},
+{t:"Nguồn gốc của tư bản tích lũy là:",o:["lợi nhuận bình quân.","giá trị thặng dư.","lợi nhuận siêu ngạch.","giá trị hàng hóa."],c:1,g:"Nguồn gốc duy nhất của tích lũy tư bản là giá trị thặng dư (Trang 105)."},
+{t:"Công ty A có 10 người lao động, giá trị sức lao động mỗi người 5tr, sản xuất 1000 đơn vị hàng hóa, c = 90tr, m' = 50%. Vậy giá trị của một đơn vị hàng hóa là bao nhiêu?",o:["195.000 đồng.","165.000 đồng.","185.000 đồng.","190.000 đồng."],c:1,g:"Tổng giá trị hàng hóa G = 165tr. Giá trị 1 đơn vị = 165tr / 1000 = 165.000 đồng."},
+{t:"Xí nghiệp A có chi phí tư bản 100.000.000 đồng, trong đó chi phí mua tư liệu sản xuất 70.000.000 đồng. Vậy cấu tạo hữu cơ của tư bản là bao nhiêu?",o:["3/1.","4/1.","3/2.","7/3."],c:3,g:"c=70tr, c+v=100tr => v=30tr. Cấu tạo hữu cơ c/v = 70tr/30tr = 7/3."},
+{t:"Ngày làm việc 8 giờ thì m' = 100%. Sau đó nhà tư bản kéo dài ngày làm việc đến 10 giờ. Vậy tỷ suất m' thay đổi như thế nào nếu giá trị sức lao động không đổi và sử dụng phương pháp nào?",o:["150%, sản xuất giá trị thặng dư tuyệt đối.","300%, sản xuất giá trị thặng dư tương đối.","300%, sản xuất giá trị thặng dư tuyệt đối.","150%, sản xuất giá trị thặng dư tương đối."],c:0,g:"Ban đầu t=4, t'=4. Khi ngày làm 10h, t=4 không đổi, t'=6. m'= 6/4 * 100% = 150%. Kéo dài ngày lao động là phương pháp tuyệt đối."},
+{t:"Xí nghiệp A có lượng tư bản đầu tư 10 tỷ đồng, c gấp bốn lần v, tỷ suất m' 50%. Vậy khối lượng giá trị thặng dư là bao nhiêu?",o:["1.000.000.000 đồng.","700.000.000 đồng.","500.000.000 đồng.","900.000.000 đồng."],c:0,g:"c+v=10 tỷ, c=4v => v=2 tỷ. M = m' * v = 50% * 2 tỷ = 1.000.000.000 đồng."},
+{t:"Tích tụ tư bản là sự tăng thêm quy mô tư bản cá biệt bằng cách tư bản hóa:",o:["giá trị cá biệt.","giá trị sử dụng.","giá trị thặng dư.","giá trị xã hội."],c:2,g:"Tích tụ tư bản là sự tăng thêm quy mô tư bản cá biệt bằng cách tư bản hóa giá trị thặng dư (Trang 108)."},
+{t:"Xí nghiệp A đầu tư 100tr, m tư bản hóa 50%, quy mô sau tích lũy là 110tr. Nếu đầu tư 200tr (các tỷ lệ khác không đổi) thì quy mô sau tích lũy là bao nhiêu?",o:["300.000.000 đồng.","220.000.000 đồng.","250.000.000 đồng.","200.000.000 đồng."],c:1,g:"Khi vốn đầu tư ban đầu gấp đôi, các tỷ lệ không đổi thì phần tích lũy và quy mô sau tích lũy cũng gấp đôi (110tr * 2 = 220tr)."},
+{t:"Xí nghiệp A có chi phí tư bản 100.000.000 đồng, cấu tạo hữu cơ 3/2. Vậy chi phí tư bản khả biến là bao nhiêu?",o:["10.000.000 đồng.","40.000.000 đồng.","20.000.000 đồng.","30.000.000 đồng."],c:1,g:"c+v=100tr, c/v=3/2 => 1,5v + v = 100tr => v = 40.000.000 đồng."},
+{t:"Tích tụ tư bản là kết quả trực tiếp của:",o:["tiết kiệm tư bản.","tập trung tư bản.","phát triển tư bản.","tích lũy tư bản."],c:3,g:"Tích tụ tư bản là kết quả trực tiếp của quá trình tích lũy tư bản (Trang 108)."},
+{t:"Một trong những hệ quả của tích lũy tư bản là:",o:["tăng chi phí sản xuất.","giảm cấu tạo hữu cơ tư bản.","giảm tích tụ và tập trung tư bản.","tăng cấu tạo hữu cơ tư bản."],c:3,g:"Quá trình tích lũy tư bản làm tăng cấu tạo hữu cơ của tư bản (Trang 107, 108)."},
+{t:"Sự hợp nhất các tư bản cá biệt vào một chỉnh thể tạo thành một tư bản cá biệt lớn hơn là:",o:["tích lũy tư bản.","phát triển tư bản.","tập trung tư bản.","tích tụ tư bản."],c:2,g:"Tập trung tư bản là sự hợp nhất các tư bản cá biệt có sẵn trong xã hội thành một tư bản cá biệt lớn hơn (Trang 108)."},
+{t:"Trong quá trình tái sản xuất tư bản chủ nghĩa, quy mô của tư bản cá biệt tăng lên thông qua quá trình tích tụ và:",o:["xuất khẩu đầu tư.","tiết kiệm tư bản.","nhập khẩu tư bản.","tập trung tư bản."],c:3,g:"Quy mô tư bản cá biệt tăng lên thông qua hai con đường: tích tụ và tập trung tư bản (Trang 108)."},
+{t:"Tập trung tư bản có thể được thực hiện thông qua sáp nhập các:",o:["tư bản cá biệt với nhau.","tư bản cho vay với nhau.","tư bản công nghiệp với nhau.","tư bản thương nghiệp với nhau."],c:0,g:"Tập trung tư bản có thể thực hiện thông qua sáp nhập các tư bản cá biệt với nhau (Trang 108)."},
+{t:"Nâng cao m', nâng cao năng suất, sử dụng hiệu quả máy móc, đại lượng tư bản ứng trước là những nhân tố ảnh hưởng:",o:["quy mô tích lũy tư bản.","thời gian chu chuyển tư bản.","tốc độ chu chuyển tư bản.","quy mô tiết kiệm tư bản."],c:0,g:"Đây là các nhân tố chính ảnh hưởng đến quy mô tích lũy tư bản (Trang 106, 107)."},
+{t:"Tích lũy tư bản là tư bản hóa:",o:["giá trị sử dụng.","giá trị.","giá trị thặng dư.","giá trị trao đổi."],c:2,g:"Tích lũy tư bản là sự chuyển hóa một phần giá trị thặng dư thành tư bản (Trang 105)."},
+{t:"C. Mác ký hiệu cấu tạo hữu cơ của tư bản là:",o:["v/c.","m/v.","v/m.","c/v."],c:3,g:"Cấu tạo hữu cơ của tư bản được ký hiệu là c/v (Trang 107)."},
+{t:"Xí nghiệp A có chi phí tư bản 100.000.000 đồng, cấu tạo hữu cơ 3/2. Vậy chi phí tư bản bất biến là bao nhiêu?",o:["50.000.000 đồng.","60.000.000 đồng.","30.000.000 đồng.","40.000.000 đồng."],c:1,g:"v=40tr, c+v=100tr => c = 100tr - 40tr = 60.000.000 đồng."},
+{t:"Tích tụ tư bản khác tập trung tư bản ở điểm làm tăng quy mô:",o:["tư bản sản xuất.","tư bản xã hội.","tư bản tiền tệ.","tư bản cá biệt."],c:1,g:"Tích tụ tư bản làm tăng quy mô tư bản cá biệt đồng thời làm tăng quy mô tư bản xã hội (Trang 108)."},
+{t:"Xí nghiệp A đầu tư 10 tỷ đồng, c=4v, m'=50%, chu chuyển 6 tháng/vòng. Vậy khối lượng giá trị thặng dư có được trong năm là bao nhiêu?",o:["1 tỷ đồng.","900.000.000 đồng.","500.000.000 đồng.","2 tỷ đồng."],c:3,g:"v=2 tỷ, m một vòng = 1 tỷ. Một năm 2 vòng nên tổng M = 2 tỷ đồng."},
+{t:"Cấu tạo giá trị của tư bản phản ánh mối quan hệ tỷ lệ giữa tư bản bất biến và:",o:["tư bản sản xuất.","tư bản tiền tệ.","tư bản khả biến.","tư bản lưu động."],c:2,g:"Quan sát qua hình thái giá trị, tỷ lệ giữa tư bản bất biến và tư bản khả biến gọi là cấu tạo giá trị (Trang 107)."},
+{t:"Xí nghiệp A đầu tư 200tr, c/v 4/1, m' 100%, tiêu dùng m hết 50%. Vậy lượng giá trị thặng dư tư bản hóa là bao nhiêu?",o:["20.000.000 đồng.","30.000.000 đồng.","25.000.000 đồng.","35.000.000 đồng."],c:0,g:"v=40tr, m=40tr. Lượng tư bản hóa = 50% * m = 20.000.000 đồng."},
+{t:"Tăng chênh lệch giữa thu nhập của nhà tư bản với người lao động là một trong những hệ quả của:",o:["tuần hoàn tư bản.","tích lũy tư bản.","chu chuyển tư bản.","tiết kiệm tư bản."],c:1,g:"Một trong các hệ quả của tích lũy tư bản là làm tăng chênh lệch thu nhập giữa các giai cấp (Trang 107, 108)."},
+{t:"Xí nghiệp A đầu tư 200tr, c/v 4/1, m' 100%, tích lũy 50%. Nếu m' tăng lên 150% thì lượng m tư bản hóa tăng lên so với trước bao nhiêu?",o:["35.000.000 đồng.","10.000.000 đồng.","30.000.000 đồng.","20.000.000 đồng."],c:1,g:"Ban đầu tích lũy 20tr. Khi m'=150%, m=60tr, tích lũy=30tr. Tăng thêm = 30tr - 20tr = 10.000.000 đồng."},
+{t:"Ngày làm việc 8h, t'=4h. Năng suất lao động ở các ngành tư liệu sinh hoạt tăng làm giá trị hàng hóa giảm 2 lần. m' thay đổi thế nào và thuộc phương pháp nào?",o:["300%, sản xuất giá trị thặng dư tương đối.","200%, sản xuất giá trị thặng dư tương đối.","300%, sản xuất giá trị thặng dư siêu ngạch.","300%, sản xuất giá trị thặng dư tuyệt đối."],c:0,g:"t ban đầu = 4h. Giá trị hàng giảm 2 lần nên t giảm còn 2h. t' mới = 8 - 2 = 6h. m' = 6/2 * 100% = 300%. Đây là phương pháp tương đối."},
+{t:"Xí nghiệp A có chi phí tư bản 100.000.000 đồng, trong đó trả tiền công 40.000.000 đồng. Vậy cấu tạo hữu cơ là bao nhiêu?",o:["4/1.","3/2.","3/1.","7/3."],c:1,g:"v=40tr, c+v=100tr => c=60tr. c/v = 60/40 = 3/2."},
+{t:"Xí nghiệp A đầu tư 200tr, c/v 4/1, m' 100%, lượng m tích lũy 20tr. Vậy tỷ suất tích lũy là bao nhiêu?",o:["150%.","100%.","50%.","200%."],c:2,g:"m=40tr. Tỷ suất tích lũy = Lượng m tư bản hóa / m = 20tr / 40tr = 50%."},
+{t:"Cấu tạo giá trị được quyết định bởi cấu tạo kỹ thuật và phản ánh sự biến đổi của cấu tạo kỹ thuật là:",o:["cấu tạo vô hình của tư bản.","cấu tạo hữu cơ của tư bản.","cấu tạo hiện vật của tư bản.","cấu tạo hữu hình của tư bản."],c:1,g:"Cấu tạo hữu cơ là cấu tạo giá trị do cấu tạo kỹ thuật quyết định và phản ánh sự biến đổi của cấu tạo kỹ thuật (Trang 107)."},
+{t:"Công ty A có 10 người lao động, giá trị sức lao động mỗi người 5tr, tỷ suất m' 50%. Vậy giá trị mới của mỗi người lao động là bao nhiêu?",o:["750.000 đồng.","8.500.000 đồng.","850.000 đồng.","7.500.000 đồng."],c:3,g:"v mỗi người = 5tr. m mỗi người = 50% * 5tr = 2,5tr. Giá trị mới mỗi người = v + m = 7.500.000 đồng."},
+{t:"Ngày làm việc 8 giờ thì tỷ suất giá trị thặng dư 100%. Sau đó nhà tư bản kéo dài ngày làm việc đến 10 giờ. Vậy tỷ suất giá trị thặng dư thay đổi như thế nào nếu giá trị sức lao động không đổi và nhà tư bản sử dụng phương pháp sản xuất giá trị thặng dư nào?",o:["150%, sản xuất giá trị thặng dư tuyệt đối.","300%, sản xuất giá trị thặng dư tương đối.","300%, sản xuất giá trị thặng dư tuyệt đối.","150%, sản xuất giá trị thặng dư tương đối."],c:0,g:"Thời gian lao động tất yếu không đổi (t = 4 giờ), thời gian lao động thặng dư mới là 10 - 4 = 6 giờ. m' = (6/4) x 100% = 150%. Do kéo dài ngày lao động nên là phương pháp tuyệt đối (Trang 101)."},
+{t:"Nâng cao tỷ suất giá trị thặng dư, nâng cao năng suất lao động, sử dụng hiệu quả máy móc, đại lượng tư bản ứng trước là những nhân tố ảnh hưởng:",o:["quy mô tích lũy tư bản.","thời gian chu chuyển tư bản.","quy mô tiết kiệm tư bản.","tốc độ chu chuyển tư bản."],c:0,g:"Đây là các nhân tố chính ảnh hưởng tới quy mô tích lũy tư bản (Trang 106, 107)."},
+{t:"Để tái sản xuất sức lao động cần tiêu dùng: ăn uống 50.000 đồng/ngày, đồ gia dụng 29.200.000 đồng/năm, nhu cầu văn hóa 900.000 đồng/tháng. Vậy giá trị sức lao động trong ngày là bao nhiêu?",o:["180.000 đồng.","200.000 đồng.","170.000 đồng.","160.000 đồng."],c:3,g:"Tổng chi phí/ngày = 50.000 + (29.200.000/365) + (900.000/30) = 50.000 + 80.000 + 30.000 = 160.000 đồng."},
+{t:"Xí nghiệp A có lượng tư bản đầu tư 200.000.000 đồng, c/v = 4/1, m' = 100%, m được tư bản hóa 50%. Nếu m' tăng lên 150% thì lượng m tư bản hóa tăng lên so với trước là bao nhiêu?",o:["35.000.000 đồng.","10.000.000 đồng.","20.000.000 đồng.","30.000.000 đồng."],c:1,g:"Lúc đầu tích lũy 20 triệu. Khi m' = 150%, m = 60 triệu, tích lũy 30 triệu. Tăng thêm 30 - 20 = 10 triệu đồng."},
+{t:"Tăng chênh lệch giữa thu nhập của nhà tư bản với thu nhập của người lao động làm thuê là hệ quả của:",o:["chu chuyển tư bản.","tích lũy tư bản.","tiết kiệm tư bản.","tuần hoàn tư bản."],c:1,g:"Đây là một trong các hệ quả của tích lũy tư bản (Trang 107, 108)."},
+{t:"Xí nghiệp A có lượng tư bản đầu tư lần thứ nhất 200 triệu đồng, c/v = 4/1, m' = 100%, m được tư bản hóa 50%. Vậy lượng tư bản đầu tư lần thứ hai là bao nhiêu?",o:["225.000.000 đồng.","235.000.000 đồng.","220.000.000 đồng.","230.000.000 đồng."],c:2,g:"m = 40 triệu, phần tích lũy là 20 triệu. Tư bản lần hai = 200 + 20 = 220 triệu đồng."},
+{t:"Xí nghiệp A đầu tư 10 tỷ đồng, c = 4v, m' = 50%, chu chuyển 6 tháng/vòng. Khối lượng m thu được trong năm là bao nhiêu?",o:["1 tỷ đồng.","900.000.000 đồng.","500.000.000 đồng.","2 tỷ đồng."],c:3,g:"v = 2 tỷ, M một vòng = 1 tỷ. Một năm 2 vòng nên M = 2 tỷ đồng."},
+{t:"Công ty A có 10 lao động, lương 5 triệu/người/tháng, sản xuất 1000 hàng hóa, chi phí c một tháng 90 triệu, m' = 50%. Giá trị một đơn vị hàng hóa là:",o:["185.000 đồng.","165.000 đồng.","195.000 đồng.","190.000 đồng."],c:1,g:"v = 50 triệu, m = 25 triệu. Tổng giá trị = 90 + 50 + 25 = 165 triệu. Đơn giá = 165.000 đồng."},
+{t:"Xí nghiệp A đầu tư 100 triệu, c/v=4/1, m'=100%, m tư bản hóa 50%, quy mô sau tích lũy là 110 triệu. Nếu đầu tư 200 triệu thì quy mô sau tích lũy là:",o:["300.000.000 đồng.","200.000.000 đồng.","250.000.000 đồng.","220.000.000 đồng."],c:3,g:"Khi tư bản đầu tư ban đầu gấp đôi, phần tích lũy cũng gấp đôi, tổng là 220 triệu đồng."},
+{t:"Công ty A có 10 lao động, lương 5 triệu/tháng, c = 90 triệu, m' = 50%. Tổng giá trị hàng hóa là:",o:["195.000.000 đồng.","185.000.000 đồng.","190.000.000 đồng.","165.000.000 đồng."],c:3,g:"Tổng G = c + v + m = 90 + 50 + 25 = 165 triệu đồng."},
+{t:"Xí nghiệp A có chi phí tư bản 100 triệu, c/v = 3/2. Chi phí tư bản khả biến là:",o:["20.000.000 đồng.","40.000.000 đồng.","30.000.000 đồng.","10.000.000 đồng."],c:1,g:"c = 1,5v. Ta có 1,5v + v = 100 => 2,5v = 100 => v = 40 triệu."},
+{t:"Xí nghiệp A đầu tư 200 triệu, c/v = 4/1, m' = 100%, tỷ suất tích lũy 80%. Khối lượng m tư bản hóa là:",o:["32.000.000 đồng.","20.000.000 đồng.","30.000.000 đồng.","35.000.000 đồng."],c:0,g:"v = 40 triệu, m = 40 triệu. Phần tích lũy = 80% x 40 = 32 triệu đồng."},
+{t:"Xí nghiệp A đầu tư 10 tỷ đồng, c = 4v, m' = 50%. Khối lượng giá trị thặng dư là:",o:["500.000.000 đồng.","1.000.000.000 đồng.","700.000.000 đồng.","900.000.000 đồng."],c:1,g:"5v = 10 tỷ => v = 2 tỷ. M = 50% x 2 tỷ = 1 tỷ đồng."},
+{t:"Công ty A có 10 lao động, lương 5 triệu/tháng, m' = 50%. Giá trị mới của mỗi người lao động là bao nhiêu?",o:["750.000 đồng.","850.000 đồng.","7.500.000 đồng.","8.500.000 đồng."],c:2,g:"Giá trị mới = v + m = 5 triệu + 2,5 triệu = 7,5 triệu đồng/người."},
+{t:"Ngày làm việc 8 giờ, lao động thặng dư 4 giờ. Do năng suất lao động tăng làm giá trị hàng hóa giảm 2 lần. Tỷ suất thặng dư thay đổi thế nào và thuộc phương pháp nào?",o:["200%, sản xuất giá trị thặng dư tương đối.","300%, sản xuất giá trị thặng dư tuyệt đối.","300%, sản xuất giá trị thặng dư siêu ngạch.","300%, sản xuất giá trị thặng dư tương đối."],c:3,g:"t giảm 2 lần còn 2 giờ. t' = 8 - 2 = 6 giờ. m' = (6/2) x 100% = 300%. Đây là phương pháp tương đối."},
+{t:"Xí nghiệp A chi phí 100 triệu, c/v = 3/2. Chi phí tư bản bất biến là:",o:["40.000.000 đồng.","60.000.000 đồng.","50.000.000 đồng.","30.000.000 đồng."],c:1,g:"v = 40 triệu (từ câu 22), suy ra c = 100 - 40 = 60 triệu đồng."},
+{t:"Quy mô tư bản cá biệt tăng lên thông qua tích tụ và:",o:["nhập khẩu tư bản.","tập trung tư bản.","xuất khẩu đầu tư.","tiết kiệm tư bản."],c:1,g:"Quy mô tư bản cá biệt tăng qua tích tụ và tập trung tư bản (Trang 108)."},
+{t:"Xí nghiệp A đầu tư 200 triệu, c/v = 4/1, m' = 100%, m dành cho tiêu dùng 50%. Vậy lượng m tư bản hóa là:",o:["35.000.000 đồng.","30.000.000 đồng.","20.000.000 đồng.","25.000.000 đồng."],c:2,g:"m = 40 triệu. Phần tư bản hóa là 100% - 50% = 50%. Lượng tích lũy = 20 triệu."},
+{t:"Xí nghiệp A chi phí 100 triệu, chi mua tư liệu sản xuất 70 triệu. Cấu tạo hữu cơ là:",o:["3/2.","7/3.","3/1.","4/1."],c:1,g:"c = 70 triệu, v = 100 - 70 = 30 triệu. c/v = 70/30 = 7/3."},
+{t:"Xí nghiệp A có thời gian chu chuyển một vòng là 6 tháng. Tốc độ chu chuyển tư bản là:",o:["4 vòng/năm.","3 vòng/năm.","1 vòng/năm.","2 vòng/năm."],c:3,g:"n = 12/6 = 2 vòng/năm."},
+{t:"Xí nghiệp A đầu tư 10 tỷ đồng, c = 4v, M = 1 tỷ. Tỷ suất giá trị thặng dư là:",o:["50%.","200%.","150%.","100%."],c:0,g:"v = 2 tỷ. m' = (1/2) x 100% = 50%."},
+{t:"Xí nghiệp A đầu tư 200 triệu, c/v = 4/1, m' = 100%, m tích lũy 20 triệu. Tỷ suất tích lũy là:",o:["50%.","100%.","200%.","150%."],c:0,g:"m = 40 triệu. Tỷ suất tích lũy = (20/40) x 100% = 50%."},
+{t:"Xí nghiệp A chi phí 100 triệu, trả lương 40 triệu. Cấu tạo hữu cơ là:",o:["3/2.","3/1.","7/3.","4/1."],c:0,g:"v = 40 triệu, c = 60 triệu. c/v = 60/40 = 3/2."},
+{t:"Phần giá trị thặng dư còn lại sau khi đã khấu trừ đi phần lợi nhuận bình quân mà các nhà tư bản kinh doanh nông nghiệp phải trả cho địa chủ là",o:["tỷ suất lợi nhuận","lợi tức","địa tô","tỷ suất lợi nhuận bình quân"],c:2,g:"Địa tô là phần giá trị thặng dư còn lại sau khi khấu trừ lợi nhuận bình quân trả cho địa chủ (Trang 120)."},
+{t:"Cạnh tranh giữa các ngành là cơ chế cho sự hình thành của",o:["tỷ suất lợi nhuận bình quân","tỷ suất lợi nhuận","lợi nhuận bình quân","lợi nhuận thương nghiệp"],c:2,g:"Cạnh tranh giữa các ngành là cơ chế dẫn đến sự hình thành lợi nhuận bình quân (Trang 114)."},
+{t:"Giá mảnh đất 100 m2 tăng từ 500 triệu lên 800 triệu, lãi suất vay giảm từ 5% xuống 4%. Địa tô thay đổi thế nào?",o:["Từ 25.000.000 đồng tăng lên 32.000.000 đồng","Từ 25.000.000 đồng tăng lên 30.000.000 đồng","Từ 32.000.000 đồng giảm xuống 25.000.000 đồng","Từ 30.000.000 đồng giảm xuống 25.000.000 đồng"],c:0,g:"Địa tô = Giá cả đất đai x Lãi suất vay. Lúc đầu: 500tr x 5% = 25tr; Lúc sau: 800tr x 4% = 32tr."},
+{t:"Ông A vay 100.000.000 đồng, sau 1 tháng phải trả 103.000.000 đồng. Tỷ suất lợi tức là bao nhiêu?",o:["4%","2%","3%","1%"],c:2,g:"Tiền lợi tức = 3tr. Tỷ suất lợi tức (z') = (3tr / 100tr) x 100% = 3%."},
+{t:"Có 3 ngành sản xuất: I (900C+100V), II (3100C+900V), III (8000C+2000V), m' = 100%. Tỷ suất lợi nhuận bình quân là",o:["15%","10%","20%","25%"],c:2,g:"Tổng m = tổng v = 3000. Tổng tư bản (c+v) = 15000. p' = (3000 / 15000) x 100% = 20%."},
+{t:"Đặc điểm cơ bản của tư bản cho vay là quyền sử dụng",o:["gắn liền quyền thừa kế","tách khỏi quyền quản lý","gắn liền quyền sở hữu","tách khỏi quyền sở hữu"],c:3,g:"Tư bản cho vay có đặc điểm là quyền sử dụng tách khỏi quyền sở hữu (Trang 118, 119)."},
+{t:"Xí nghiệp A đầu tư 400.000.000 đồng, c/v = 3/2, m' = 50%. Lợi nhuận (cung = cầu) là bao nhiêu?",o:["80.000.000 đồng","20.000.000 đồng","50.000.000 đồng","40.000.000 đồng"],c:0,g:"v = 160tr. m = 50% x 160tr = 80tr. Khi cung = cầu, p = m = 80.000.000 đồng."},
+{t:"Địa tô thu được trên mảnh đất cho thuê, không kể độ màu mỡ tự nhiên thuận lợi hay do thâm canh là",o:["địa tô chênh lệch I","địa tô tương đối","địa tô tuyệt đối","địa tô chênh lệch II"],c:2,g:"Địa tô tuyệt đối thu được trên mảnh đất cho thuê bất kể chất lượng đất (Trang 121)."},
+{t:"Địa tô thu được trên những loại ruộng đất tốt, độ màu mỡ cao và điều kiện tự nhiên thuận lợi là",o:["địa tô chênh lệch I","địa tô tuyệt đối","địa tô chênh lệch II","địa tô tương đối"],c:0,g:"Địa tô chênh lệch I thu được do điều kiện tự nhiên thuận lợi và đất màu mỡ (Trang 120)."},
+{t:"3 ngành A, B, C đầu tư cùng 100 triệu, c/v lần lượt 4/1, 3/2, 7/3, m' = 100%. Lợi nhuận bình quân từng ngành là",o:["80.000.000 đồng","40.000.000 đồng","20.000.000 đồng","30.000.000 đồng"],c:3,g:"Tổng m = 90tr. Tổng tư bản = 300tr. p' = 30%. Lợi nhuận bình quân = 30% x 100tr = 30 triệu đồng."},
+{t:"Xí nghiệp A đầu tư 800.000.000 đồng, lợi nhuận 8.000.000 đồng. Tỷ suất lợi nhuận là",o:["0,1%","10%","1%","2%"],c:2,g:"p' = (8tr / 800tr) x 100% = 1%."},
+{t:"Xí nghiệp giày da có tổng giá trị hàng hóa 650 triệu, m thu được 100 triệu. Chi phí sản xuất là bao nhiêu?",o:["550.000.000 đồng","300.000.000 đồng","450.000.000 đồng","500.000.000 đồng"],c:0,g:"Chi phí sản xuất k = G - m = 650tr - 100tr = 550.000.000 đồng."},
+{t:"Địa tô thu được trên những mảnh đất do đầu tư thâm canh và làm tăng độ màu mỡ là",o:["địa tô tương đối","địa tô chênh lệch II","địa tô tuyệt đối","địa tô chênh lệch I"],c:1,g:"Địa tô chênh lệch II thu được do thâm canh làm tăng độ màu mỡ (Trang 120)."},
+{t:"Phần giá trị bù lại giá cả tư liệu sản xuất và sức lao động đã sử dụng là",o:["chi phí chu chuyển tư bản","chi phí tuần hoàn tư bản","chi phí tư bản bất biến","chi phí sản xuất tư bản chủ nghĩa"],c:3,g:"Đây là định nghĩa chi phí sản xuất tư bản chủ nghĩa (Trang 111)."},
+{t:"Có 3 ngành A, B, C đầu tư cùng 100 triệu, c/v lần lượt 4/1, 3/2, 7/3, m' = 100%. Tỷ suất lợi nhuận bình quân bằng bao nhiêu?",o:["20%","30%","25%","10%"],c:1,g:"p' = (90tr / 300tr) x 100% = 30%."},
+{t:"Xí nghiệp A đầu tư 800 triệu, lợi nhuận 8 triệu, chu chuyển 6 tháng/vòng. Tỷ suất lợi nhuận trong năm là",o:["0,2%","0,1%","1%","2%"],c:3,g:"1 năm có 2 vòng. Tổng lợi nhuận năm là 16tr. p' = (16tr / 800tr) x 100% = 2%."},
+{t:"Một phần lợi nhuận bình quân mà người đi vay trả cho người cho vay vì sử dụng lượng tiền nhàn rỗi là",o:["lợi nhuận bình quân","lợi tức","địa tô","lợi nhuận thương nghiệp"],c:1,g:"Đây là định nghĩa về lợi tức (Trang 118)."},
+{t:"\"Nền kinh tế vận hành theo các quy luật của thị trường, đồng thời góp phần hướng tới từng bước xác lập một xã hội mà ở đó dân giàu, nước mạnh, dân chủ, công bằng, văn minh có sự điều tiết của Nhà nước do Đảng cộng sản Việt Nam lãnh đạo\" là khái niệm về:",o:["kinh tế thị trường tư bản chủ nghĩa.","kinh tế thị trường có sự quản lý của nhà nước.","kinh tế thị trường hiện đại.","kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam."],c:3,g:"Đây là định nghĩa đầy đủ về mô hình kinh tế thị trường đặc thù của Việt Nam (Xem trang 170, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Quan điểm: “Kinh tế thị trường định hướng xã hội chủ nghĩa là mô hình kinh tế tổng quát của thời kỳ quá độ lên chủ nghĩa xã hội ở nước ta\" được khẳng định trong văn kiện Đại hội lần thứ mấy của Đảng?",o:["VIII.","IX.","X.","XI."],c:1,g:"Đại hội IX của Đảng đã chính thức khẳng định mô hình kinh tế tổng quát này (Xem trang 172, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Quan điểm: \"Nền kinh tế hàng hóa nhiều thành phần, vận hành theo cơ chế thị trường, có sự quản lý của Nhà nước, dưới sự lãnh đạo của Đảng Cộng sản Việt Nam\" được khẳng định rõ nhất tại Đại hội:",o:["VIII.","IX.","X.","XI."],c:3,g:"Văn kiện Đại hội XI của Đảng đã khẳng định và làm rõ thêm các yếu tố cấu thành nền kinh tế thị trường nước ta (Xem trang 172, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Nội dung nào sau đây KHÔNG thể hiện tính tất yếu khách quan của việc phát triển kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam?",o:["Phù hợp với tính quy luật phát triển khách quan.","Tính ưu việt của kinh tế thị trường trong thúc đẩy phát triển.","Mô hình kinh tế thị trường phù hợp với nguyện vọng của nhân dân.","Mô hình kinh tế này đã và đang là mục tiêu của nhân loại."],c:3,g:"Đây là sự lựa chọn riêng biệt phù hợp với con đường đi lên CNXH của Việt Nam, không phải mục tiêu chung của toàn nhân loại (Xem trang 173, 174, 175)."},
+{t:"Một trong những tính tất yếu khách quan của việc phát triển kinh tế thị trường định hướng XHCN ở Việt Nam là vì mô hình này:",o:["phù hợp với sự phát triển của quan hệ sản xuất.","được nhiều nước trên thế giới lựa chọn.","phù hợp với nguyện vọng của nhân dân.","đang được thử nghiệm theo mô hình kinh tế mới."],c:2,g:"Mô hình này hướng tới mục tiêu dân giàu, nước mạnh, dân chủ, công bằng, văn minh, phù hợp mong muốn nhân dân (Xem trang 176)."},
+{t:"Phát triển kinh tế thị trường định hướng XHCN ở Việt Nam là tất yếu khách quan vì nó:",o:["phù hợp với tính quy luật phát triển khách quan.","phù hợp với sự phát triển của quan hệ sản xuất.","được nhiều nước trên thế giới lựa chọn.","đang được thử nghiệm theo mô hình kinh tế mới."],c:0,g:"Phát triển kinh tế thị trường là xu thế tất yếu của thời đại và phù hợp với quy luật khách quan (Xem trang 173)."},
+{t:"Nội dung nào luận giải về tính tất yếu khách quan của việc phát triển kinh tế thị trường định hướng XHCN ở Việt Nam?",o:["phát triển theo mô hình kinh tế mới của thế giới.","tính ưu việt của kinh tế thị trường trong thúc đẩy phát triển.","đây là mô hình kinh tế nhiều nước trên thế giới lựa chọn.","thử nghiệm theo mô hình kinh tế mới."],c:1,g:"Kinh tế thị trường là phương thức hiệu quả để thúc đẩy sức sản xuất xã hội (Xem trang 175)."},
+{t:"Quan hệ nào sau đây KHÔNG phải là quan hệ lợi ích kinh tế cơ bản trong nền kinh tế thị trường?",o:["Quan hệ lợi ích giữa người lao động và người sử dụng lao động.","Quan hệ lợi ích giữa những người sử dụng lao động.","Quan hệ giữa lợi ích cá nhân, lợi ích nhóm và lợi ích xã hội.","Quan hệ giữa Đảng, Nhà nước và nhân dân."],c:3,g:"Quan hệ giữa Đảng, Nhà nước và nhân dân là quan hệ chính trị - xã hội, không thuộc quan hệ lợi ích kinh tế cơ bản (Xem trang 1)."},
+{t:"Trong nền kinh tế thị trường định hướng XHCN, các thành phần kinh tế nòng cốt để phát triển kinh tế là:",o:["bền vững.","độc lập, tự chủ.","tiến bộ.","tiên tiến, hiện đại."],c:1,g:"Kinh tế nhà nước, tập thể và tư nhân là nòng cốt để phát triển một nền kinh tế độc lập, tự chủ."},
+{t:"Nội dung nào sau đây KHÔNG phải là lý do phải hoàn thiện thể chế kinh tế thị trường định hướng XHCN ở Việt Nam?",o:["Thể chế còn chưa đồng bộ.","Thể chế kinh tế thị trường định hướng xã hội chủ nghĩa không phù hợp.","Hệ thống thể chế chưa đầy đủ.","Hệ thống thể chế còn kém hiệu lực, hiệu quả."],c:1,g:"Thể chế này hoàn toàn phù hợp, lý do cần hoàn thiện là vì nó còn chưa đồng bộ và kém hiệu quả (Xem trang 188, 189)."},
+{t:"Một trong những lý do phải hoàn thiện thể chế kinh tế thị trường định hướng XHCN ở Việt Nam là:",o:["còn chưa đồng bộ.","không phù hợp.","khác với các nước trên thế giới.","còn mới mẻ."],c:0,g:"Do hệ thống pháp luật và cơ chế vận hành hiện nay còn chồng chéo, chưa khớp nhau (Xem trang 188, 189)."},
+{t:"Hoàn thiện thể chế kinh tế thị trường là yêu cầu cấp thiết vì hệ thống thể chế hiện nay:",o:["không phù hợp.","chưa đầy đủ.","khác với các nước trên thế giới.","còn mới mẻ."],c:1,g:"Nhiều loại hình thị trường và yếu tố thị trường vẫn còn thiếu khung pháp lý điều chỉnh (Xem trang 188, 189)."},
+{t:"Đâu là lý do cần hoàn thiện thể chế kinh tế thị trường định hướng XHCN tại Việt Nam?",o:["Không phù hợp với điều kiện của đất nước.","Khác với các nước trên thế giới.","Còn kém hiệu lực, hiệu quả, thiếu các yếu tố thị trường và các loại thị trường.","Còn mới mẻ, chưa thật sự phù hợp với điều kiện kinh tế."],c:2,g:"Thể chế hiện tại chưa phát huy được tối đa các nguồn lực do thiếu các loại thị trường bộ phận (Xem trang 188, 189)."},
+{t:"Nội dung nào sau đây KHÔNG thuộc nhiệm vụ hoàn thiện thể chế kinh tế thị trường định hướng XHCN ở Việt Nam?",o:["Hoàn thiện thể chế về sở hữu, phát triển các thành phần kinh tế.","Hoàn thiện thể chế để phát triển đồng bộ các yếu tố thị trường.","Hoàn thiện thể chế mới cho phù hợp với điều kiện phát triển của đất nước.","Hoàn thiện thể chế, nâng cao năng lực lãnh đạo của Đảng."],c:2,g:"Việc hoàn thiện là trên nền tảng thể chế hiện có, không phải xây dựng một \"thể chế mới\" hoàn toàn khác (Xem trang 191 - 196)."},
+{t:"Một trong những nội dung trọng tâm để hoàn thiện thể chế kinh tế thị trường định hướng XHCN ở Việt Nam là:",o:["để phát triển đồng bộ các yếu tố thị trường và các loại thị trường.","cho phù hợp với điều kiện phát triển của đất nước.","để tăng trưởng kinh tế.","để phát triển văn hóa."],c:0,g:"Đây là nội dung quan trọng nhằm tạo môi trường kinh doanh thuận lợi (Xem trang 194)."},
+{t:"Hoàn thiện thể chế gắn kết tăng trưởng kinh tế với công bằng xã hội nhằm thúc đẩy:",o:["mở rộng hoạt động kinh tế đối ngoại.","nền sản xuất phát triển.","hội nhập quốc tế.","phát triển kinh tế, chính trị, văn hóa."],c:2,g:"Thúc đẩy hội nhập quốc tế là kết quả của việc hoàn thiện thể chế gắn với phát triển bền vững (Xem trang 195)."},
+{t:"Nội dung nào không thuộc nội dung hoàn thiện thể chế kinh tế thị trường định hướng XHCN?",o:["Hoàn thiện thể chế về sở hữu.","Hoàn thiện thể chế phát triển yếu tố thị trường.","Nâng cao năng lực lãnh đạo của Đảng và hệ thống chính trị.","Hoàn thiện thể chế kinh tế, chính trị, văn hoá, xã hội."],c:3,g:"Nhiệm vụ này chỉ tập trung vào thể chế kinh tế, không bao hàm tất cả các lĩnh vực xã hội khác (Xem trang 191 - 196)."},
+{t:"Hoàn thiện thể chế kinh tế thị trường bao gồm việc nâng cao vai trò của chủ thể nào?",o:["Nâng cao năng lực cạnh tranh.","Thúc đẩy sản xuất phát triển.","Nâng cao vị thế Việt Nam.","Đẩy mạnh, nâng cao năng lực lãnh đạo của Đảng và hệ thống chính trị."],c:3,g:"Đảng lãnh đạo là đặc trưng cốt lõi của định hướng XHCN tại Việt Nam (Xem trang 196)."},
+{t:"Nội dung nào sau đây là nội dung tiên quyết để hoàn thiện thể chế kinh tế thị trường định hướng XHCN?",o:["Sở hữu, phát triển các thành phần kinh tế, các loại hình doanh nghiệp.","Bảo đảm tạo việc làm cho người lao động.","Mở rộng hoạt động kinh tế đối ngoại.","Nâng cao năng lực cạnh tranh."],c:0,g:"Quan hệ sở hữu là nền tảng của mọi thể chế kinh tế (Xem trang 191)."},
+{t:"Quan điểm của Đảng và Nhà nước xác định vai trò của lợi ích kinh tế là:",o:["nguyện vọng của các chủ thể kinh tế.","trách nhiệm của các chủ thể kinh tế.","động lực trực tiếp của các chủ thể và hoạt động kinh tế xã hội.","quyền lợi của các chủ thể kinh tế."],c:2,g:"Lợi ích kinh tế thúc đẩy các cá nhân, doanh nghiệp nỗ lực hoạt động sản xuất (Xem trang 199, 200)."},
+{t:"Sự khác biệt cơ bản giữa kinh tế thị trường định hướng XHCN ở Việt Nam với kinh tế thị trường tư bản chủ nghĩa nằm ở:",o:["tồn tại nhiều hình thức sở hữu.","có sự điều tiết của Nhà nước.","tồn tại nhiều hình thức phân phối.","xây dựng trên nền tảng chế độ công hữu về những tư liệu sản xuất chủ yếu."],c:3,g:"Chế độ công hữu về tư liệu sản xuất chủ yếu đảm bảo phát triển vì lợi ích nhân dân."},
+{t:"Lý do trực tiếp dẫn đến sự tồn tại nhiều thành phần kinh tế hiện nay là vì:",o:["tồn tại nhiều hình thức sở hữu tư liệu sản xuất.","tồn tại nhiều hình thức phân phối.","sự phát triển của lực lượng sản xuất.","sự phát triển của quan hệ sản sản xuất."],c:0,g:"Hình thức sở hữu quyết định thành phần kinh tế tương ứng."},
+{t:"Vai trò chủ yếu của lợi ích kinh tế là:",o:["động lực trực tiếp của các chủ thể kinh tế và hoạt động kinh tế - xã hội.","nguyện vọng của các chủ thể kinh tế.","trách nhiệm trực tiếp của các chủ thể kinh tế.","quyền lợi của các chủ thể kinh tế."],c:0,g:"Lợi ích kinh tế là cơ sở thúc đẩy sự phát triển các lợi ích khác (Xem trang 199)."},
+{t:"Trong nền kinh tế thị trường định hướng XHCN ở Việt Nam, kinh tế nhà nước giữ vai trò:",o:["thống trị.","nền tảng.","chủ đạo.","quan trọng."],c:2,g:"Kinh tế nhà nước là lực lượng vật chất để Nhà nước điều tiết nền kinh tế (Xem trang 181)."},
+{t:"Trong nền kinh tế thị trường định hướng XHCN ở Việt Nam, kinh tế tư nhân:",o:["bị xem nhẹ và bị hạn chế phát triển.","có vai trò quan trọng (là một động lực quan trọng).","đóng vai trò chủ đạo.","là hình thức sở hữu thống trị."],c:1,g:"Đảng khẳng định kinh tế tư nhân là một động lực quan trọng của nền kinh tế (Xem trang 181)."},
+{t:"Đặc trưng phản ánh thuộc tính quan trọng mang tính định hướng xã hội chủ nghĩa tại Việt Nam là:",o:["Về mục tiêu.","Về quan hệ sở hữu và thành phần kinh tế.","Về quan hệ quản lý nền kinh tế và quan hệ phân phối.","Về quan hệ giữa gắn tăng trưởng kinh tế với công bằng xã hội."],c:3,g:"Đây là đặc trưng thể hiện bản chất nhân văn của chế độ (Xem trang 185)."},
+{t:"Những hình thức phân phối phản ánh định hướng xã hội chủ nghĩa của nền kinh tế thị trường Việt Nam là:",o:["Phân phối công bằng các yếu tố sản xuất.","Phân phối theo lao động và hiệu quả kinh tế, phân phối theo phúc lợi.","Phân phối theo vốn và tài sản.","Phân phối dựa trên nhu cầu."],c:1,g:"Đảm bảo công bằng thông qua lao động và an sinh xã hội (Xem trang 185)."},
+{t:"Nội dung nào sau đây KHÔNG đúng khi nói về vai trò chủ đạo của kinh tế nhà nước?",o:["Kinh tế nhà nước nắm giữ hầu hết các ngành, các lĩnh vực trong nền kinh tế quốc dân.","Kinh tế nhà nước là đòn bẩy thúc đẩy nền kinh tế tăng trưởng nhanh, bền vững.","Kinh tế nhà nước hướng dẫn, mở đường, hỗ trợ các thành phần kinh tế khác phát triển.","Là lực lượng vật chất để Nhà nước quản lý, điều tiết nền kinh tế."],c:0,g:"Kinh tế nhà nước chỉ nắm giữ các ngành then chốt, những lĩnh vực trọng yếu (Xem trang 214 - 220)."},
+{t:"Nhận định nào sai khi nói về vai trò chủ đạo của kinh tế nhà nước ở Việt Nam?",o:["Là đòn bẩy thúc đẩy nền kinh tế tăng trưởng nhanh.","Hướng dẫn, mở đường cho thành phần khác.","Là lực lượng vật chất để quản lý vĩ mô.","Sự tăng nhanh về quy mô, số lượng các doanh nghiệp nhà nước."],c:3,g:"Vai trò chủ đạo không đồng nghĩa với việc tăng mãi số lượng doanh nghiệp nhà nước (Xem trang 214 - 220)."},
+{t:"Lý do cần hoàn thiện thể chế kinh tế thị trường định hướng XHCN bao gồm:",o:["Thể chế chưa đồng bộ.","Hệ thống thể chế chưa đầy đủ.","Hiệu lực, hiệu quả còn kém.","Cả A, B và C đều đúng."],c:3,g:"Đây là tổng hợp các lý do chính được nêu trong giáo trình (Xem trang 188, 189)."},
+{t:"Về mặt lịch sử, cho đến nay, loài người đã và đang trải qua bao nhiêu cuộc cách mạng công nghiệp?",o:["4","5","3","2"],c:0,g:"Loài người đã trải qua ba cuộc cách mạng công nghiệp và đang bắt đầu cuộc cách mạng công nghiệp lần thứ tư (Xem trang 225, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Nghiên cứu về cách mạng công nghiệp lần thứ nhất, C. Mác đã khái quát tính quy luật của cách mạng công nghiệp qua ba giai đoạn phát triển là:",o:["đại công nghiệp, công trường thủ công và hiệp tác giản đơn.","hiệp tác giản đơn, công trường thủ công và đại công nghiệp.","công trường thủ công, hiệp tác giản đơn và đại công nghiệp.","hiệp tác giản đơn, đại công nghiệp và công trường thủ công."],c:1,g:"Trình tự phát triển theo quy luật từ thấp đến cao là hiệp tác giản đơn, công trường thủ công và đại công nghiệp (Trang 226, 227)."},
+{t:"Liên kết giữa thế giới thực và ảo, để thực hiện công việc thông minh và hiệu quả nhất là đặc trưng của cách mạng công nghiệp:",o:["lần thứ nhất.","lần thứ hai.","lần thứ ba.","lần thứ tư."],c:3,g:"Đây là đặc trưng cốt lõi của cuộc cách mạng công nghiệp lần thứ tư (Trang 229, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Sử dụng công nghệ thông tin và máy tính để tự động hóa sản xuất là đặc trưng của cách mạng công nghiệp:",o:["lần thứ nhất.","lần thứ hai.","lần thứ ba.","lần thứ tư."],c:2,g:"Đặc trưng của cách mạng công nghiệp lần thứ ba là ứng dụng công nghệ thông tin và máy tính (Trang 229)."},
+{t:"Sử dụng năng lượng điện và động cơ điện, để tạo ra dây chuyền sản xuất hàng loạt là đặc trưng của cách mạng công nghiệp:",o:["lần thứ nhất.","lần thứ hai.","lần thứ ba.","lần thứ tư."],c:1,g:"Năng lượng điện và sản xuất hàng loạt gắn liền với cách mạng công nghiệp lần thứ hai (Trang 229)."},
+{t:"Sử dụng năng lượng nước và hơi nước để cơ khí hóa sản xuất là đặc trưng của cách mạng công nghiệp:",o:["lần thứ nhất.","lần thứ hai.","lần thứ ba.","lần thứ tư."],c:0,g:"Đây là đặc trưng cơ bản nhất của cuộc cách mạng công nghiệp lần thứ nhất (Trang 229)."},
+{t:"Những bước phát triển nhảy vọt về chất trình độ của tư liệu lao động trên cơ sở những phát minh đột phá về kỹ thuật và công nghệ... là khái niệm về:",o:["công nghiệp hóa, hiện đại hóa.","phát triển bền vững.","cách mạng công nghiệp.","hội nhập kinh tế quốc tế."],c:2,g:"Đây là định nghĩa đầy đủ về cách mạng công nghiệp (Trang 225, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Công nghiệp hóa là quá trình chuyển đổi nền sản xuất xã hội từ dựa trên lao động thủ công là chính sang nền sản xuất dựa chủ yếu trên lao động bằng máy móc nhằm:",o:["xây dựng nền kinh tế hiện đại.","thúc đẩy nền kinh tế phát triển cao.","tạo ra năng suất lao động xã hội cao.","xây dựng cơ sở hạ tầng hiện đại."],c:2,g:"Mục đích cốt lõi của công nghiệp hóa là nâng cao năng suất lao động xã hội (Trang 242)."},
+{t:"\"Quá trình chuyển đổi căn bản, toàn diện các hoạt động sản xuất kinh doanh... nhằm tạo ra năng suất lao động xã hội cao\" là khái niệm về:",o:["cách mạng công nghiệp.","công nghiệp hóa, hiện đại hóa.","phát triển bền vững.","phát triển theo chiều sâu."],c:1,g:"Đây là khái niệm đầy đủ về quá trình công nghiệp hóa, hiện đại hóa (Trang 246)."},
+{t:"Quá trình chuyển đổi nền sản xuất xã hội từ lao động thủ công sang lao động bằng máy móc để tạo ra năng suất cao là khái niệm về:",o:["hiện đại hóa.","công nghiệp hóa.","công nghiệp hóa, hiện đại hóa.","cơ khí hóa, điện khí hóa."],c:2,g:"Đây là cách định nghĩa ngắn gọn về bản chất của công nghiệp hóa, hiện đại hóa (Trang 246)."},
+{t:"Một đặc điểm chủ yếu của công nghiệp hóa, hiện đại hóa ở Việt Nam là thực hiện mục tiêu:",o:["\"dân giàu, nước mạnh, xã hội văn minh, dân chủ, bình đẳng\".","\"dân giàu, nước mạnh, văn minh, bình đẳng, công bằng\".","\"dân giàu, nước mạnh, dân chủ, công bằng, văn minh\".","\"dân giàu, nước mạnh, bình đẳng, công bằng, dân chủ\"."],c:2,g:"Mục tiêu xuyên suốt là xây dựng xã hội \"dân giàu, nước mạnh, dân chủ, công bằng, văn minh\" (Trang 249)."},
+{t:"Đặc điểm chủ yếu của công nghiệp hóa, hiện đại hóa ở Việt Nam là tiến hành trong điều kiện kinh tế thị trường:",o:["định hướng phát triển bền vững.","định hướng tăng trưởng bền vững.","định hướng phát triển theo chiều sâu.","định hướng xã hội chủ nghĩa."],c:3,g:"CNH, HĐH tại Việt Nam luôn gắn liền với định hướng chính trị xã hội chủ nghĩa (Trang 249)."},
+{t:"Đặc điểm chủ yếu của công nghiệp hóa, hiện đại hóa ở Việt Nam là gắn liền với:",o:["tăng trưởng xanh.","tăng trưởng bền vững.","phát triển kinh tế tri thức.","phát triển nền kinh tế mới."],c:2,g:"Đây là một đặc điểm quan trọng trong bối cảnh cuộc cách mạng công nghiệp hiện đại (Trang 249)."},
+{t:"Đối với các nước kém phát triển quá độ lên CNXH như Việt Nam, xây dựng cơ sở vật chất - kỹ thuật cho CNXH phải thực hiện từ đầu thông qua:",o:["hợp tác quốc tế.","phát triển kinh tế tri thức.","cơ khí hóa, điện khí hóa.","công nghiệp hoá, hiện đại hoá."],c:3,g:"Đây là con đường tất yếu để tạo ra nền tảng vật chất cho xã hội mới (Trang 247)."},
+{t:"Nội dung CNH, HĐH ở Việt Nam là tạo lập điều kiện để chuyển đổi từ nền sản xuất - xã hội lạc hậu sang:",o:["nền sản xuất - xã hội tiến bộ.","nền sản xuất - xã hội hiện đại.","nền kinh tế thị trường.","nền kinh tế tri thức."],c:0,g:"Tạo lập tiền đề để thực hiện bước chuyển mình sang xã hội tiến bộ (Trang 249)."},
+{t:"Một nội dung của CNH, HĐH ở Việt Nam là thực hiện nhiệm vụ chuyển đổi từ nền sản xuất - xã hội lạc hậu sang:",o:["nền kinh tế thị trường.","nền sản xuất - xã hội tiến bộ.","nền sản xuất - xã hội hiện đại.","nền kinh tế tri thức."],c:2,g:"Chuyển đổi căn bản trình độ sản xuất sang hướng hiện đại (Trang 249, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Một nhiệm vụ để chuyển đổi nền sản xuất hiện đại là từng bước hoàn thiện quan hệ sản xuất phù hợp với trình độ phát triển của:",o:["nền sản xuất.","lực lượng sản xuất.","phương thức sản xuất.","tư liệu sản xuất."],c:1,g:"Quan hệ sản xuất phải luôn phù hợp với sự phát triển của lực lượng sản xuất (Trang 250)."},
+{t:"Nhiệm vụ chuyển đổi sang nền sản xuất hiện đại bao gồm chuyển dịch cơ cấu kinh tế theo hướng:",o:["các nước đang phát triển.","phát triển bền vững.","các nước phát triển.","hiện đại, hợp lý và hiệu quả."],c:3,g:"Cơ cấu kinh tế phải dịch chuyển sang các ngành có năng suất và hiệu quả cao (Trang 253)."},
+{t:"Để CNH, HĐH thích ứng với cách mạng công nghiệp 4.0, cần hoàn thiện thể chế và xây dựng nền kinh tế trên nền tảng:",o:["của các nước đi trước.","của các nước phát triển.","đổi mới, sáng tạo.","phát triển."],c:2,g:"Đổi mới sáng tạo là nhân tố quyết định trong thời đại công nghệ số (Trang 255)."},
+{t:"Nội dung nào sau đây KHÔNG phải là nhiệm vụ ứng phó với tác động tiêu cực của cách mạng công nghiệp 4.0?",o:["Thực hiện chuyển đổi số nền kinh tế và quản trị xã hội.","Đẩy mạnh công nghiệp hoá, hiện đại hoá nông nghiệp, nông thôn.","Phát triển nguồn nhân lực chất lượng cao.","Phát triển các loại hình du lịch và dịch vụ."],c:3,g:"Các nhiệm vụ ứng phó tập trung vào hạ tầng, số hóa, nông nghiệp và nhân lực (Trang 256 - 259)."},
+{t:"Một trong những điều kiện của hội nhập kinh tế quốc tế là sự tương đồng giữa các nước về:",o:["chế độ kinh tế.","thể chế kinh tế.","chế độ chính trị.","thể chế chính trị."],c:1,g:"Thể chế kinh tế tương đồng giúp việc phối hợp và giao thương thuận lợi hơn (Trang 275)."},
+{t:"Một vấn đề ảnh hưởng lớn đến hội nhập kinh tế quốc tế của Việt Nam hiện nay là:",o:["cơ chế thị trường chưa hoàn thiện.","cơ chế thị trường chưa ổn định.","kinh tế thị trường ở trình độ sơ khai.","kinh tế thị trường còn chưa đầy đủ."],c:0,g:"Đây là một rào cản nội tại cần khắc phục để hội nhập sâu rộng (Trang 276)."},
+{t:"Một rào cản đối với hội nhập kinh tế quốc tế của Việt Nam là hệ thống luật pháp, chính sách:",o:["chưa phù hợp.","chưa đồng bộ.","chưa đầy đủ.","chưa ổn định."],c:1,g:"Hệ thống pháp luật thiếu đồng bộ gây khó khăn cho các hoạt động kinh tế quốc tế (Trang 276)."},
+{t:"Một trong những vấn đề có ảnh hưởng lớn đến hội nhập kinh tế quốc tế của Việt Nam hiện nay là:",o:["môi trường kinh tế còn hạn chế.","môi trường cạnh tranh còn nhiều hạn chế.","môi trường xã hội còn phức tạp.","môi trường chính trị còn nhiều bất ổn."],c:1,g:"Năng lực cạnh tranh thấp là thách thức lớn khi tham gia sân chơi toàn cầu (Trang 276)."},
+{t:"Biện pháp xây dựng nền kinh tế độc lập tự chủ đi đôi với hội nhập quốc tế là hoàn thiện đường lối chung và:",o:["đường lối chính trị, xây dựng và phát triển đất nước.","các chính sách ưu tiên phát triển kinh tế.","các chính sách ưu tiên hội nhập kinh tế quốc tế.","đường lối kinh tế, xây dựng và phát triển đất nước."],c:3,g:"Đường lối kinh tế đúng đắn là kim chỉ nam cho sự phát triển bền vững (Trang 279)."},
+{t:"Để xây dựng nền kinh tế độc lập, tự chủ và hội nhập quốc tế, Việt Nam cần đẩy mạnh:",o:["xây dựng nền kinh tế độc lập, tự chủ.","phát triển kinh tế thị trường.","công nghiệp hóa, hiện đại hóa đất nước.","phát triển kinh tế tri thức."],c:2,g:"CNH, HĐH là giải pháp then chốt để tăng cường sức mạnh nội sinh (Trang 279, 280)."},
+{t:"Để đẩy mạnh CNH, HĐH, một biện pháp cần tập trung là cơ cấu lại nền kinh tế, chuyển sang tăng trưởng theo:",o:["chiều rộng.","hướng bền vững.","hướng hiện đại.","chiều sâu."],c:3,g:"Tăng trưởng theo chiều sâu dựa trên năng suất và công nghệ là hướng đi bền vững (Trang 279)."},
+{t:"Một giải pháp hội nhập hiệu quả là thực hiện thành công ba đột phá chiến lược gồm cải cách thể chế, phát triển hạ tầng và:",o:["phát triển nguồn nhân lực.","phát triển kinh tế.","phát triển xã hội.","cải cách chính trị."],c:0,g:"Nhân lực là nhân tố quyết định sự thành bại của quá trình phát triển (Trang 280)."},
+{t:"Tiến trình hội nhập kinh tế quốc tế được chia theo mức độ từ thấp đến cao là:",o:["PTA, FTA, CU, Thị trường chung.","FTA, CU, Thị trường chung, PTA.","CU, Thị trường chung, PTA, FTA.","Thị trường chung, PTA, FTA, CU."],c:0,g:"Đây là trình tự liên kết kinh tế quốc tế theo cấp độ sâu rộng dần (Trang 263)."},
+{t:"Quan điểm xây dựng nền kinh tế tự chủ dựa trên làm chủ công nghệ được nêu rõ trong chiến lược giai đoạn:",o:["2000.","2001 - 2010.","2011 - 2020.","2021 - 2030."],c:3,g:"Đây là định hướng mới nhất được khẳng định trong chiến lược phát triển kinh tế xã hội mười năm tới (Trang 279)."},
+{t:"Các nhà tài phiệt sử dụng nhiều thủ đoạn như lập công ty mới, phát hành trái khoản, kinh doanh công trái, đầu cơ chứng khoán, đầu cơ ruộng đất để:",o:["thu giá trị thặng dư siêu ngạch.","thu lợi nhuận độc quyền.","thu lợi nhuận độc quyền cao.","thu lợi nhuận siêu ngạch."],c:2,g:"Tài phiệt sử dụng các thủ đoạn tài chính và đầu cơ để thu về lợi nhuận độc quyền cao (Trang 141, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Người bán không mất quyền sở hữu, người mua chỉ được quyền sử dụng trong một thời gian là đặc điểm của:",o:["tư bản hàng hóa.","tư bản sản xuất.","tư bản thương nghiệp.","tư bản cho vay."],c:3,g:"Đặc điểm của tư bản cho vay là quyền sở hữu tách rời quyền sử dụng trong một thời hạn nhất định (Trang 118)."},
+{t:"Nền kinh tế trong đó sự sản sinh ra, phổ cập và sử dụng tri thức giữ vai trò quyết định nhất đối với sự phát triển kinh tế là:",o:["kinh tế tự cung tự cấp.","kinh tế hàng hóa.","kinh tế tri thức.","kinh tế thị trường."],c:2,g:"Đây là định nghĩa về nền kinh tế tri thức, lấy tri thức làm động lực chính tạo ra của cải (Trang 251)."},
+{t:"Xí nghiệp A đầu tư 200.000.000 đồng, cấu tạo hữu cơ c/v = 4/1, tỷ suất m' = 100%. Vậy lượng giá trị mới là bao nhiêu?",o:["25.000.000 đồng.","30.000.000 đồng.","80.000.000 đồng.","40.000.000 đồng."],c:2,g:"c+v=200tr, c=4v => v=40tr. m'=100% => m=40tr. Giá trị mới = v + m = 40tr + 40tr = 80.000.000 đồng."},
+{t:"Nhà kinh tế học Pierr Boisguillebert là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng nông.","Chủ nghĩa trọng thương.","Kinh tế chính trị cổ điển Anh.","Kinh tế chính trị tầm thường."],c:0,g:"Pierr Boisguillebert cùng với Jacques Turgot là những đại biểu của chủ nghĩa trọng nông (Trang 14)."},
+{t:"Mâu thuẫn giữa lao động cụ thể và lao động trừu tượng xuất hiện khi sản phẩm tạo ra không phù hợp với:",o:["thói quen tiêu dùng.","nhu cầu xã hội.","nhu cầu cá nhân.","thị hiếu cá nhân."],c:1,g:"Xuất hiện khi sản phẩm không được xã hội chấp nhận hoặc hao phí lao động cá biệt cao hơn mức xã hội chấp nhận (Trang 42)."},
+{t:"Cuộc khủng hoảng kinh tế nào sau đây dẫn tới hình thành các doanh nghiệp độc quyền?",o:["2008.","1997.","1873.","1914."],c:2,g:"Cuộc khủng hoảng năm 1873 làm phá sản hàng loạt doanh nghiệp nhỏ, thúc đẩy quá trình tích tụ và hình thành độc quyền (Trang 127)."},
+{t:"Một trong những nhân tố chủ yếu ảnh hưởng đến quy mô tích lũy tư bản là:",o:["năng suất lao động xã hội.","lao động cụ thể.","lao động trừu tượng.","phân công lao động xã hội."],c:0,g:"Tăng năng suất lao động xã hội giúp tăng khối lượng giá trị thặng dư được tư bản hóa (Trang 106, 107)."},
+{t:"Một trong những điều kiện để sức lao động trở thành hàng hóa là người lao động:",o:["có sức lao động.","có sức khỏe và trí tuệ.","muốn bán sức lao động.","được tự do về thân thể."],c:3,g:"Hai điều kiện là tự do về thân thể và không có tư liệu sản xuất (Trang 86, 87)."},
+{t:"Sự hình thành các liên kết kinh tế quốc tế và khu vực tạo ra sân chơi chung là đặc trưng của:",o:["hội nhập kinh tế quốc tế.","kinh tế tri thức.","công nghiệp hoá, hiện đại hoá.","kinh tế thị trường."],c:0,g:"Hội nhập kinh tế quốc tế dẫn đến hình thành các khối liên kết và khu vực mậu dịch chung (Trang 273)."},
+{t:"Giá trị hàng hoá biểu hiện mối quan hệ giữa những người sản xuất, trao đổi và là phạm trù có tính:",o:["lịch sử.","vĩnh viễn.","phổ biến.","đặc thù."],c:0,g:"Giá trị hàng hóa chỉ tồn tại trong các nền kinh tế sản xuất hàng hóa, nên có tính lịch sử (Trang 39)."},
+{t:"Tiết kiệm tư bản bất biến là một trong những nhân tố ảnh hưởng đến:",o:["tỷ suất lợi nhuận.","tỷ suất lợi tức.","lợi nhuận bình quân.","tỷ suất lợi nhuận bình quân."],c:0,g:"Tiết kiệm c làm giảm tư bản ứng trước, từ đó làm tăng tỷ suất lợi nhuận (Trang 114)."},
+{t:"Phần giá trị bù lại giá cả tư liệu sản xuất và sức lao động đã sử dụng để sản xuất ra hàng hóa gọi là:",o:["tư bản bất biến.","tư bản khả biến.","chi phí hàng hóa.","chi phí sản xuất."],c:3,g:"k = c + v, dùng để bù đắp các chi phí đầu vào của nhà tư bản (Trang 111)."},
+{t:"Theo luật lưu thông tiền tệ, số lượng tiền cần thiết cho lưu thông phải thống nhất với:",o:["tiêu dùng.","lưu thông hàng hoá.","nhu cầu cá nhân.","sản xuất."],c:1,g:"Lượng tiền phát hành phải tương ứng với tổng giá cả hàng hóa lưu thông trên thị trường (Trang 71)."},
+{t:"Tiền biến thành tư bản khi được dùng để mang lại:",o:["giá trị trao đổi.","giá trị.","giá trị thặng dư.","giá trị sử dụng."],c:2,g:"Mục đích cuối cùng của vận động tư bản là tạo ra m (Trang 85, 86)."},
+{t:"Xí nghiệp A chi phí tư bản 100.000.000 đồng, cấu tạo hữu cơ c/v = 7/3, m' = 50%. Vậy giá trị cũ là bao nhiêu?",o:["30.000.000 đồng.","45.000.000 đồng.","15.000.000 đồng.","70.000.000 đồng."],c:3,g:"c+v=100tr, c=7/3v => 10/3v=100tr => v=30tr. Giá trị cũ là c = 100tr - 30tr = 70.000.000 đồng."},
+{t:"Trong cơ cấu của độc quyền nhà nước, nhà nước đã trở thành:",o:["một doanh nghiệp độc quyền.","một tập thể tư bản khổng lồ.","một tổ chức xã hội.","một nhà tư bản lớn."],c:1,g:"Nhà nước kết hợp với các tổ chức độc quyền tư nhân để hình thành một tập thể tư bản thống trị (Trang 131)."},
+{t:"Thực hiện quản trị phát triển nền kinh tế thông qua việc tạo lập môi trường kinh tế tốt nhất là vai trò của:",o:["người tiêu dùng.","người sản xuất.","chủ thể trung gian.","nhà nước."],c:3,g:"Nhà nước đóng vai trò quản lý vĩ mô và kiến tạo môi trường kinh doanh (Trang 80)."},
+{t:"Trong kinh tế thị trường định hướng XHCN Việt Nam, kinh tế tư nhân là một động lực:",o:["quyết định.","chủ đạo.","quan trọng.","cơ bản."],c:2,g:"Kinh tế nhà nước giữ vai trò chủ đạo, kinh tế tư nhân là một động lực quan trọng của nền kinh tế (Trang 1)."},
+{t:"Kiểm soát, ngăn ngừa các quan hệ lợi ích có ảnh hưởng tiêu cực đối với xã hội là vai trò của:",o:["Người sản xuất.","Người tiêu dùng.","Chủ thể trung gian.","Nhà nước."],c:3,g:"Nhà nước điều tiết và giải quyết các mâu thuẫn lợi ích để đảm bảo hài hòa xã hội (Trang 214-220)."},
+{t:"Quá trình hình thành sự liên kết giữa các độc quyền theo chiều dọc và ngang dẫn đến sự ra đời của:",o:["syndicate và các trust.","concern và các conglomerate.","trust và các cartel.","cartel và các syndicate."],c:1,g:"Đây là các hình thức liên kết độc quyền đa ngành phát triển cao (Trang 150)."},
+{t:"Quy luật kinh tế nào sau đây điều tiết quan hệ giữa bên bán và bên mua hàng hoá trên thị trường?",o:["Giá trị.","Cung - cầu.","Lưu thông tiền tệ.","Cạnh tranh."],c:1,g:"Quy luật cung - cầu trực tiếp điều tiết quan hệ trao đổi giữa người bán và người mua (Trang 70)."},
+{t:"Tổng tư bản công nghiệp và thương nghiệp là 1 tỷ đồng, p' ngang = 18%, lợi nhuận công nghiệp là 162 triệu. Vậy lợi nhuận thương nghiệp là:",o:["18.000.000 đồng.","14.800.000 đồng.","148.000.000 đồng.","180.000.000 đồng."],c:0,g:"Tổng lợi nhuận p ngang = 1 tỷ * 18% = 180tr. Lợi nhuận thương nghiệp = 180tr - 162tr = 18.000.000 đồng."},
+{t:"Hệ thống quy tắc, luật pháp, bộ máy quản lý và cơ chế vận hành nhằm điều chỉnh hành vi kinh tế gọi là:",o:["hệ thống kinh tế.","chế độ kinh tế.","thể chế kinh tế.","quy luật kinh tế."],c:2,g:"Đây là định nghĩa đầy đủ về thể chế kinh tế (Trang 187)."},
+{t:"Cạnh tranh giữa các tổ chức độc quyền và các xí nghiệp ngoài độc quyền nhằm:",o:["thôn tính, loại bỏ các xí nghiệp độc quyền.","hỗ trợ cho các xí nghiệp ngoài độc quyền phát triển.","mở rộng thị trường cho các xí nghiệp ngoài độc quyền.","thôn tính, loại bỏ các xí nghiệp ngoài độc quyền."],c:3,g:"Các tổ chức độc quyền dùng sức mạnh để loại bỏ các đối thủ yếu hơn (Trang 135)."},
+{t:"Bản chất của tích lũy tư bản là quá trình:",o:["lưu thông tiền tệ.","lưu thông hàng hoá.","tái sản xuất giản đơn.","tái sản xuất mở rộng."],c:3,g:"Tích lũy tư bản là việc biến một phần giá trị thặng dư thành tư bản phụ thêm để mở rộng sản xuất (Trang 105)."},
+{t:"Sự kết hợp về nhân sự giữa tổ chức độc quyền và nhà nước được thực hiện thông qua:",o:["thị trường.","hội đồng quản trị.","các đảng phái.","doanh nghiệp."],c:2,g:"Các đảng phái chính trị là cầu nối nhân sự giữa giới tài phiệt và bộ máy nhà nước (Trang 145)."},
+{t:"Phát hiện ra các quy luật chi phối quan hệ lợi ích giữa con người trong sản xuất là giá trị khoa học của:",o:["Kinh tế chính trị Mác - Lênin.","Chủ nghĩa trọng nông.","Chủ nghĩa trọng thương.","Kinh tế chính trị tầm thường."],c:0,g:"Đây là đóng góp khoa học to lớn của học thuyết kinh tế Mác - Lênin (Trang 26)."},
+{t:"Quy luật kinh tế nào điều tiết khách quan mối quan hệ ganh đua kinh tế giữa các chủ thể?",o:["Lưu thông tiền tệ.","Giá trị.","Cung - cầu.","Cạnh tranh."],c:3,g:"Cạnh tranh là quy luật thúc đẩy sự ganh đua và đào thải giữa các chủ thể (Trang 72)."},
+{t:"Chức năng thực tiễn của Kinh tế chính trị Mác - Lênin giúp xây dựng hoạt động kinh tế phù hợp với:",o:["xu hướng chung của thế giới.","sự quản lý của nhà nước.","quy luật khách quan.","thói quen cá nhân."],c:2,g:"Chức năng thực tiễn trang bị năng lực vận dụng đúng các quy luật khách quan vào đời sống (Trang 31)."},
+{t:"Tiền trong nền sản xuất tư bản chủ nghĩa vận động theo công thức:",o:["H-H-T.","T-H-T'.","H-T-H'.","T-H-T."],c:1,g:"Tư bản vận động theo trình tự Tiền - Hàng - Tiền (có giá trị lớn hơn) (Trang 85)."},
+{t:"Giá trị thặng dư trong nền kinh tế thị trường tư bản chủ nghĩa mang bản chất là quan hệ:",o:["trao đổi.","lợi ích.","xã hội.","giai cấp."],c:3,g:"Nó phản ánh quan hệ bóc lột giữa giai cấp tư sản và giai cấp công nhân làm thuê (Trang 98)."},
+{t:"Sở dĩ hàng hoá có hai thuộc tính là do lao động của người sản xuất có tính hai mặt là:",o:["giản đơn và phức tạp.","cụ thể và cần thiết.","trừu tượng và giản đơn.","cụ thể và trừu tượng."],c:3,g:"Lao động cụ thể tạo ra giá trị sử dụng, lao động trừu tượng tạo ra giá trị (Trang 40)."},
+{t:"Cơ sở để so sánh, trao đổi các giá trị sử dụng khác nhau là lao động:",o:["trừu tượng.","phức tạp.","cụ thể.","giản đơn."],c:0,g:"Lao động trừu tượng là sự hao phí sức lao động nói chung, là thước đo giá trị chung (Trang 41)."},
+{t:"C. Mác đã kế thừa trực tiếp giá trị khoa học của học thuyết nào để phát triển lý luận về phương thức sản xuất tư bản?",o:["Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh.","Chủ nghĩa trọng thương."],c:2,g:"Mác kế thừa tinh hoa của Petty, A. Smith và David Ricardo (Trang 16)."},
+{t:"Mục đích nghiên cứu ở cấp độ cao nhất của kinh tế chính trị Mác - Lênin là phát hiện ra các quy luật chi phối quan hệ:",o:["trao đổi hàng hóa.","sản xuất tư bản.","giữa người với người trong sản xuất và trao đổi.","quản lý vĩ mô của nhà nước."],c:2,g:"Đây là mục đích nghiên cứu bản chất các quan hệ xã hội trong kinh tế (Trang 24)."},
+{t:"Mối quan hệ tỷ lệ giữa các ngành, các vùng và các thành phần kinh tế gọi là:",o:["chế độ kinh tế.","hệ thống kinh tế.","cơ cấu kinh tế.","thể chế kinh tế."],c:2,g:"Cơ cấu kinh tế phản ánh cấu trúc và tỷ trọng của các bộ phận kinh tế (Trang 253)."},
+{t:"Kết quả của cạnh tranh trong nội bộ ngành là hình thành:",o:["giá trị sử dụng.","giá trị.","giá trị trao đổi.","giá trị thị trường."],c:3,g:"Cạnh tranh nội bộ ngành san bằng các mức hao phí lao động cá biệt thành giá trị thị trường (Trang 73)."},
+{t:"Kinh tế hàng hoá hình thành khi có phân công lao động xã hội và:",o:["sự phụ thuộc lẫn nhau về mặt kinh tế.","sự phát triển của khoa học kỹ thuật.","sự tách biệt về mặt kinh tế của các chủ thể sản xuất.","sự phát triển của lực lượng sản xuất."],c:2,g:"Sự tách biệt về sở hữu đòi hỏi việc trao đổi sản phẩm phải thông qua mua bán (Trang 35, 36)."},
+{t:"Kinh tế chính trị cổ điển Anh được hình thành, phát triển từ cuối thế kỷ XVIII đến nửa đầu thế kỷ XIX và kết thúc ở hệ thống lý luận của:",o:["William Petty.","A. Smith.","David Ricardo.","Montchretien."],c:2,g:"Hệ thống lý luận của David Ricardo là điểm kết thúc với nhiều giá trị khoa học của kinh tế chính trị cổ điển Anh (Trang 14)."},
+{t:"Quy luật kinh tế tồn tại khách quan, không phụ thuộc vào ý chí của con người. Con người có thể:",o:["thủ tiêu quy luật kinh tế.","nhận thức và vận dụng quy luật kinh tế.","thay đổi quy luật kinh tế.","điều chỉnh hoặc xoá bỏ quy luật kinh tế."],c:1,g:"Con người không thể thay đổi hay thủ tiêu nhưng có thể nhận thức để vận dụng phục vụ lợi ích của mình (Trang 26)."},
+{t:"Chính sách kinh tế tác động vào các quan hệ lợi ích và những sự tác động đó mang tính chất nào sau đây?",o:["Chủ quan.","Khách quan.","Mâu thuẫn.","Đối lập."],c:0,g:"Khác với quy luật kinh tế khách quan, chính sách kinh tế là sản phẩm của con người nên mang tính chủ quan (Trang 25)."},
+{t:"Việc người lao động hình thành năng lực, kỹ năng vận dụng các quy luật kinh tế vào thực tiễn hoạt động lao động là nói đến chức năng nào của Kinh tế chính trị Mác - Lênin?",o:["Nhận thức.","Tư tưởng.","Phương pháp luận.","Thực tiễn."],c:3,g:"Chức năng thực tiễn giúp người lao động vận dụng kiến thức vào thực tế sản xuất (Trang 30)."},
+{t:"Năng lực sản xuất của người lao động, được tính bằng số lượng sản phẩm sản xuất ra trong một đơn vị thời gian được gọi là:",o:["cường độ lao động.","lực lượng lao động.","năng suất lao động.","đối tượng lao động."],c:2,g:"Đây là định nghĩa về năng suất lao động tính trên đơn vị sản phẩm hoặc thời gian (Trang 43)."},
+{t:"Năng lực sản xuất của người lao động, được tính bằng số lượng thời gian hao phí để sản xuất ra một đơn vị sản phẩm được gọi là:",o:["cường độ lao động.","năng suất lao động.","lực lượng lao động.","đối tượng lao động."],c:1,g:"Năng suất lao động có thể tính bằng thời gian hao phí để tạo ra 1 đơn vị sản phẩm (Trang 43)."},
+{t:"Mức độ khẩn trương, tích cực của hoạt động lao động trong sản xuất được gọi là:",o:["cường độ lao động.","năng suất lao động.","lực lượng lao động.","đối tượng lao động."],c:0,g:"Cường độ lao động phản ánh mức độ khẩn trương trong quá trình sản xuất (Trang 44)."},
+{t:"Lao động cụ thể và lao động trừu tượng là tính hai mặt của lao động:",o:["tư nhân.","sản xuất hàng hóa.","xã hội cần thiết.","cá biệt."],c:1,g:"C. Mác phát hiện lao động của người sản xuất hàng hóa có tính hai mặt: cụ thể và trừu tượng (Trang 40)."},
+{t:"Giá cả hàng hóa là hình thức biểu hiện bằng tiền của:",o:["giá trị hàng hóa.","giá trị sử dụng của hàng hóa.","giá trị trao đổi.","giá trị thị trường."],c:0,g:"Giá cả là hình thái tiền tệ của giá trị (Trang 49)."},
+{t:"Việc đưa số lượng tiền cần thiết cho lưu thông phải thống nhất với lưu thông hàng hóa là yêu cầu của quy luật:",o:["lưu thông hàng hóa.","lưu thông tiền tệ.","giá trị.","cung - cầu."],c:1,g:"Đây là yêu cầu cơ bản của quy luật lưu thông tiền tệ (Trang 71)."},
+{t:"Thị trường đóng vai trò quyết định trong việc phân bố các nguồn lực xã hội là một trong những đặc trưng của:",o:["cơ cấu kinh tế.","thể chế kinh tế.","kinh tế thị trường.","kinh tế tự nhiên."],c:2,g:"Phân bố nguồn lực qua cơ chế thị trường là đặc trưng phổ biến của kinh tế thị trường (Trang 62)."},
+{t:"Giá cả được hình thành theo nguyên tắc thị trường là một trong những đặc trưng chung của:",o:["kinh tế thị trường.","kinh tế tự nhiên.","thể chế kinh tế.","cơ cấu kinh tế."],c:0,g:"Trong kinh tế thị trường, giá cả do cung cầu và các yếu tố thị trường quyết định (Trang 62)."},
+{t:"Giá trị hàng hóa là nội dung, là cơ sở của:",o:["giá trị sử dụng.","giá trị trao đổi.","phân phối.","tiêu dùng."],c:1,g:"Giá trị là nội dung, là cơ sở cho các quan hệ trao đổi trên thị trường (Trang 39)."},
+{t:"Thực hiện quản trị phát triển nền kinh tế là vai trò của:",o:["người tiêu dùng.","người sản xuất.","các chủ thể trung gian.","nhà nước."],c:3,g:"Nhà nước quản trị phát triển bằng cách tạo lập môi trường kinh tế thuận lợi cho các chủ thể (Trang 80)."},
+{t:"Lý luận giá trị thặng dư của C. Mác được trình bày cô đọng nhất trong tác phẩm nào?",o:["Chuyên luận về kinh tế chính trị.","Bộ Tư bản.","Tuyên ngôn của đảng cộng sản.","Phê phán cương lĩnh Gôta."],c:1,g:"Bộ Tư bản là tác phẩm trình bày hoàn chỉnh và cô đọng nhất lý luận này (Trang 85)."},
+{t:"Tiền ứng ra ban đầu với mục đích thu được giá trị thặng dư trở thành:",o:["hàng hoá.","giá trị sử dụng.","tư bản.","giá trị trao đổi."],c:2,g:"Mục đích thu về giá trị thặng dư biến tiền thành tư bản (Trang 85)."},
+{t:"Điểm khác cơ bản giữa lưu thông hàng hoá giản đơn và lưu thông tư bản chủ nghĩa là:",o:["mục đích của quá trình lưu thông.","điểm bắt đầu và kết thúc.","giới hạn lưu thông.","trình tự lưu thông."],c:0,g:"Mục đích của sản xuất hàng hóa giản đơn là giá trị sử dụng, còn của tư bản là giá trị thặng dư (Trang 85)."},
+{t:"Một trong các bộ phận hợp thành giá trị của hàng hoá sức lao động là:",o:["phí tốn lao động.","chi phí hàng hoá.","chi phí sản xuất.","phí tốn đào tạo người lao động."],c:3,g:"Giá trị sức lao động gồm tư liệu sinh hoạt nuôi gia đình và phí tổn đào tạo (Trang 87)."},
+{t:"Xí nghiệp A đầu tư 100.000.000 đồng, c/v = 4/1. Vậy chi phí sức lao động là bao nhiêu?",o:["40.000.000 đồng.","20.000.000 đồng.","10.000.000 đồng.","80.000.000 đồng."],c:1,g:"c+v=100tr, c=4v => 5v=100tr => v=20tr. Tư bản khả biến (v) chính là chi phí sức lao động."},
+{t:"Việc làm tăng chênh lệch thu nhập giữa nhà tư bản và người lao động là hệ quả của:",o:["tích luỹ tư bản.","tích luỹ tiêu dùng.","lưu thông hàng hoá.","lưu thông tiền tệ."],c:0,g:"Một hệ quả xã hội của tích lũy tư bản là làm sâu sắc thêm sự chênh lệch thu nhập (Trang 108)."},
+{t:"Xí nghiệp A chi phí 100.000.000 đồng, c/v = 3/2. Chi phí tư liệu sản xuất là:",o:["40.000.000 đồng.","60.000.000 đồng.","30.000.000 đồng.","50.000.000 đồng."],c:1,g:"c+v=100tr, c=1,5v => 2,5v=100tr => v=40tr. Suy ra c = 100 - 40 = 60 triệu (c là tư liệu sản xuất)."},
+{t:"Mục tiêu, động cơ, động lực của hoạt động sản xuất kinh doanh trong nền kinh tế thị trường là:",o:["giá cả.","lợi nhuận.","thoả mãn nhu cầu xã hội.","thoả mãn nhu cầu cá nhân."],c:1,g:"Lợi nhuận là động lực thúc đẩy mọi hoạt động của các chủ thể kinh tế thị trường (Trang 112)."},
+{t:"Một trong những phạm trù thể hiện lợi ích kinh tế của nhà tư bản trong kinh tế thị trường tư bản là:",o:["trao đổi hàng hoá.","giá trị hàng hoa.","tỷ suất lợi nhuận.","giá trị sử dụng."],c:2,g:"Tỷ suất lợi nhuận phản ánh hiệu quả sử dụng tư bản và lợi ích của nhà tư bản (Trang 113)."},
+{t:"Cơ sở khoa học để giải quyết các quan hệ đất đai và chính sách thuế liên quan là lý luận địa tô của:",o:["C. Mác.","VI. Lênin.","A. Montchretien.","Thomas Mun."],c:0,g:"Lý luận địa tô của C. Mác là cơ sở khoa học để điều tiết và giải quyết quan hệ đất đai (Trang 121)."},
+{t:"Mảnh đất 100m2, địa tô 60 triệu đồng, lãi suất ngân hàng 5%. Giá cả mảnh đất là:",o:["1.200.000.000 đồng.","1.080.000.000 đồng.","1.300.000.000 đồng.","1.480.000.000 đồng."],c:0,g:"Giá cả đất đai = Địa tô / Lãi suất = 60.000.000 / 5% = 1,2 tỷ đồng."},
+{t:"Giá trị thặng dư của các nhà tư bản vừa và nhỏ bị các tổ chức lớn chiếm đoạt trong cạnh tranh tạo thành nguồn gốc của:",o:["độc quyền cao.","lợi nhuận độc quyền.","lợi nhuận bình quân.","lợi nhuận siêu ngạch."],c:1,g:"Lợi nhuận độc quyền bao gồm m của công nhân độc quyền và m của tư bản ngoài độc quyền (Trang 127, 128)."},
+{t:"Độc quyền nhà nước trong chủ nghĩa tư bản hình thành nhằm phục vụ lợi ích của:",o:["xã hội.","người lao động.","độc quyền tư nhân.","tập thể."],c:2,g:"Nhà nước tư sản can thiệp để bảo vệ lợi ích cho các tổ chức độc quyền tư nhân (Trang 131)."},
+{t:"Độc quyền góp phần thúc đẩy nền kinh tế phát triển theo hướng nào?",o:["tự do cạnh tranh.","sản xuất lớn hiện đại.","kinh tế tự nhiên.","sản xuất tự cấp tự túc."],c:1,g:"Độc quyền tập trung sức mạnh kinh tế để đẩy mạnh sản xuất lớn hiện đại (Trang 133)."},
+{t:"Sự phát triển của lực lượng sản xuất thúc đẩy trình độ độc quyền tư nhân lên trạng thái:",o:["độc quyền công nghiệp.","độc quyền tư bản.","độc quyền ngân hàng.","độc quyền nhà nước."],c:3,g:"Độc quyền nhà nước là nấc thang phát triển cao hơn của độc quyền (Trang 129)."},
+{t:"Doanh nghiệp nhà nước được hình thành bằng nguồn vốn nào dưới đây?",o:["nước ngoài.","doanh nghiệp tư nhân.","doanh nghiệp độc quyền.","ngân sách."],c:3,g:"Nhà nước dùng vốn ngân sách để xây dựng và phát triển các doanh nghiệp nhà nước (Trang 147)."},
+{t:"Sức mạnh và phạm vi bành trướng của các công ty xuyên quốc gia thúc đẩy sự hình thành:",o:["độc quyền nhà nước.","độc quyền quốc tế.","độc quyền tư nhân.","tự do cạnh tranh."],c:1,g:"Sự bành trướng quốc tế dẫn đến các hình thức độc quyền xuyên quốc gia và quốc tế."},
+{t:"Trong kinh tế thị trường định hướng XHCN ở Việt Nam, thị trường giữ vai trò quyết định trong:",o:["phân bố nguồn lực xã hội.","tạo lập điều kiện cho sản xuất.","phân phối sản phẩm.","thỏa mãn nhu cầu xã hội."],c:0,g:"Thị trường là cơ chế chính để phân bổ các nguồn lực trong nền kinh tế Việt Nam hiện nay."},
+{t:"Nội dung tiên quyết trong hoàn thiện thể chế kinh tế thị trường ở Việt Nam là hoàn thiện thể chế:",o:["về sở hữu, phát triển các thành phần kinh tế.","phát triển các loại thị trường.","gắn tăng trưởng với công bằng xã hội.","nâng cao năng lực lãnh đạo."],c:0,g:"Hoàn thiện thể chế sở hữu là nội dung quan trọng hàng đầu trong hệ thống thể chế[cite: 5, 7]."},
+{t:"Nhân tố nào sau đây KHÔNG ảnh hưởng đến quan hệ lợi ích kinh tế trong nền kinh tế thị trường?",o:["Trình độ lực lượng sản xuất.","Phong tục tập quán, truyền thống văn hóa.","Địa vị của chủ thể trong quan hệ sản xuất.","Chính sách phân phối của Nhà nước."],c:1,g:"Phong tục tập quán không phải nhân tố kinh tế trực tiếp ảnh hưởng đến các quan hệ lợi ích (Trang 205, 206)."},
+{t:"Chuyển đổi từ nền sản xuất lạc hậu sang nền sản xuất tiến bộ là nội dung của:",o:["công nghiệp hóa, hiện đại hóa ở Việt Nam.","cách mạng công nghiệp lần thứ tư.","cách mạng công nghiệp lần thứ ba.","kinh tế tri thức."],c:0,g:"Đây là mục tiêu cơ bản của sự nghiệp CNH-HĐH tại Việt Nam (Trang 249)."},
+{t:"Chuyển đổi nền sản xuất lạc hậu sang nền sản xuất hiện đại là một nội dung của:",o:["công nghiệp hóa, hiện đại hóa ở Việt Nam.","cách mạng công nghiệp lần thứ tư.","cách mạng công nghiệp lần thứ ba.","phát triển kinh tế tri thức."],c:0,g:"Tương tự câu 38, CNH-HĐH nhằm hiện đại hóa nền sản xuất quốc gia (Trang 249)."},
+{t:"Chủ thể nào dẫn dắt tiến trình hội nhập kinh tế quốc tế và hỗ trợ các chủ thể khác cùng tham gia?",o:["Người dân.","Công ty xuyên quốc gia.","Nhà nước.","Doanh nghiệp có vốn đầu tư nước ngoài."],c:2,g:"Nhà nước đóng vai trò chủ đạo trong việc định hướng và dẫn dắt hội nhập (Trang 270)."},
+{t:"Việc người lao động hình thành được năng lực, kỹ năng vận dụng các quy luật kinh tế vào thực tiễn là nói đến chức năng nào của Kinh tế chính trị Mác - Lênin?",o:["Nhận thức.","Tư tưởng.","Phương pháp luận.","Thực tiễn."],c:3,g:"Đây là biểu hiện của chức năng thực tiễn (Xem trang 30, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Thị trường đóng vai trò quyết định trong việc phân bố các nguồn lực xã hội thông qua hoạt động của các thị trường bộ phận là đặc trưng của:",o:["cơ cấu kinh tế.","thể chế kinh tế.","kinh tế thị trường.","kinh tế tự nhiên."],c:2,g:"Đây là đặc trưng phổ biến của nền kinh tế thị trường (Xem trang 62, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Lý luận giá trị thặng dư của C. Mác được trình bày cô đọng nhất trong tác phẩm nào sau đây?",o:["Chuyên luận về kinh tế chính trị.","Bộ Tư bản.","Tuyên ngôn của đảng cộng sản.","Phê phán cương lĩnh Gôta."],c:1,g:"Được trình bày cô đọng nhất trong tác phẩm Tư bản (Xem trang 85, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Điểm khác cơ bản giữa hai hình thức vận động của tiền trong sản xuất hàng hoá giản đơn và sản xuất hàng hoá tư bản chủ nghĩa là:",o:["mục đích của quá trình lưu thông.","điểm bắt đầu và kết thúc.","giới hạn của quá trình lưu thông.","trình tự của quá trình lưu thông."],c:0,g:"Điểm khác nhau cơ bản thể hiện ở mục đích của quá trình lưu thông (Xem trang 85, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Xí nghiệp A có lượng tư bản đầu tư 100.000.000 đồng, cấu tạo hữu cơ 4/1. Vậy chi phí sức lao động là bao nhiêu?",o:["40.000.000 đồng.","10.000.000 đồng.","20.000.000 đồng.","80.000.000 đồng."],c:2,g:"c+v=100tr, c/v=4/1 => v=20tr. Tư bản khả biến (v) là chi phí sức lao động."},
+{t:"Việc làm tăng chênh lệch thu nhập giữa nhà tư bản và người lao động làm thuê là hệ quả của:",o:["tích luỹ tư bản.","tích luỹ tiêu dùng.","lưu thông hàng hoá.","lưu thông tiền tệ."],c:0,g:"Đây là hệ quả của quá trình tích lũy tư bản (Xem trang 108, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Xí nghiệp A có chi phí tư bản 100.000.000 đồng, cấu tạo hữu cơ 3/2. Vậy chi phí tư liệu sản xuất là bao nhiêu?",o:["40.000.000 đồng.","60.000.000 đồng.","30.000.000 đồng.","50.000.000 đồng."],c:1,g:"c+v=100tr, c/v=3/2 => v=40tr, c=60tr. Tư bản bất biến (c) là chi phí tư liệu sản xuất."},
+{t:"Mục tiêu, động cơ, động lực của hoạt động sản xuất, kinh doanh trong nền kinh tế thị trường là:",o:["giá cả.","lợi nhuận.","thoả mãn nhu cầu xã hội.","thoả mãn nhu cầu cá nhân."],c:1,g:"Lợi nhuận là mục tiêu và động lực của hoạt động sản xuất kinh doanh (Xem trang 112, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Một trong những phạm trù thể hiện lợi ích kinh tế của nhà tư bản trong nền kinh tế thị trường tư bản chủ nghĩa là:",o:["trao đổi hàng hoá.","giá trị hàng hoá.","tỷ suất lợi nhuận.","giá trị sử dụng."],c:2,g:"Tỷ suất lợi nhuận thể hiện lợi ích kinh tế của nhà tư bản (Xem trang 113, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Một trong những cơ sở khoa học để giải quyết các quan hệ đất đai là lý luận địa tô của:",o:["C. Mác.","V.I. Lênin.","A. Montchretien.","Thomas Mun."],c:0,g:"Lý luận địa tô của C. Mác là cơ sở khoa học để giải quyết quan hệ đất đai (Xem trang 121, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Mảnh đất 100m2, địa tô 60 triệu đồng, lãi suất ngân hàng 5%. Vậy giá cả mảnh đất là bao nhiêu?",o:["1.200.000.000 đồng.","1.080.000.000 đồng.","1.300.000.000 đồng.","1.480.000.000 đồng."],c:0,g:"Giá cả đất đai = Địa tô / Lãi suất = 60.000.000 / 5% = 1.200.000.000 đồng."},
+{t:"Giá trị thặng dư của các nhà tư bản vừa và nhỏ bị mất đi do thua thiệt trong cạnh tranh là nguồn gốc của:",o:["độc quyền cao.","lợi nhuận độc quyền.","bình quân.","siêu ngạch."],c:1,g:"Đây là một trong những nguồn gốc của lợi nhuận độc quyền (Xem trang 127, 128, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Độc quyền tạo được sức mạnh kinh tế góp phần thúc đẩy nền kinh tế phát triển theo hướng:",o:["tự do cạnh tranh.","sản xuất lớn hiện đại.","kinh tế tự nhiên.","sản xuất tự cấp tự túc."],c:1,g:"Độc quyền góp phần thúc đẩy sản xuất lớn hiện đại (Xem trang 133, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Sự phát triển của lực lượng sản xuất thúc đẩy trình độ độc quyền lên trạng thái cao hơn là độc quyền:",o:["công nghiệp.","tư nhân.","ngân hàng.","nhà nước."],c:3,g:"Lực lượng sản xuất phát triển thúc đẩy lên độc quyền nhà nước (Xem trang 129, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Sở hữu nhà nước được hình thành dưới hình thức xây dựng doanh nghiệp nhà nước bằng vốn của:",o:["nước ngoài.","doanh nghiệp tư nhân.","doanh nghiệp độc quyền.","ngân sách."],c:3,g:"Được hình thành bằng vốn của ngân sách (Xem trang 147, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Sức mạnh và phạm vi bành trướng của các công ty xuyên quốc gia thúc đẩy việc hình thành chủ nghĩa tư bản:",o:["độc quyền nhà nước.","độc quyền quốc tế.","độc quyền.","tự do cạnh tranh."],c:1,g:"Bành trướng công ty xuyên quốc gia thúc đẩy hình thành chủ nghĩa tư bản độc quyền quốc tế."},
+{t:"Trong nền kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam, thị trường giữ vai trò quyết định trong:",o:["phân bố nguồn lực xã hội.","tạo lập điều kiện cho sản xuất.","phân phối sản phẩm lao động.","tạo ra phương thức thỏa mãn nhu cầu."],c:0,g:"Thị trường giữ vai trò quyết định trong phân bố nguồn lực xã hội."},
+{t:"Nội dung tiên quyết trong hoàn thiện thể chế kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam là hoàn thiện thể chế:",o:["về sở hữu, phát triển các thành phần kinh tế và các loại hình doanh nghiệp.","phát triển đồng bộ các yếu tố thị trường.","gắn tăng trưởng kinh tế với bảo đảm phát triển bền vững.","nâng cao năng lực lãnh đạo của Đảng."],c:0,g:"Nội dung tiên quyết là hoàn thiện thể chế về sở hữu."},
+{t:"Tạo lập những điều kiện để chuyển đổi từ nền sản xuất lạc hậu sang nền sản xuất tiến bộ là một trong những nội dung của:",o:["công nghiệp hóa, hiện đại hóa ở Việt Nam.","cách mạng công nghiệp lần thứ tư.","cách mạng công nghiệp lần thứ ba.","phát triển kinh tế tri thức ở Việt Nam."],c:0,g:"Đây là nội dung của công nghiệp hóa, hiện đại hóa ở Việt Nam (Xem trang 249, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Thực hiện các nhiệm vụ để chuyển đổi nền sản xuất lạc hậu sang nền sản xuất hiện đại là một trong những nội dung của:",o:["công nghiệp hóa, hiện đại hóa ở Việt Nam.","của cách mạng công nghiệp lần thứ tư.","của cách mạng công nghiệp lần thứ ba.","phát triển kinh tế tri thức ở Việt Nam."],c:0,g:"Đây là nội dung của công nghiệp hóa, hiện đại hóa ở Việt Nam (Xem trang 249, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Trong bối cảnh hội nhập kinh tế quốc tế, chủ thể nào dẫn dắt tiến trình hội nhập?",o:["Người dân.","Công ty xuyên quốc gia.","Nhà nước.","Doanh nghiệp có vốn đầu tư nước ngoài."],c:2,g:"Nhà nước dẫn dắt tiến trình hội nhập và hỗ trợ các chủ thể khác (Xem trang 270, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."}
+]
+
+// ===== STATE =====
+let Q=[],ans=[],cur=0,showSum=false,totalSec=3600,timerInterval=null,chosenCount=60;
+
+function setCount(n,btn){
+  chosenCount=n;
+  document.querySelectorAll('.count-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const mins=n<=20?20:n<=40?30:n<=60?60:n<=100?90:150;
+  document.getElementById('meta-count').textContent=n;
+  document.getElementById('meta-time').textContent=mins;
+}
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function startExam(){
+  const n=Math.min(chosenCount,BANK.length);
+  Q=shuffle(BANK).slice(0,n);
+  ans=new Array(n).fill(null);
+  cur=0;showSum=false;
+  const mins=n<=20?20:n<=40?30:n<=60?60:n<=100?90:150;
+  totalSec=mins*60;
+  document.getElementById('hdr-sub').textContent='Random '+n+' câu';
+  document.getElementById('splash').style.display='none';
+  document.getElementById('app').style.display='block';
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    if(totalSec<=0){clearInterval(timerInterval);finishQuiz();return;}
+    totalSec--;
+    const m=String(Math.floor(totalSec/60)).padStart(2,'0');
+    const s=String(totalSec%60).padStart(2,'0');
+    const el=document.getElementById('timer-txt');
+    if(el){el.textContent=m+':'+s;el.className='timer-txt'+(totalSec<=300?' timer-warn':'');}
+  },1000);
+  renderQ();
+}
+
+function backToSplash(){
+  if(!showSum&&ans.some(a=>a!==null)){if(!confirm('Bỏ bài đang làm và về trang chủ?'))return;}
+  clearInterval(timerInterval);
+  document.getElementById('splash').style.display='flex';
+  document.getElementById('app').style.display='none';
+}
+
+function getTabClass(i){
+  const a=ans[i];
+  const active=i===cur&&!showSum?' active':'';
+  if(a===null)return'tab'+active;
+  if(a==='skip'||a==='unanswered'||a==='hint')return'tab skip'+active;
+  if(!a.revealed)return'tab'+active;
+  if(a.choice===Q[i].c)return'tab ok'+active;
+  return'tab ng'+active;
+}
+
+function renderTabs(){
+  const wrap=document.getElementById('tabs-wrap');
+  wrap.innerHTML=Q.map((_,i)=>`<div class="${getTabClass(i)}" onclick="goTo(${i})">Câu ${i+1}</div>`).join('');
+  setTimeout(()=>{const tabs=wrap.querySelectorAll('.tab');if(tabs[cur])tabs[cur].scrollIntoView({block:'nearest',inline:'center'});},30);
+}
+
+function renderProgress(){
+  const answered=ans.filter(a=>a&&a.revealed).length;
+  const el=document.getElementById('prog-info');
+  if(el)el.textContent=answered+' / '+Q.length+' câu';
+  const bar=document.getElementById('prog-bar');
+  if(!bar)return;
+  const segW=(100/Q.length).toFixed(4)+'%';
+  bar.innerHTML=Q.map((_,i)=>{
+    const a=ans[i];
+    let color='#E2E8F0';
+    if(a==='unanswered')color='#DC2626';
+    else if(a&&a!=='skip'&&a!=='hint'&&a.revealed){
+      color=a.choice===Q[i].c?'#16A34A':'#DC2626';
+    }
+    return`<div class="pbar-seg" style="width:${segW};background:${color}"></div>`;
+  }).join('');
+}
+
+function renderQ(){
+  if(showSum){renderSum();return;}
+  const q=Q[cur];
+  const a=ans[cur];
+  const isSkip=a==='unanswered';
+  const isHint=a==='hint';
+  const isChosen=a!==null&&a!=='skip'&&a!=='unanswered'&&a!=='hint';
+  const isRevealed=isChosen&&a.revealed;
+  const choice=isChosen?a.choice:null;
+
+  let explain='';
+  if(isRevealed){
+    if(choice===q.c){
+      explain=`<div class="explain correct"><span class="explain-icon">✅</span><div><div class="explain-lbl">Chính xác!</div><div class="explain-body">${q.g}</div></div></div>`;
+    } else {
+      explain=`<div class="explain wrong"><span class="explain-icon">❌</span><div><div class="explain-lbl">Chưa đúng — Đáp án đúng: ${q.o[q.c]}</div><div class="explain-body">${q.g}</div></div></div>`;
+    }
+  } else if(isHint){
+    explain=`<div class="explain hint"><span class="explain-icon">💡</span><div><div class="explain-lbl">Đáp án đúng</div><div class="explain-body"><strong>${q.o[q.c]}</strong><br>${q.g}</div></div></div>`;
+  }
+
+  const locked=isSkip||isRevealed||isHint;
+  const opts=q.o.map((o,i)=>{
+    let cls='opt';
+    if(locked)cls+=' locked';
+    if(isRevealed){
+      if(i===q.c)cls+=' correct';
+      else if(i===choice&&choice!==q.c)cls+=' wrong';
+    } else if(isHint){
+      if(i===q.c)cls+=' correct';
+    } else if(isChosen&&i===choice){cls+=' pending';}
+    const click=!locked?`onclick="pick(${i})"`:'' ;
+    return`<div class="${cls}" ${click}><div class="obadge">${['A','B','C','D'][i]}</div><span class="otext">${o}</span></div>`;
+  }).join('');
+
+  document.getElementById('main-content').innerHTML=`
+    <div class="qwrap">
+      <div class="qnum">Câu ${cur+1} / ${Q.length}</div>
+      <div class="qtext">${q.t}</div>
+      <div class="opts">${opts}</div>
+      ${explain}
+    </div>
+    <div class="fnav">
+      <button class="nav-btn nav-prev" onclick="prev()" ${cur===0?'disabled':''}>
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="nav-center" onclick="toggleGrid()">
+        <svg width="17" height="17" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#2563EB" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#2563EB" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#2563EB" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#2563EB" stroke-width="2"/></svg>
+        <span class="nav-center-txt">Câu ${cur+1} / ${Q.length}</span>
+      </div>
+      <button class="nav-btn nav-next" onclick="next()">
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>`;
+
+  renderTabs();renderProgress();
+  const fab=document.getElementById('fab-ans');
+  if(fab){
+    const canHint=!showSum&&(a===null||(a&&a!=='skip'&&a!=='unanswered'&&a!=='hint'&&!a.revealed));
+    fab.classList.toggle('hidden',!canHint);
+  }
+  setTimeout(renderMath,50);
+}
+
+function renderSum(){
+  const ok=ans.filter((a,i)=>a&&a!=='skip'&&a.revealed&&a.choice===Q[i].c).length;
+  const ng=ans.filter((a,i)=>a&&a!=='skip'&&a.revealed&&a.choice!==Q[i].c).length;
+  const sk=ans.filter(a=>a===null||a==='skip'||a==='unanswered'||a==='hint').length;
+  const pct=Math.round(ok/Q.length*100);
+  const score=(ok/Q.length*10).toFixed(1);
+  const pass=ok>=Math.ceil(Q.length*0.8);
+  document.getElementById('main-content').innerHTML=`
+    <div class="sum-wrap">
+      <div class="sum-hero">
+        <div class="sum-emoji">${pass?'🎉':'📖'}</div>
+        <div class="sum-score">${score}<span style="font-size:24px;font-weight:600;color:#94A3B8">/10</span></div>
+        <div class="sum-grade">${pass?'Xuất sắc — Nắm vững nội dung!':'Cần ôn thêm để chắc hơn nhé'}</div>
+      </div>
+      <div class="sum-cards">
+        <div class="sum-card"><div class="sum-card-num c-ok">${ok}</div><div class="sum-card-lbl">Câu đúng</div></div>
+        <div class="sum-card"><div class="sum-card-num c-ng">${ng}</div><div class="sum-card-lbl">Câu sai</div></div>
+        <div class="sum-card"><div class="sum-card-num c-sk">${sk}</div><div class="sum-card-lbl">Bỏ qua</div></div>
+        <div class="sum-card"><div class="sum-card-num c-pct">${pct}%</div><div class="sum-card-lbl">Tỉ lệ đúng</div></div>
+      </div>
+      <div class="sum-actions">
+        <button class="sum-btn sb-primary" onclick="restart()">🔄 Làm lại đề mới</button>
+        <button class="sum-btn sb-outline" onclick="review()">👁 Xem lại câu trả lời</button>
+        <button class="sum-btn sb-ghost" onclick="backToSplash()">🏠 Về trang chủ</button>
+      </div>
+    </div>`;
+  renderTabs();renderProgress();
+}
+
+function revealCurrent(){
+  const a=ans[cur];
+  if(a&&a!=='skip'&&a!=='unanswered'&&a!=='hint'&&!a.revealed){ans[cur]={choice:a.choice,revealed:true};}
+}
+function skipIfEmpty(){if(ans[cur]===null)ans[cur]='skip';}
+
+function pick(i){
+  const a=ans[cur];
+  if(a&&a!=='skip'&&a!=='unanswered'&&a!=='hint'&&a.revealed)return;
+  ans[cur]={choice:i,revealed:false};
+  renderQ();
+}
+function prev(){if(cur===0)return;revealCurrent();cur--;showSum=false;renderQ();}
+function next(){revealCurrent();if(cur<Q.length-1){cur++;renderQ();}else{showSum=true;renderSum();}}
+function goTo(i){if(i===cur&&!showSum){closeGridDirect();return;}revealCurrent();cur=i;showSum=false;renderQ();closeGridDirect();}
+
+function openConfirm(){
+  const done=ans.filter(a=>a!==null&&a!=='skip').length;
+  const skip=ans.filter(a=>a===null||a==='skip').length;
+  const sub=document.getElementById('confirm-sub');
+  if(skip>0)sub.innerHTML=`Đã làm <strong>${done}/${Q.length}</strong> câu, còn <strong>${skip}</strong> câu chưa trả lời.`;
+  else sub.innerHTML=`Đã hoàn thành <strong>tất cả ${Q.length} câu</strong>. Sẵn sàng nộp!`;
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('show');}
+function confirmFinish(){closeConfirm();finishQuiz();}
+
+function finishQuiz(){
+  clearInterval(timerInterval);revealCurrent();
+  ans=ans.map(a=>{
+    if(a===null)return'unanswered';
+    if(a==='skip')return'skip';
+    if(!a.revealed)return{choice:a.choice,revealed:true};
+    return a;
+  });
+  showSum=true;renderSum();
+}
+
+function restart(){
+  const n=Math.min(chosenCount,BANK.length);
+  Q=shuffle(BANK).slice(0,n);
+  ans=new Array(n).fill(null);
+  cur=0;showSum=false;
+  const mins=n<=20?20:n<=40?30:n<=60?60:n<=100?90:150;
+  totalSec=mins*60;
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    if(totalSec<=0){clearInterval(timerInterval);finishQuiz();return;}
+    totalSec--;
+    const m=String(Math.floor(totalSec/60)).padStart(2,'0');
+    const s=String(totalSec%60).padStart(2,'0');
+    const el=document.getElementById('timer-txt');
+    if(el){el.textContent=m+':'+s;el.className='timer-txt'+(totalSec<=300?' timer-warn':'');}
+  },1000);
+  renderQ();
+}
+
+function review(){showSum=false;cur=0;renderQ();}
+
+function showHint(){
+  const a=ans[cur];
+  if(a&&a!=='skip'&&a!=='unanswered'&&!a.revealed){ans[cur]={choice:a.choice,revealed:true};}
+  else if(a===null){ans[cur]='hint';}
+  renderQ();
+}
+
+function toggleGrid(){
+  const grid=document.getElementById('q-grid');
+  grid.innerHTML=Q.map((_,i)=>{
+    const a=ans[i];
+    let cls='gdot';
+    if(i===cur&&!showSum)cls+=' cur';
+    else if(a===null)cls+='';
+    else if(a==='skip')cls+='';
+    else if(!a.revealed)cls+='';
+    else if(a.choice===Q[i].c)cls+=' ok';
+    else cls+=' ng';
+    return`<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+  }).join('');
+  document.getElementById('grid-overlay').classList.add('show');
+}
+function closeGrid(e){if(e.target===document.getElementById('grid-overlay'))closeGridDirect();}
+function closeGridDirect(){document.getElementById('grid-overlay').classList.remove('show');}
+
+function renderMath(){
+  if(typeof renderMathInElement==='function'){
+    renderMathInElement(document.getElementById('main-content'),{
+      delimiters:[{left:"$",right:"$",display:false}],throwOnError:false
+    });
+  }
+}
+</script>
+
+</body>
+</html>

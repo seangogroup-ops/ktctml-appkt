@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ôn thi KTCT Mác-Lênin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#ececef;min-height:100vh}
+
+/* Header */
+.header{background:#1565C0;color:#fff;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-icon{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.header-title{font-size:17px;font-weight:600}
+.nop-bai{display:flex;align-items:center;gap:6px;background:#fff;border:none;border-radius:20px;padding:7px 14px;cursor:pointer;font-size:14px;font-weight:700;color:#1565C0;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all .15s;font-family:inherit}
+.nop-bai:hover{background:#f0f6ff;transform:scale(1.03)}
+
+/* Timer */
+.timer-bar{background:#1976D2;padding:6px 16px;display:flex;align-items:center;justify-content:space-between}
+.timer-txt{color:#fff;font-size:14px;font-weight:600;letter-spacing:0.5px}
+.progress-info{color:rgba(255,255,255,0.8);font-size:13px}
+
+/* Progress bar */
+.prog-bar-wrap{height:5px;background:#e0e0e0;display:flex}
+.prog-seg{height:5px;transition:background .3s}
+
+/* Tabs */
+.tabs-wrap{background:#fff;border-bottom:1px solid #e0e0e0;overflow-x:auto;display:flex;gap:0;position:sticky;top:44px;z-index:99}
+.tabs-wrap::-webkit-scrollbar{display:none}
+.tab-item{flex-shrink:0;padding:12px 16px;font-size:14px;font-weight:500;color:#666;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;position:relative}
+.tab-item.active{color:#1565C0;border-bottom-color:#1565C0;font-weight:700}
+.tab-item.answered-ok{color:#2e7d32}
+.tab-item.answered-ng{color:#c62828}
+.tab-item.answered-skip{color:#bbb}
+
+/* Question area */
+.q-wrap{padding:16px;max-width:700px;margin:0 auto}
+.q-number{font-size:14px;color:#1565C0;font-weight:600;margin-bottom:8px}
+.q-text{font-size:17px;font-weight:700;color:#1a1a1a;line-height:1.65;margin-bottom:18px}
+
+/* Options */
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-item{
+  display:flex;align-items:center;gap:14px;
+  padding:17px 16px;
+  border-radius:12px;
+  border:2px solid transparent;
+  cursor:pointer;
+  background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,0.07);
+  transition:background .15s, border-color .15s, box-shadow .15s;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.opt-item:not(.disabled):hover{background:#f0f4ff;border-color:#c5d8f8}
+.opt-item:not(.disabled):hover .opt-num{border-color:#1976D2;color:#1565C0}
+
+/* Pending */
+.opt-item.selected-pending{background:#e8f0fe;border-color:#1565C0}
+.opt-item.selected-pending .opt-num{border-color:#1565C0;color:#1565C0;background:#dce8fc}
+.opt-item.selected-pending .opt-text{color:#0d47a1;font-weight:600}
+
+/* Correct */
+.opt-item.selected-ok{background:#e8f5e9;border-color:#43a047}
+.opt-item.selected-ok .opt-num{background:#43a047;border-color:#43a047;color:#fff}
+.opt-item.selected-ok .opt-text{color:#2e7d32;font-weight:600}
+.opt-item.show-correct{background:#e8f5e9;border-color:#43a047}
+.opt-item.show-correct .opt-num{background:#43a047;border-color:#43a047;color:#fff}
+.opt-item.show-correct .opt-text{color:#2e7d32;font-weight:600}
+
+/* Wrong */
+.opt-item.selected-ng{background:#ffebee;border-color:#e53935}
+.opt-item.selected-ng .opt-num{background:#e53935;border-color:#e53935;color:#fff}
+.opt-item.selected-ng .opt-text{color:#c62828;font-weight:600}
+
+.opt-item.disabled{cursor:default;pointer-events:none}
+
+.opt-num{
+  width:36px;height:36px;border-radius:50%;
+  border:2px solid #d0d0d0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#888;
+  flex-shrink:0;
+  transition:all .15s;
+  background:#fff;
+}
+.opt-text{font-size:15px;color:#1a1a1a;line-height:1.5;flex:1}
+
+/* Explanation */
+.explain-box{margin-top:14px;padding:13px 14px;border-radius:12px;background:#fffde7;border-left:4px solid #f9a825;display:flex;gap:10px;align-items:flex-start}
+.explain-box.correct-box{background:#e8f5e9;border-left-color:#43a047}
+.explain-box.wrong-box{background:#ffebee;border-left-color:#e53935}
+.explain-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.explain-content{}
+.explain-label{font-size:13px;font-weight:700;color:#f57f17;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.explain-box.correct-box .explain-label{color:#2e7d32}
+.explain-box.wrong-box .explain-label{color:#c62828}
+.explain-text{font-size:15px;color:#333;line-height:1.6}
+
+/* Bottom nav */
+.fnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0e0e0;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:100;max-width:700px;margin:0 auto}
+.fnav-center{font-size:14px;color:#555;font-weight:500;display:flex;align-items:center;gap:6px;cursor:pointer}
+.fnav-center svg{color:#1565C0}
+.nav-btn{width:42px;height:42px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;transition:all .18s}
+.btn-prev{background:#f0f2f5;color:#444}
+.btn-prev:hover{background:#e0e0e0}
+.btn-next{background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.35)}
+.btn-next:hover{background:#0d47a1}
+.nav-btn:disabled{opacity:0.35;cursor:not-allowed}
+
+/* Summary */
+.sum-wrap{padding:24px 16px 100px;max-width:700px;margin:0 auto;text-align:center}
+.sum-emoji{font-size:56px;margin-bottom:8px}
+.sum-score{font-size:52px;font-weight:700;color:#1565C0;margin:4px 0}
+.sum-sub{font-size:14px;color:#666;margin-bottom:24px}
+.sum-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+.sum-card{background:#fff;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.sum-num{font-size:28px;font-weight:700}
+.sum-lbl{font-size:12px;color:#888;margin-top:4px}
+.ok-c{color:#43a047}.ng-c{color:#e53935}.skip-c{color:#f57c00}.pct-c{color:#1565C0}
+.sum-btn{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;margin-bottom:10px;font-family:inherit;transition:all .18s}
+.sum-btn-p{background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.3)}
+.sum-btn-p:hover{background:#0d47a1}
+.sum-btn-o{background:#fff;color:#1565C0;border:2px solid #1565C0}
+.sum-btn-o:hover{background:#f0f6ff}
+
+/* Grid dialog */
+.grid-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:flex-end}
+.grid-overlay.show{display:flex}
+.grid-modal{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-height:70vh;overflow-y:auto;max-width:700px;margin:0 auto}
+.grid-modal h3{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:14px;text-align:center}
+.q-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.q-dot{width:100%;aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;border:2px solid #e0e0e0;background:#f5f5f5;color:#666;transition:all .15s}
+.q-dot.cur{border-color:#1565C0;background:#e3f2fd;color:#1565C0}
+.q-dot.ok{background:#43a047;border-color:#43a047;color:#fff}
+.q-dot.ng{background:#e53935;border-color:#e53935;color:#fff}
+.q-dot.skip{background:#ff9800;border-color:#ff9800;color:#fff}
+.grid-close{width:100%;padding:12px;border-radius:10px;border:none;background:#f0f2f5;color:#333;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px;font-family:inherit}
+
+.pb-safe{height:70px}
+
+/* Confirm dialog */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:300;align-items:center;justify-content:center;padding:24px}
+.confirm-overlay.show{display:flex}
+.confirm-box{background:#fff;border-radius:20px;padding:28px 24px;width:100%;max-width:340px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.18)}
+.confirm-icon{font-size:44px;margin-bottom:12px}
+.confirm-title{font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:8px}
+.confirm-sub{font-size:14px;color:#777;line-height:1.5;margin-bottom:24px}
+.confirm-btns{display:flex;gap:10px}
+.confirm-btn{flex:1;padding:13px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
+.confirm-btn-cancel{background:#f0f2f5;color:#555}
+.confirm-btn-cancel:hover{background:#e0e0e0}
+.confirm-btn-ok{background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.3)}
+.confirm-btn-ok:hover{background:#0d47a1}
+
+.fab-answer{position:fixed;bottom:80px;right:16px;background:#1565C0;color:#fff;border:none;border-radius:50px;padding:11px 20px;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:99;font-family:inherit;transition:all .2s}
+.fab-answer:hover{background:#3a6b8a;transform:scale(1.04)}
+.fab-answer.hidden{display:none}
+
+/* Back header */
+.top-header{background:#1565C0;color:#fff;height:52px;display:flex;align-items:center;padding:0 12px;position:sticky;top:0;z-index:200;box-shadow:0 2px 6px rgba(0,0,0,0.25)}
+.back-btn{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.15);border:none;cursor:pointer;color:#fff;flex-shrink:0}
+.back-btn svg{display:block}
+.top-header-title{font-size:15px;font-weight:600;margin-left:10px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+</style>
+</head>
+<body>
+
+
+
+
+
+
+<div class="top-header">
+  <button class="back-btn" onclick="window.location.href='../index.html'">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  </button>
+  <span class="top-header-title">Ôn thi KTCT Mác-Lênin</span>
+</div>
+<div class="timer-bar">
+  <span class="timer-txt" id="timer-txt">60:00</span>
+  <div class="nop-bai" onclick="openConfirm()">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="#1565C0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Nộp bài
+  </div>
+</div>
+<div class="prog-bar-wrap" id="prog-bar"></div>
+
+<div class="tabs-wrap" id="tabs-wrap"></div>
+
+<div id="main-content"></div>
+
+<!-- Floating answer button -->
+<button class="fab-answer hidden" id="fab-ans" onclick="showHint()">
+  <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  Đáp án
+</button>
+
+<!-- Confirm nộp bài -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">📝</div>
+    <div class="confirm-title">Nộp bài?</div>
+    <div class="confirm-sub" id="confirm-sub">Bạn chắc chắn muốn nộp bài không?</div>
+    <div class="confirm-btns">
+      <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirm()">Làm tiếp</button>
+      <button class="confirm-btn confirm-btn-ok" onclick="confirmFinish()">Nộp bài</button>
+    </div>
+  </div>
+</div>
+
+<!-- Grid dialog -->
+<div class="grid-overlay" id="grid-overlay" onclick="closeGrid(event)">
+  <div class="grid-modal">
+    <h3>Danh sách câu hỏi</h3>
+    <div class="q-grid" id="q-grid"></div>
+    <button class="grid-close" onclick="closeGridDirect()">Đóng</button>
+  </div>
+</div>
+
+<script>
+const Q=[
+{t:"Các nhà tài phiệt sử dụng nhiều thủ đoạn như lập công ty mới, phát hành trái khoản, kinh doanh công trái, đầu cơ chứng khoán, đầu cơ ruộng đất để:",o:["thu giá trị thặng dư siêu ngạch.","thu lợi nhuận độc quyền.","thu lợi nhuận độc quyền cao.","thu lợi nhuận siêu ngạch."],c:2,g:"Tài phiệt sử dụng các thủ đoạn tài chính và đầu cơ để thu về lợi nhuận độc quyền cao (Trang 141, giáo trình Kinh tế chính trị Mác - Lênin, 2021)."},
+{t:"Người bán không mất quyền sở hữu, người mua chỉ được quyền sử dụng trong một thời gian là đặc điểm của:",o:["tư bản hàng hóa.","tư bản sản xuất.","tư bản thương nghiệp.","tư bản cho vay."],c:3,g:"Đặc điểm của tư bản cho vay là quyền sở hữu tách rời quyền sử dụng trong một thời hạn nhất định (Trang 118)."},
+{t:"Nền kinh tế trong đó sự sản sinh ra, phổ cập và sử dụng tri thức giữ vai trò quyết định nhất đối với sự phát triển kinh tế là:",o:["kinh tế tự cung tự cấp.","kinh tế hàng hóa.","kinh tế tri thức.","kinh tế thị trường."],c:2,g:"Đây là định nghĩa về nền kinh tế tri thức, lấy tri thức làm động lực chính tạo ra của cải (Trang 251)."},
+{t:"Xí nghiệp A đầu tư 200.000.000 đồng, cấu tạo hữu cơ c/v = 4/1, tỷ suất m' = 100%. Vậy lượng giá trị mới là bao nhiêu?",o:["25.000.000 đồng.","30.000.000 đồng.","80.000.000 đồng.","40.000.000 đồng."],c:2,g:"c+v=200tr, c=4v => v=40tr. m'=100% => m=40tr. Giá trị mới = v + m = 40tr + 40tr = 80.000.000 đồng."},
+{t:"Nhà kinh tế học Pierr Boisguillebert là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng nông.","Chủ nghĩa trọng thương.","Kinh tế chính trị cổ điển Anh.","Kinh tế chính trị tầm thường."],c:0,g:"Pierr Boisguillebert cùng với Jacques Turgot là những đại biểu của chủ nghĩa trọng nông (Trang 14)."},
+{t:"Mâu thuẫn giữa lao động cụ thể và lao động trừu tượng xuất hiện khi sản phẩm tạo ra không phù hợp với:",o:["thói quen tiêu dùng.","nhu cầu xã hội.","nhu cầu cá nhân.","thị hiếu cá nhân."],c:1,g:"Xuất hiện khi sản phẩm không được xã hội chấp nhận hoặc hao phí lao động cá biệt cao hơn mức xã hội chấp nhận (Trang 42)."},
+{t:"Cuộc khủng hoảng kinh tế nào sau đây dẫn tới hình thành các doanh nghiệp độc quyền?",o:["2008.","1997.","1873.","1914."],c:2,g:"Cuộc khủng hoảng năm 1873 làm phá sản hàng loạt doanh nghiệp nhỏ, thúc đẩy quá trình tích tụ và hình thành độc quyền (Trang 127)."},
+{t:"Nhà kinh tế học nào sau đây là đại biểu tiêu biểu của Chủ nghĩa trọng nông?",o:["Jacques Turgot.","Ricardo.","Montchretien.","Smith."],c:0,g:"Jacques Turgot là đại diện tiêu biểu của trường phái trọng nông (Trang 14)."},
+{t:"Một trong những nhân tố chủ yếu ảnh hưởng đến quy mô tích lũy tư bản là:",o:["năng suất lao động xã hội.","lao động cụ thể.","lao động trừu tượng.","phân công lao động xã hội."],c:0,g:"Tăng năng suất lao động xã hội giúp tăng khối lượng giá trị thặng dư được tư bản hóa (Trang 106, 107)."},
+{t:"Một trong những điều kiện để sức lao động trở thành hàng hóa là người lao động:",o:["có sức lao động.","có sức khỏe và trí tuệ.","muốn bán sức lao động.","được tự do về thân thể."],c:3,g:"Hai điều kiện là tự do về thân thể và không có tư liệu sản xuất (Trang 86, 87)."},
+{t:"Sự hình thành các liên kết kinh tế quốc tế và khu vực tạo ra sân chơi chung là đặc trưng của:",o:["hội nhập kinh tế quốc tế.","kinh tế tri thức.","công nghiệp hoá, hiện đại hoá.","kinh tế thị trường."],c:0,g:"Hội nhập kinh tế quốc tế dẫn đến hình thành các khối liên kết và khu vực mậu dịch chung (Trang 273)."},
+{t:"Giá trị hàng hoá biểu hiện mối quan hệ giữa những người sản xuất, trao đổi và là phạm trù có tính:",o:["lịch sử.","vĩnh viễn.","phổ biến.","đặc thù."],c:0,g:"Giá trị hàng hóa chỉ tồn tại trong các nền kinh tế sản xuất hàng hóa, nên có tính lịch sử (Trang 39)."},
+{t:"Tiết kiệm tư bản bất biến là một trong những nhân tố ảnh hưởng đến:",o:["tỷ suất lợi nhuận.","tỷ suất lợi tức.","lợi nhuận bình quân.","tỷ suất lợi nhuận bình quân."],c:0,g:"Tiết kiệm c làm giảm tư bản ứng trước, từ đó làm tăng tỷ suất lợi nhuận (Trang 114)."},
+{t:"Phần giá trị bù lại giá cả tư liệu sản xuất và sức lao động đã sử dụng để sản xuất ra hàng hóa gọi là:",o:["tư bản bất biến.","tư bản khả biến.","chi phí hàng hóa.","chi phí sản xuất."],c:3,g:"k = c + v, dùng để bù đắp các chi phí đầu vào của nhà tư bản (Trang 111)."},
+{t:"Theo luật lưu thông tiền tệ, số lượng tiền cần thiết cho lưu thông phải thống nhất với:",o:["tiêu dùng.","lưu thông hàng hoá.","nhu cầu cá nhân.","sản xuất."],c:1,g:"Lượng tiền phát hành phải tương ứng với tổng giá cả hàng hóa lưu thông trên thị trường (Trang 71)."},
+{t:"Tiền biến thành tư bản khi được dùng để mang lại:",o:["giá trị trao đổi.","giá trị.","giá trị thặng dư.","giá trị sử dụng."],c:2,g:"Mục đích cuối cùng của vận động tư bản là tạo ra m (Trang 85, 86)."},
+{t:"Xí nghiệp A chi phí tư bản 100.000.000 đồng, cấu tạo hữu cơ c/v = 7/3, m' = 50%. Vậy giá trị cũ là bao nhiêu?",o:["30.000.000 đồng.","45.000.000 đồng.","15.000.000 đồng.","70.000.000 đồng."],c:3,g:"c+v=100tr, c=7/3v => 10/3v=100tr => v=30tr. Giá trị cũ là c = 100tr - 30tr = 70.000.000 đồng."},
+{t:"Trong cơ cấu của độc quyền nhà nước, nhà nước đã trở thành:",o:["một doanh nghiệp độc quyền.","một tập thể tư bản khổng lồ.","một tổ chức xã hội.","một nhà tư bản lớn."],c:1,g:"Nhà nước kết hợp với các tổ chức độc quyền tư nhân để hình thành một tập thể tư bản thống trị (Trang 131)."},
+{t:"Thực hiện quản trị phát triển nền kinh tế thông qua việc tạo lập môi trường kinh tế tốt nhất là vai trò của:",o:["người tiêu dùng.","người sản xuất.","chủ thể trung gian.","nhà nước."],c:3,g:"Nhà nước đóng vai trò quản lý vĩ mô và kiến tạo môi trường kinh doanh (Trang 80)."},
+{t:"Trong kinh tế thị trường định hướng XHCN Việt Nam, kinh tế tư nhân là một động lực:",o:["quyết định.","chủ đạo.","quan trọng.","cơ bản."],c:2,g:"Kinh tế nhà nước giữ vai trò chủ đạo, kinh tế tư nhân là một động lực quan trọng của nền kinh tế (Trang 1)."},
+{t:"Kiểm soát, ngăn ngừa các quan hệ lợi ích có ảnh hưởng tiêu cực đối với xã hội là vai trò của:",o:["Người sản xuất.","Người tiêu dùng.","Chủ thể trung gian.","Nhà nước."],c:3,g:"Nhà nước điều tiết và giải quyết các mâu thuẫn lợi ích để đảm bảo hài hòa xã hội (Trang 214-220)."},
+{t:"Quá trình hình thành sự liên kết giữa các độc quyền theo chiều dọc và ngang dẫn đến sự ra đời của:",o:["syndicate và các trust.","concern và các conglomerate.","trust và các cartel.","cartel và các syndicate."],c:1,g:"Đây là các hình thức liên kết độc quyền đa ngành phát triển cao (Trang 150)."},
+{t:"Quy luật kinh tế nào sau đây điều tiết quan hệ giữa bên bán và bên mua hàng hoá trên thị trường?",o:["Giá trị.","Cung - cầu.","Lưu thông tiền tệ.","Cạnh tranh."],c:1,g:"Quy luật cung - cầu trực tiếp điều tiết quan hệ trao đổi giữa người bán và người mua (Trang 70)."},
+{t:"Tổng tư bản công nghiệp và thương nghiệp là 1 tỷ đồng, p' ngang = 18%, lợi nhuận công nghiệp là 162 triệu. Vậy lợi nhuận thương nghiệp là:",o:["18.000.000 đồng.","14.800.000 đồng.","148.000.000 đồng.","180.000.000 đồng."],c:0,g:"Tổng lợi nhuận p ngang = 1 tỷ * 18% = 180tr. Lợi nhuận thương nghiệp = 180tr - 162tr = 18.000.000 đồng."},
+{t:"Hệ thống quy tắc, luật pháp, bộ máy quản lý và cơ chế vận hành nhằm điều chỉnh hành vi kinh tế gọi là:",o:["hệ thống kinh tế.","chế độ kinh tế.","thể chế kinh tế.","quy luật kinh tế."],c:2,g:"Đây là định nghĩa đầy đủ về thể chế kinh tế (Trang 187)."},
+{t:"Cạnh tranh giữa các tổ chức độc quyền và các xí nghiệp ngoài độc quyền nhằm:",o:["thôn tính, loại bỏ các xí nghiệp độc quyền.","hỗ trợ cho các xí nghiệp ngoài độc quyền phát triển.","mở rộng thị trường cho các xí nghiệp ngoài độc quyền.","thôn tính, loại bỏ các xí nghiệp ngoài độc quyền."],c:3,g:"Các tổ chức độc quyền dùng sức mạnh để loại bỏ các đối thủ yếu hơn (Trang 135)."},
+{t:"Bản chất của tích lũy tư bản là quá trình:",o:["lưu thông tiền tệ.","lưu thông hàng hoá.","tái sản xuất giản đơn.","tái sản xuất mở rộng."],c:3,g:"Tích lũy tư bản là việc biến một phần giá trị thặng dư thành tư bản phụ thêm để mở rộng sản xuất (Trang 105)."},
+{t:"Sự kết hợp về nhân sự giữa tổ chức độc quyền và nhà nước được thực hiện thông qua:",o:["thị trường.","hội đồng quản trị.","các đảng phái.","doanh nghiệp."],c:2,g:"Các đảng phái chính trị là cầu nối nhân sự giữa giới tài phiệt và bộ máy nhà nước (Trang 145)."},
+{t:"Phát hiện ra các quy luật chi phối quan hệ lợi ích giữa con người trong sản xuất là giá trị khoa học của:",o:["Kinh tế chính trị Mác - Lênin.","Chủ nghĩa trọng nông.","Chủ nghĩa trọng thương.","Kinh tế chính trị tầm thường."],c:0,g:"Đây là đóng góp khoa học to lớn của học thuyết kinh tế Mác - Lênin (Trang 26)."},
+{t:"Quy luật kinh tế nào điều tiết khách quan mối quan hệ ganh đua kinh tế giữa các chủ thể?",o:["Lưu thông tiền tệ.","Giá trị.","Cung - cầu.","Cạnh tranh."],c:3,g:"Cạnh tranh là quy luật thúc đẩy sự ganh đua và đào thải giữa các chủ thể (Trang 72)."},
+{t:"Chức năng thực tiễn của Kinh tế chính trị Mác - Lênin giúp xây dựng hoạt động kinh tế phù hợp với:",o:["xu hướng chung của thế giới.","sự quản lý của nhà nước.","quy luật khách quan.","thói quen cá nhân."],c:2,g:"Chức năng thực tiễn trang bị năng lực vận dụng đúng các quy luật khách quan vào đời sống (Trang 31)."},
+{t:"Tiền trong nền sản xuất tư bản chủ nghĩa vận động theo công thức:",o:["H-H-T.","T-H-T'.","H-T-H'.","T-H-T."],c:1,g:"Tư bản vận động theo trình tự Tiền - Hàng - Tiền (có giá trị lớn hơn) (Trang 85)."},
+{t:"Giá trị thặng dư trong nền kinh tế thị trường tư bản chủ nghĩa mang bản chất là quan hệ:",o:["trao đổi.","lợi ích.","xã hội.","giai cấp."],c:3,g:"Nó phản ánh quan hệ bóc lột giữa giai cấp tư sản và giai cấp công nhân làm thuê (Trang 98)."},
+{t:"Sở dĩ hàng hoá có hai thuộc tính là do lao động của người sản xuất có tính hai mặt là:",o:["giản đơn và phức tạp.","cụ thể và cần thiết.","trừu tượng và giản đơn.","cụ thể và trừu tượng."],c:3,g:"Lao động cụ thể tạo ra giá trị sử dụng, lao động trừu tượng tạo ra giá trị (Trang 40)."},
+{t:"Cơ sở để so sánh, trao đổi các giá trị sử dụng khác nhau là lao động:",o:["trừu tượng.","phức tạp.","cụ thể.","giản đơn."],c:0,g:"Lao động trừu tượng là sự hao phí sức lao động nói chung, là thước đo giá trị chung (Trang 41)."},
+{t:"C. Mác đã kế thừa trực tiếp giá trị khoa học của học thuyết nào để phát triển lý luận về phương thức sản xuất tư bản?",o:["Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh.","Chủ nghĩa trọng thương."],c:2,g:"Mác kế thừa tinh hoa của Petty, A. Smith và David Ricardo (Trang 16)."},
+{t:"Mục đích nghiên cứu ở cấp độ cao nhất của kinh tế chính trị Mác - Lênin là phát hiện ra các quy luật chi phối quan hệ:",o:["trao đổi hàng hóa.","sản xuất tư bản.","giữa người với người trong sản xuất và trao đổi.","quản lý vĩ mô của nhà nước."],c:2,g:"Đây là mục đích nghiên cứu bản chất các quan hệ xã hội trong kinh tế (Trang 24)."},
+{t:"Mối quan hệ tỷ lệ giữa các ngành, các vùng và các thành phần kinh tế gọi là:",o:["chế độ kinh tế.","hệ thống kinh tế.","cơ cấu kinh tế.","thể chế kinh tế."],c:2,g:"Cơ cấu kinh tế phản ánh cấu trúc và tỷ trọng của các bộ phận kinh tế (Trang 253)."},
+{t:"Kết quả của cạnh tranh trong nội bộ ngành là hình thành:",o:["giá trị sử dụng.","giá trị.","giá trị trao đổi.","giá trị thị trường."],c:3,g:"Cạnh tranh nội bộ ngành san bằng các mức hao phí lao động cá biệt thành giá trị thị trường (Trang 73)."},
+{t:"Kinh tế hàng hoá hình thành khi có phân công lao động xã hội và:",o:["sự phụ thuộc lẫn nhau về mặt kinh tế.","sự phát triển của khoa học kỹ thuật.","sự tách biệt về mặt kinh tế của các chủ thể sản xuất.","sự phát triển của lực lượng sản xuất."],c:2,g:"Sự tách biệt về sở hữu đòi hỏi việc trao đổi sản phẩm phải thông qua mua bán (Trang 35, 36)."}
+];
+// State
+// ans[i]: null = chưa làm, number = đã chọn, 'skip' = bỏ qua
+let cur = 0;
+let ans = new Array(Q.length).fill(null);
+let showSum = false;
+
+// Timer
+let totalSec = 60 * 60; // 60 phút
+let timerInterval = setInterval(()=>{
+  if(totalSec <= 0){ clearInterval(timerInterval); finishQuiz(); return; }
+  totalSec--;
+  const m = String(Math.floor(totalSec/60)).padStart(2,'0');
+  const s = String(totalSec%60).padStart(2,'0');
+  const el = document.getElementById('timer-txt');
+  if(el) el.textContent = m+':'+s;
+}, 1000);
+
+function getTabClass(i){
+  const a = ans[i];
+  const active = i===cur ? ' active' : '';
+  if(a === null) return 'tab-item'+active;
+  if(a === 'skip' || a === 'unanswered' || a === 'hint') return 'tab-item answered-skip'+active;
+  if(!a.revealed) return 'tab-item'+active; // đã chọn nhưng chưa reveal → coi như chưa làm
+  if(a.choice === Q[i].c) return 'tab-item answered-ok'+active;
+  return 'tab-item answered-ng'+active;
+}
+
+function renderTabs(){
+  const wrap = document.getElementById('tabs-wrap');
+  wrap.innerHTML = Q.map((_,i)=>`<div class="${getTabClass(i)}" onclick="goTo(${i})">Câu ${i+1}</div>`).join('');
+  setTimeout(()=>{
+    const tabs = wrap.querySelectorAll('.tab-item');
+    if(tabs[cur]) tabs[cur].scrollIntoView({block:'nearest',inline:'center'});
+  }, 30);
+}
+
+function renderProgress(){
+  const done = ans.filter(a=>a && (a==='skip' || a==='unanswered' || a==='hint' || a.revealed)).length;
+  const el = document.getElementById('prog-info');
+  if(el) el.textContent = done + ' / ' + Q.length + ' câu';
+  const bar = document.getElementById('prog-bar');
+  if(!bar) return;
+  // Mỗi câu một đoạn nhỏ: đúng=xanh lá, sai=đỏ, chưa làm/bỏ qua=xám nhạt
+  const segW = (100 / Q.length).toFixed(4) + '%';
+  bar.innerHTML = Q.map((_,i)=>{
+    const a = ans[i];
+    let color = '#e0e0e0'; // chưa làm / bỏ qua = trắng
+    if(a === 'unanswered'){
+      color = '#e53935'; // nộp bài mà chưa làm = đỏ
+    } else if(a && a !== 'skip' && a !== 'unanswered' && a !== 'hint' && a.revealed){
+      color = a.choice === Q[i].c ? '#43a047' : '#e53935';
+    }
+    return `<div class="prog-seg" style="width:${segW};background:${color}"></div>`;
+  }).join('');
+}
+
+function renderQ(){
+  if(showSum){ renderSum(); return; }
+  const q = Q[cur];
+  // ans[cur]: null = chưa làm, {choice: number, revealed: bool} = đã chọn, 'skip' = bỏ qua
+  const a = ans[cur];
+  const isSkip = a === 'unanswered';
+  const isHint = a === 'hint'; // bấm xem đáp án mà không chọn
+  const isChosen = a !== null && a !== 'skip' && a !== 'unanswered' && a !== 'hint';
+  const isRevealed = isChosen && a.revealed;
+  const choice = isChosen ? a.choice : null;
+
+  // Chỉ hiện đúng/sai khi đã revealed (tức đã bấm sang câu khác sau khi chọn)
+  let explain = '';
+  if(isRevealed){
+    if(choice === q.c){
+      explain = `<div class="explain-box correct-box"><span class="explain-icon">✅</span><div class="explain-content"><div class="explain-label">Chính xác!</div><div class="explain-text">${q.g}</div></div></div>`;
+    } else {
+      explain = `<div class="explain-box wrong-box"><span class="explain-icon">❌</span><div class="explain-content"><div class="explain-label">Chưa đúng — Đáp án: ${q.o[q.c]}</div><div class="explain-text">${q.g}</div></div></div>`;
+    }
+  } else if(isHint){
+    explain = `<div class="explain-box"><span class="explain-icon">💡</span><div class="explain-content"><div class="explain-label">Đáp án đúng</div><div class="explain-text"><strong>${q.o[q.c]}</strong><br>${q.g}</div></div></div>`;
+  }
+
+  // Lock options: nếu đã skip hoặc đã revealed thì không cho chọn nữa
+  // Nếu đã chọn nhưng chưa revealed: vẫn hiện lựa chọn nhưng chưa tô màu đúng/sai
+  const locked = isSkip || isRevealed || isHint;
+
+  const opts = q.o.map((o,i)=>{
+    let cls = 'opt-item';
+    if(locked) cls += ' disabled';
+    if(isRevealed){
+      if(i === q.c) cls += ' selected-ok';
+      else if(i === choice && choice !== q.c) cls += ' selected-ng';
+    } else if(isHint){
+      if(i === q.c) cls += ' show-correct';
+    } else if(isChosen && i === choice){
+      // Đã chọn nhưng chưa revealed: tô xanh nhạt nhưng chưa show đúng/sai
+      cls += ' selected-pending';
+    }
+    const click = !locked ? `onclick="pick(${i})"` : '';
+    const numLabel = ['1','2','3','4'][i];
+    return `<div class="${cls}" ${click}><div class="opt-num">${numLabel}</div><span class="opt-text">${o}</span></div>`;
+  }).join('');
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="q-wrap">
+      <div class="q-number">Câu ${cur+1} / ${Q.length}</div>
+      <div class="q-text">${q.t}</div>
+      <div class="options">${opts}</div>
+      ${explain}
+      <div class="pb-safe"></div>
+    </div>
+    <div class="fnav">
+      <button class="nav-btn btn-prev" onclick="prev()" ${cur===0?'disabled':''}>
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="fnav-center" onclick="toggleGrid()">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/></svg>
+        Câu ${cur+1} / ${Q.length}
+      </div>
+      <button class="nav-btn btn-next" onclick="next()">
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  `;
+
+  renderTabs();
+  renderProgress();
+  // Hiện nút Đáp án chỉ khi câu chưa làm/chưa revealed và chưa hint
+  const fab = document.getElementById('fab-ans');
+  if(fab){
+    const _a = ans[cur];
+    const canHint = !showSum && (_a === null || (_a && _a !== 'skip' && _a !== 'unanswered' && _a !== 'hint' && !_a.revealed));
+    fab.classList.toggle('hidden', !canHint);
+  }
+  setTimeout(renderMath, 50);
+}
+
+function renderSum(){
+  const ok = ans.filter((a,i)=>a && a!=='skip' && a.revealed && a.choice===Q[i].c).length;
+  const ng = ans.filter((a,i)=>a && a!=='skip' && a.revealed && a.choice!==Q[i].c).length;
+  const sk = ans.filter(a=>a===null||a==='skip'||a==='unanswered'||a==='hint').length;
+  const pct = Math.round(ok/Q.length*100);
+  const pass = ok >= Math.ceil(Q.length*0.8);
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="sum-wrap">
+      <div class="sum-emoji">${pass?'🎉':'📖'}</div>
+      <div class="sum-score">${ok}/${Q.length}</div>
+      <div class="sum-sub">${pass?'Xuất sắc! Bạn nắm vững nội dung.':'Cần ôn thêm để nắm chắc hơn nhé.'}</div>
+      <div class="sum-grid">
+        <div class="sum-card"><div class="sum-num ok-c">${ok}</div><div class="sum-lbl">Câu đúng</div></div>
+        <div class="sum-card"><div class="sum-num ng-c">${ng}</div><div class="sum-lbl">Câu sai</div></div>
+        <div class="sum-card"><div class="sum-num skip-c">${sk}</div><div class="sum-lbl">Bỏ qua</div></div>
+        <div class="sum-card"><div class="sum-num pct-c">${pct}%</div><div class="sum-lbl">Điểm số</div></div>
+      </div>
+      <button class="sum-btn sum-btn-p" onclick="restart()">Làm lại từ đầu</button>
+      <button class="sum-btn sum-btn-o" onclick="review()">Xem lại câu trả lời</button>
+    </div>
+  `;
+  renderTabs();
+  renderProgress();
+}
+
+// Helper: reveal câu hiện tại (đánh dấu đã chuyển câu)
+function revealCurrent(){
+  const a = ans[cur];
+  if(a && a !== 'skip' && a !== 'unanswered' && a !== 'hint' && !a.revealed){
+    ans[cur] = {choice: a.choice, revealed: true};
+  }
+}
+
+// Helper: skip câu nếu chưa chọn gì
+function skipIfEmpty(){
+  if(ans[cur] === null) ans[cur] = 'skip';
+  // hint = đã xem đáp án, giữ nguyên (không skip)
+}
+
+function pick(i){
+  const a = ans[cur];
+  if(a && a !== 'skip' && a !== 'unanswered' && a !== 'hint' && a.revealed) return;
+  ans[cur] = {choice: i, revealed: false};
+  renderQ();
+}
+
+function prev(){
+  if(cur === 0) return;
+  // Reveal câu hiện tại nếu đã chọn, skip nếu chưa
+  revealCurrent();
+  cur--;
+  showSum = false;
+  renderQ();
+}
+
+function next(){
+  // Reveal câu hiện tại nếu đã chọn, skip nếu chưa
+  revealCurrent();
+  if(cur < Q.length - 1){
+    cur++;
+    renderQ();
+  } else {
+    showSum = true;
+    renderSum();
+  }
+}
+
+function goTo(i){
+  if(i === cur && !showSum){ closeGridDirect(); return; }
+  revealCurrent();
+  skipIfEmpty();
+  cur = i;
+  showSum = false;
+  renderQ();
+  closeGridDirect();
+}
+
+function openConfirm(){
+  const done = ans.filter(a => a !== null && a !== 'skip').length;
+  const skip = ans.filter(a => a === null || a === 'skip').length;
+  const sub = document.getElementById('confirm-sub');
+  if(skip > 0){
+    sub.innerHTML = `Đã làm <strong>${done}/${Q.length}</strong> câu, còn <strong>${skip}</strong> câu chưa trả lời.`;
+  } else {
+    sub.innerHTML = `Đã hoàn thành <strong>tất cả ${Q.length} câu</strong>. Sẵn sàng nộp!`;
+  }
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+function closeConfirm(){
+  document.getElementById('confirm-overlay').classList.remove('show');
+}
+function confirmFinish(){
+  closeConfirm();
+  finishQuiz();
+}
+
+function finishQuiz(){
+  revealCurrent();
+  ans = ans.map(a => {
+    if(a === null) return 'unanswered'; // chưa làm → đỏ trên thanh
+    if(a === 'skip') return 'skip';     // bỏ qua → trắng
+    if(!a.revealed) return {choice: a.choice, revealed: true};
+    return a;
+  });
+  showSum = true;
+  renderSum();
+}
+
+function restart(){
+  ans = new Array(Q.length).fill(null);
+  cur = 0; showSum = false;
+  totalSec = 60*60;
+  renderQ();
+}
+
+function review(){
+  showSum = false; cur = 0; renderQ();
+}
+
+function showHint(){
+  const q = Q[cur];
+  const a = ans[cur];
+  // Nếu đã chọn rồi thì reveal luôn, nếu chưa thì đánh dấu hint
+  if(a && a !== 'skip' && a !== 'unanswered' && !a.revealed){
+    ans[cur] = {choice: a.choice, revealed: true};
+  } else if(a === null){
+    ans[cur] = 'hint'; // xem đáp án mà không chọn
+  }
+  renderQ();
+}
+
+function toggleGrid(){
+  const ov = document.getElementById('grid-overlay');
+  const grid = document.getElementById('q-grid');
+  grid.innerHTML = Q.map((_,i)=>{
+    const a = ans[i];
+    let cls = 'q-dot';
+    if(i===cur && !showSum) cls += ' cur';
+    else if(a===null) cls += '';
+    else if(a==='skip') cls += ' skip';
+    else if(!a.revealed) cls += ''; // chọn rồi nhưng chưa qua câu
+    else if(a.choice===Q[i].c) cls += ' ok';
+    else cls += ' ng';
+    return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+  }).join('');
+  ov.classList.add('show');
+}
+
+function closeGrid(e){
+  if(e.target === document.getElementById('grid-overlay')) closeGridDirect();
+}
+
+function closeGridDirect(){
+  document.getElementById('grid-overlay').classList.remove('show');
+}
+
+function renderMath(){
+  if(typeof renderMathInElement === 'function'){
+    renderMathInElement(document.getElementById('main-content'), {
+      delimiters: [{left:"$",right:"$",display:false}],
+      throwOnError: false
+    });
+  }
+}
+
+// Init
+renderQ();
+</script>
+
+</body>
+</html>
