@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ôn thi KTCT Mác-Lênin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#ececef;min-height:100vh}
+
+/* Header */
+.header{background:#1565C0;color:#fff;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-icon{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.header-title{font-size:17px;font-weight:600}
+.nop-bai{display:flex;align-items:center;gap:6px;background:#fff;border:none;border-radius:20px;padding:7px 14px;cursor:pointer;font-size:14px;font-weight:700;color:#1565C0;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all .15s;font-family:inherit}
+.nop-bai:hover{background:#f0f6ff;transform:scale(1.03)}
+
+/* Timer */
+.timer-bar{background:#1976D2;padding:6px 16px;display:flex;align-items:center;justify-content:space-between}
+.timer-txt{color:#fff;font-size:14px;font-weight:600;letter-spacing:0.5px}
+.progress-info{color:rgba(255,255,255,0.8);font-size:13px}
+
+/* Progress bar */
+.prog-bar-wrap{height:5px;background:#e0e0e0;display:flex}
+.prog-seg{height:5px;transition:background .3s}
+
+/* Tabs */
+.tabs-wrap{background:#fff;border-bottom:1px solid #e0e0e0;overflow-x:auto;display:flex;gap:0;position:sticky;top:44px;z-index:99}
+.tabs-wrap::-webkit-scrollbar{display:none}
+.tab-item{flex-shrink:0;padding:12px 16px;font-size:14px;font-weight:500;color:#666;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;position:relative}
+.tab-item.active{color:#1565C0;border-bottom-color:#1565C0;font-weight:700}
+.tab-item.answered-ok{color:#2e7d32}
+.tab-item.answered-ng{color:#c62828}
+.tab-item.answered-skip{color:#bbb}
+
+/* Question area */
+.q-wrap{padding:16px;max-width:700px;margin:0 auto}
+.q-number{font-size:14px;color:#1565C0;font-weight:600;margin-bottom:8px}
+.q-text{font-size:17px;font-weight:700;color:#1a1a1a;line-height:1.65;margin-bottom:18px}
+
+/* Options */
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-item{
+  display:flex;align-items:center;gap:14px;
+  padding:17px 16px;
+  border-radius:12px;
+  border:2px solid transparent;
+  cursor:pointer;
+  background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,0.07);
+  transition:background .15s, border-color .15s, box-shadow .15s;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.opt-item:not(.disabled):hover{background:#f0f4ff;border-color:#c5d8f8}
+.opt-item:not(.disabled):hover .opt-num{border-color:#1976D2;color:#1565C0}
+
+/* Pending */
+.opt-item.selected-pending{background:#e8f0fe;border-color:#1565C0}
+.opt-item.selected-pending .opt-num{border-color:#1565C0;color:#1565C0;background:#dce8fc}
+.opt-item.selected-pending .opt-text{color:#0d47a1;font-weight:600}
+
+/* Correct */
+.opt-item.selected-ok{background:#e8f5e9;border-color:#43a047}
+.opt-item.selected-ok .opt-num{background:#43a047;border-color:#43a047;color:#fff}
+.opt-item.selected-ok .opt-text{color:#2e7d32;font-weight:600}
+.opt-item.show-correct{background:#e8f5e9;border-color:#43a047}
+.opt-item.show-correct .opt-num{background:#43a047;border-color:#43a047;color:#fff}
+.opt-item.show-correct .opt-text{color:#2e7d32;font-weight:600}
+
+/* Wrong */
+.opt-item.selected-ng{background:#ffebee;border-color:#e53935}
+.opt-item.selected-ng .opt-num{background:#e53935;border-color:#e53935;color:#fff}
+.opt-item.selected-ng .opt-text{color:#c62828;font-weight:600}
+
+.opt-item.disabled{cursor:default;pointer-events:none}
+
+.opt-num{
+  width:36px;height:36px;border-radius:50%;
+  border:2px solid #d0d0d0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#888;
+  flex-shrink:0;
+  transition:all .15s;
+  background:#fff;
+}
+.opt-text{font-size:15px;color:#1a1a1a;line-height:1.5;flex:1}
+
+/* Explanation */
+.explain-box{margin-top:14px;padding:13px 14px;border-radius:12px;background:#fffde7;border-left:4px solid #f9a825;display:flex;gap:10px;align-items:flex-start}
+.explain-box.correct-box{background:#e8f5e9;border-left-color:#43a047}
+.explain-box.wrong-box{background:#ffebee;border-left-color:#e53935}
+.explain-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.explain-content{}
+.explain-label{font-size:13px;font-weight:700;color:#f57f17;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.explain-box.correct-box .explain-label{color:#2e7d32}
+.explain-box.wrong-box .explain-label{color:#c62828}
+.explain-text{font-size:15px;color:#333;line-height:1.6}
+
+/* Bottom nav */
+.fnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0e0e0;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:100;max-width:700px;margin:0 auto}
+.fnav-center{font-size:14px;color:#555;font-weight:500;display:flex;align-items:center;gap:6px;cursor:pointer}
+.fnav-center svg{color:#1565C0}
+.nav-btn{width:42px;height:42px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;transition:all .18s}
+.btn-prev{background:#f0f2f5;color:#444}
+.btn-prev:hover{background:#e0e0e0}
+.btn-next{background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.35)}
+.btn-next:hover{background:#0d47a1}
+.nav-btn:disabled{opacity:0.35;cursor:not-allowed}
+
+/* Summary */
+.sum-wrap{padding:24px 16px 100px;max-width:700px;margin:0 auto;text-align:center}
+.sum-emoji{font-size:56px;margin-bottom:8px}
+.sum-score{font-size:52px;font-weight:700;color:#1565C0;margin:4px 0}
+.sum-sub{font-size:14px;color:#666;margin-bottom:24px}
+.sum-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+.sum-card{background:#fff;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.sum-num{font-size:28px;font-weight:700}
+.sum-lbl{font-size:12px;color:#888;margin-top:4px}
+.ok-c{color:#43a047}.ng-c{color:#e53935}.skip-c{color:#f57c00}.pct-c{color:#1565C0}
+.sum-btn{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;margin-bottom:10px;font-family:inherit;transition:all .18s}
+.sum-btn-p{background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.3)}
+.sum-btn-p:hover{background:#0d47a1}
+.sum-btn-o{background:#fff;color:#1565C0;border:2px solid #1565C0}
+.sum-btn-o:hover{background:#f0f6ff}
+
+/* Grid dialog */
+.grid-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:flex-end}
+.grid-overlay.show{display:flex}
+.grid-modal{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-height:70vh;overflow-y:auto;max-width:700px;margin:0 auto}
+.grid-modal h3{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:14px;text-align:center}
+.q-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.q-dot{width:100%;aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;border:2px solid #e0e0e0;background:#f5f5f5;color:#666;transition:all .15s}
+.q-dot.cur{border-color:#1565C0;background:#e3f2fd;color:#1565C0}
+.q-dot.ok{background:#43a047;border-color:#43a047;color:#fff}
+.q-dot.ng{background:#e53935;border-color:#e53935;color:#fff}
+.q-dot.skip{background:#ff9800;border-color:#ff9800;color:#fff}
+.grid-close{width:100%;padding:12px;border-radius:10px;border:none;background:#f0f2f5;color:#333;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px;font-family:inherit}
+
+.pb-safe{height:70px}
+
+/* Confirm dialog */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:300;align-items:center;justify-content:center;padding:24px}
+.confirm-overlay.show{display:flex}
+.confirm-box{background:#fff;border-radius:20px;padding:28px 24px;width:100%;max-width:340px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.18)}
+.confirm-icon{font-size:44px;margin-bottom:12px}
+.confirm-title{font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:8px}
+.confirm-sub{font-size:14px;color:#777;line-height:1.5;margin-bottom:24px}
+.confirm-btns{display:flex;gap:10px}
+.confirm-btn{flex:1;padding:13px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
+.confirm-btn-cancel{background:#f0f2f5;color:#555}
+.confirm-btn-cancel:hover{background:#e0e0e0}
+.confirm-btn-ok{background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.3)}
+.confirm-btn-ok:hover{background:#0d47a1}
+
+.fab-answer{position:fixed;bottom:80px;right:16px;background:#1565C0;color:#fff;border:none;border-radius:50px;padding:11px 20px;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:99;font-family:inherit;transition:all .2s}
+.fab-answer:hover{background:#3a6b8a;transform:scale(1.04)}
+.fab-answer.hidden{display:none}
+</style>
+</head>
+<body>
+
+
+
+
+
+
+<div class="timer-bar">
+  <span class="timer-txt" id="timer-txt">60:00</span>
+  <div class="nop-bai" onclick="openConfirm()">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="#1565C0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Nộp bài
+  </div>
+</div>
+<div class="prog-bar-wrap" id="prog-bar"></div>
+
+<div class="tabs-wrap" id="tabs-wrap"></div>
+
+<div id="main-content"></div>
+
+<!-- Floating answer button -->
+<button class="fab-answer hidden" id="fab-ans" onclick="showHint()">
+  <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  Đáp án
+</button>
+
+<!-- Confirm nộp bài -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">📝</div>
+    <div class="confirm-title">Nộp bài?</div>
+    <div class="confirm-sub" id="confirm-sub">Bạn chắc chắn muốn nộp bài không?</div>
+    <div class="confirm-btns">
+      <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirm()">Làm tiếp</button>
+      <button class="confirm-btn confirm-btn-ok" onclick="confirmFinish()">Nộp bài</button>
+    </div>
+  </div>
+</div>
+
+<!-- Grid dialog -->
+<div class="grid-overlay" id="grid-overlay" onclick="closeGrid(event)">
+  <div class="grid-modal">
+    <h3>Danh sách câu hỏi</h3>
+    <div class="q-grid" id="q-grid"></div>
+    <button class="grid-close" onclick="closeGridDirect()">Đóng</button>
+  </div>
+</div>
+
+<script>
+const Q=[
+{t:"Thuật ngữ Kinh tế chính trị xuất hiện lần đầu tiên vào năm nào sau đây?",o:["1605","1615","1625","1635"],c:1,g:"Thuật ngữ kinh tế chính trị xuất hiện lần đầu tiên vào năm 1615 (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học nào sau đây là người đầu tiên đưa ra thuật ngữ Kinh tế chính trị?",o:["A. Montchretien","W. Petty","A. Smith","D. Ricardo"],c:0,g:"Nhà kinh tế học Autoine de Montchrétien là người đầu tiên đưa ra thuật ngữ kinh tế chính trị (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Thuật ngữ Kinh tế chính trị xuất hiện đầu tiên trong tác phẩm nào sau đây?",o:["Lý luận về kinh tế chính trị.","Bàn về kinh tế chính trị.","Khoa học về kinh tế chính trị.","Chuyên luận về kinh tế chính trị."],c:3,g:"Thuật ngữ Kinh tế chính trị xuất hiện đầu tiên trong tác phẩm Chuyên luận về kinh tế chính trị (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tác phẩm nào sau đây được coi là phác thảo ban đầu về môn học kinh tế chính trị?",o:["Lý luận về kinh tế chính trị.","Chuyên luận về kinh tế chính trị.","Thảo luận về kinh tế chính trị.","Bàn luận về kinh tế chính trị."],c:1,g:"Chuyên luận về kinh tế chính trị được coi là phác thảo ban đầu về môn học kinh tế chính trị (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Trong lịch sử kinh tế chính trị học, từ cuối thế kỷ XVIII đến nửa đầu thế kỷ XIX là giai đoạn phát triển của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Kinh tế chính trị cổ điển Anh được hình thành và phát triển từ cuối thế kỷ XVIII đến nửa đầu thế kỷ XIX (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học nào sau đây là đại biểu tiêu biểu của Chủ nghĩa trọng thương?",o:["A. Montchretien.","Boisguillebert.","F. Quesney.","Turgot."],c:0,g:"A. Montchrétien là đại biểu tiêu biểu của chủ nghĩa trọng thương (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học nào sau đây là đại biểu tiêu biểu của Chủ nghĩa trọng nông?",o:["Starford.","Thomas Mun.","A. Montchretien.","F. Quesney."],c:3,g:"F. Quesney là đại biểu tiêu biểu của chủ nghĩa trọng nông (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học nào sau đây là đại biểu tiêu biểu của Kinh tế chính trị cổ điển Anh?",o:["A. Montchretien.","F. Quesney.","Turgot.","D. Ricardo."],c:3,g:"David Ricardo là đại biểu tiêu biểu của Kinh tế chính trị cổ điển Anh (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chủ nghĩa trọng thương hình thành và phát triển trong giai đoạn nào sau đây?",o:["Từ thời cổ đại đến thế kỷ thứ XV.","Từ giữa thế kỷ thứ XV đến giữa thế kỷ thứ XVII.","Từ giữa thế kỷ thứ XVII đến giữa thế kỷ XVIII.","Từ giữa thế kỷ thứ XVIII đến cuối thế kỷ XIX."],c:1,g:"Chủ nghĩa trọng thương hình thành và phát triển trong giai đoạn từ giữa thế kỷ XV đến giữa thế kỷ XVII (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chủ nghĩa trọng nông hình thành và phát triển trong giai đoạn nào sau đây?",o:["Từ thời cổ đại đến thế kỷ thứ XV.","Từ thế kỷ thứ XV đến cuối thế kỷ thứ XVII.","Từ nửa cuối thế kỷ thứ XVII đến nửa đầu thế kỷ thứ XVIII.","Từ giữa thế kỷ thứ XVIII đến cuối thế kỷ XIX."],c:2,g:"Chủ nghĩa trọng nông được hình thành và phát triển trong thời kỳ từ nửa cuối thế kỷ XVII đến nửa đầu thế kỷ XVIII (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị cổ điển Anh hình thành và phát triển trong giai đoạn nào sau đây?",o:["Từ thời cổ đại đến thế kỷ thứ XV.","Từ thế kỷ thứ XV đến cuối thế kỷ XVII.","Từ giữa thế kỷ thứ XVII đến nửa đầu thế kỷ XVIII.","Từ cuối thế kỷ thứ XVIII đến nửa đầu thế kỷ thứ XIX."],c:3,g:"Kinh tế chính trị cổ điển Anh được hình thành và phát triển từ cuối thế kỷ XVIII đến nửa đầu thế kỷ XIX (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học A. Montchretien là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:0,g:"Nhà kinh tế học A. Montchrétien là đại biểu tiêu biểu của chủ nghĩa trọng thương (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học Turgot là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:1,g:"Nhà kinh tế học Turgot là đại biểu tiêu biểu của chủ nghĩa trọng nông (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học W. Petty là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Nhà kinh tế học W. Petty là đại biểu tiêu biểu của kinh tế chính trị cổ điển Anh (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học F. Quesney là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:1,g:"Nhà kinh tế học F. Quesney là đại biểu tiêu biểu của chủ nghĩa trọng nông (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"“Chuyên luận về kinh tế chính trị” được coi là phác thảo ban đầu về môn học:",o:["lý luận chính trị.","khoa học chính trị.","kinh tế chính trị.","hệ thống chính trị."],c:2,g:"“Chuyên luận về kinh tế chính trị” được coi là phác thảo ban đầu về môn học kinh tế chính trị (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lý luận kinh tế chính trị của C. Mác và Ph. Ăngghen được thể hiện tập trung và cô đọng nhất trong tác phẩm nào sau đây?",o:["Bộ Tư bản.","Hệ tư tưởng Đức.","Tuyên ngôn của Đảng Cộng sản.","Biện chứng của tự nhiên."],c:0,g:"Lý luận kinh tế chính trị của C. Mác và Ph. Ăngghen được thể hiện tập trung và cô đọng nhất trong bộ Tư bản (Xem trang 16, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học A. Smith là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Nhà kinh tế học A. Smith là đại biểu tiêu biểu của kinh tế chính trị cổ điển Anh (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học D. Ricardo là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Nhà kinh tế học D. Ricardo là đại biểu tiêu biểu của kinh tế chính trị cổ điển Anh (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nhà kinh tế học Thomas Mun là đại biểu tiêu biểu của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:0,g:"Nhà kinh tế học Thomas Mun là đại biểu tiêu biểu của chủ nghĩa trọng thương (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị Mác - Lênin đã kế thừa trực tiếp những giá trị khoa học của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Kinh tế chính trị Mác – Lênin kế thừa và phát triển trực tiếp những giá trị khoa học của kinh tế chính trị tư sản cổ điển Anh (Xem trang 18, 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"C. Mác đã kế thừa trực tiếp giá trị của Kinh tế chính trị cổ điển Anh để phát triển lý luận về phương thức sản xuất:",o:["Chiếm hữu nô lệ.","Phong kiến.","Tư bản chủ nghĩa.","Cộng sản chủ nghĩa."],c:2,g:"C. Mác kế thừa để phát triển lý luận kinh tế chính trị về phương thức sản xuất tư bản chủ nghĩa (Xem trang 16, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chủ nghĩa trọng thương là hệ thống lý luận kinh tế chính trị đầu tiên nghiên cứu nền sản xuất:",o:["Chiếm hữu nô lệ.","Phong kiến.","Tư bản chủ nghĩa.","Cộng sản chủ nghĩa."],c:2,g:"Chủ nghĩa trọng thương được ghi nhận là hệ thống lý luận bước đầu nghiên cứu về nền sản xuất tư bản chủ nghĩa (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hệ thống lý luận kinh tế chính trị đầu tiên nghiên cứu về nền sản xuất tư bản chủ nghĩa là:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:0,g:"Chủ nghĩa trọng thương là hệ thống lý luận kinh tế chính trị bước đầu nghiên cứu về nền sản xuất tư bản chủ nghĩa (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hệ thống lý luận nhấn mạnh vai trò sản xuất nông nghiệp, coi trọng sở hữu tư nhân và tự do kinh tế là:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:1,g:"Chủ nghĩa trọng nông nhấn mạnh vai trò nông nghiệp, coi trọng sở hữu tư nhân và tự do kinh tế."},
+{t:"Hệ thống trình bày một cách hệ thống các phạm trù kinh tế thị trường để rút ra quy luật vận động là:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị cổ điển Anh."],c:3,g:"Kinh tế chính trị cổ điển Anh trình bày hệ thống các phạm trù để rút ra các quy luật kinh tế (Xem trang 15, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chủ nghĩa trọng nông rút ra lý luận kinh tế chính trị từ trong lĩnh vực:",o:["sản xuất.","lưu thông.","phân phối.","tiêu dùng."],c:0,g:"Chủ nghĩa trọng nông hướng việc nghiên cứu vào lĩnh vực sản xuất (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chủ nghĩa trọng thương rút ra lý luận kinh tế chính trị từ trong lĩnh vực:",o:["sản xuất.","lưu thông.","phân phối.","tiêu dùng."],c:1,g:"Chủ nghĩa trọng thương dành trọng tâm vào nghiên cứu lĩnh vực lưu thông (Xem trang 13, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Học thuyết giá trị thặng dư của C. Mác là cơ sở khoa học luận chứng cho vai trò lịch sử của:",o:["chiếm hữu nô lệ.","phong kiến.","tư bản chủ nghĩa.","cộng sản chủ nghĩa."],c:2,g:"Học thuyết giá trị thặng dư luận chứng về vai trò lịch sử của phương thức sản xuất tư bản chủ nghĩa (Xem trang 17, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị trở thành môn khoa học hệ thống với các phạm trù chuyên ngành với sự xuất hiện lý luận của:",o:["F. Quesney.","W. Petty.","A. Smith.","D. Ricardo."],c:2,g:"Kinh tế chính trị trở thành môn khoa học hệ thống từ Adam Smith (Xem trang 12, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Đối tượng nghiên cứu của kinh tế chính trị theo quan điểm của Chủ nghĩa trọng thương là:",o:["sản xuất.","lưu thông.","phân phối.","tiêu dùng."],c:1,g:"Chủ nghĩa trọng thương phát hiện đối tượng nghiên cứu trong lĩnh vực lưu thông (Xem trang 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Đối tượng nghiên cứu của kinh tế chính trị theo quan điểm của Chủ nghĩa trọng nông là:",o:["sản xuất nông nghiệp.","sản xuất công nghiệp.","ngoại thương.","dịch vụ."],c:0,g:"Chủ nghĩa trọng nông chuyển đối tượng nghiên cứu sang lĩnh vực nông nghiệp (Xem trang 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị cổ điển Anh mở đầu từ William Petty, tiếp đến là A. Smith và kết thúc ở:",o:["F. Quesney.","A. Montchretien.","D. Ricardo.","Thomas Mun."],c:2,g:"Hệ thống lý luận có nhiều giá trị khoa học nhất kết thúc ở David Ricardo (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Đối tượng nghiên cứu của Kinh tế chính trị Mác – Lênin là:",o:["quan hệ sản xuất.","lực lượng sản xuất.","các quan hệ xã hội của sản xuất và tiêu dùng.","các quan hệ xã hội của sản xuất và trao đổi."],c:3,g:"Đối tượng nghiên cứu là các quan hệ của sản xuất và trao đổi (Xem trang 20, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Mục đích nghiên cứu của Kinh tế chính trị Mác – Lênin nhằm phát hiện quy luật chi phối con người trong:",o:["sản xuất.","lưu thông.","sản xuất và trao đổi.","sản xuất và tiêu dùng."],c:2,g:"Mục đích cao nhất là phát hiện quy luật chi phối quan hệ người - người trong sản xuất và trao đổi (Xem trang 24, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Các quan hệ xã hội của sản xuất và trao đổi là đối tượng nghiên cứu của:",o:["Kinh tế chính trị cổ điển Anh.","Kinh tế chính trị tiểu tư sản.","Kinh tế chính trị tầm thường.","Kinh tế chính trị Mác – Lênin."],c:3,g:"Đối tượng nghiên cứu của kinh tế chính trị Mác – Lênin là các quan hệ của sản xuất và trao đổi (Xem trang 20, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Hệ thống lý luận từ W. Petty đến A. Smith và kết thúc ở D. Ricardo là:",o:["Kinh tế chính trị cổ điển Anh.","Kinh tế chính trị tiểu tư sản.","Kinh tế chính trị tầm thường.","Kinh tế chính trị Mác – Lênin."],c:0,g:"Đây là dòng chảy phát triển của kinh tế chính trị cổ điển Anh (Xem trang 14, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Sản xuất nông nghiệp là đối tượng nghiên cứu của kinh tế chính trị theo quan điểm của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị tư sản cổ điển Anh."],c:1,g:"Chủ nghĩa trọng nông chuyển đối tượng nghiên cứu sang lĩnh vực nông nghiệp (Xem trang 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Lưu thông là đối tượng nghiên cứu của kinh tế chính trị theo quan điểm của:",o:["Chủ nghĩa trọng thương.","Chủ nghĩa trọng nông.","Kinh tế chính trị tầm thường.","Kinh tế chính trị tư sản cổ điển Anh."],c:0,g:"Chủ nghĩa trọng thương phát hiện đối tượng nghiên cứu trong lĩnh vực lưu thông (Xem trang 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Quy luật kinh tế tồn tại khách quan, con người không thể thủ tiêu nhưng có thể:",o:["phát hiện và hoàn thiện quy luật kinh tế.","thay đổi quy luật kinh tế.","bỏ qua quy luật kinh tế.","nhận thức và vận dụng quy luật kinh tế."],c:3,g:"Con người có thể nhận thức và vận dụng quy luật kinh tế để phục vụ lợi ích của mình (Xem trang 26, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khi chính sách kinh tế không phù hợp quy luật khách quan, chủ thể ban hành có thể:",o:["ban hành chính sách khác để thay thế.","điều chỉnh quy luật kinh tế cho phù hợp.","thủ tiêu quy luật kinh tế.","thay đổi quy luật kinh tế."],c:0,g:"Chủ thể có thể thay thế bằng chính sách khác chứ không thay đổi được quy luật (Xem trang 26, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị Mác – Lênin phát triển liên tục kể từ:",o:["XVI.","XVII.","XVIII.","XIX."],c:3,g:"Kinh tế chính trị Mác – Lênin phát triển không ngừng từ giữa thế kỷ XIX (Xem trang 19, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Kinh tế chính trị Mác – Lênin tìm quy luật chi phối con người tương ứng với trình độ phát triển của:",o:["lực lượng sản xuất.","xã hội.","quan hệ sản xuất.","kinh tế."],c:0,g:"Kinh tế chính trị nghiên cứu sự vận động gắn liền với các trình độ phát triển của xã hội."},
+{t:"Quan hệ sản xuất và trao đổi đặt trong liên hệ biện chứng với lực lượng sản xuất và kiến trúc thượng tầng của:",o:["tư liệu sản xuất.","phương thức sản xuất nhất định.","quá trình sản xuất.","cơ sở hạ tầng nhất định."],c:1,g:"Đối tượng nghiên cứu gắn với phương thức sản xuất nhất định (Xem trang 23, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Quy luật kinh tế tác động vào động cơ lợi ích, từ đó giúp con người điều chỉnh:",o:["quy luật kinh tế.","hành vi kinh tế.","nền sản xuất.","cơ chế thị trường."],c:1,g:"Quy luật kinh tế điều chỉnh hành vi của con người trong hoạt động kinh tế (Xem trang 25, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chính sách kinh tế là sản phẩm chủ quan của con người được hình thành trên cơ sở:",o:["thay đổi các quy luật kinh tế.","bỏ qua các quy luật kinh tế.","vận dụng các quy luật kinh tế.","thủ tiêu các quy luật kinh tế."],c:2,g:"Chính sách kinh tế dựa trên việc vận dụng các quy luật (Xem trang 26, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Những mối liên hệ phản ánh bản chất, khách quan, lặp đi lặp lại của các hiện tượng kinh tế gọi là:",o:["chu kỳ kinh tế.","hiện tượng kinh tế.","quy luật kinh tế.","quá trình kinh tế."],c:2,g:"Đây là định nghĩa về quy luật kinh tế (Xem trang 25, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Phương pháp nghiên cứu quan trọng nhất của Kinh tế chính trị Mác – Lênin là:",o:["lôgic kết hợp với lịch sử.","trừu tượng hóa khoa học.","quan sát thống kê.","hệ thống hóa."],c:1,g:"Trừu tượng hoá khoa học là phương pháp nghiên cứu quan trọng nhất (Xem trang 27, 28, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Quy luật kinh tế là mối liên hệ phản ánh bản chất, khách quan của các:",o:["hiện tượng và quá trình kinh tế.","nền kinh tế.","giai đoạn và chu kỳ kinh tế.","chế độ kinh tế."],c:0,g:"Quy luật kinh tế phản ánh bản chất các hiện tượng và quá trình kinh tế (Xem trang 25, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Sự tác động của chính sách kinh tế vào các quan hệ lợi ích mang tính:",o:["khách quan.","phổ biến.","chủ quan.","đa dạng."],c:2,g:"Tác động của chính sách kinh tế mang tính chủ quan vì do con người ban hành (Xem trang 25, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"\"Kinh tế học tuyệt nhiên không nghiên cứu sản xuất, mà nghiên cứu quan hệ xã hội giữa người với người\" là của:",o:["C. Mác.","Ph. Ăngghen.","V.I. Lênin.","Hêghen."],c:2,g:"Đây là quan điểm nhấn mạnh của V.I. Lênin (Xem trang 22, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Khi vận dụng không phù hợp với quy luật kinh tế, con người cần phải:",o:["thủ tiêu quy luật kinh tế.","thay đổi hành vi.","thay đổi quy luật kinh tế.","thay đổi thói quen."],c:1,g:"Khi không phù hợp, con người phải thay đổi hành vi chứ quy luật không thay đổi (Xem trang 26, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Nghiên cứu mặt xã hội của sản xuất và trao đổi phản ánh đúng thực tiễn sự vận động của:",o:["kinh tế tự nhiên.","kinh tế kế hoạch hóa tập trung.","kinh tế thị trường.","kinh tế tri thức."],c:2,g:"Quan điểm này phản ánh đúng thực tiễn vận động của kinh tế thị trường (Xem trang 24, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Gạt bỏ yếu tố ngẫu nhiên để tách ra hiện tượng bền vững, điển hình nhằm nắm được bản chất là nội dung của:",o:["Lôgic kết hợp với lịch sử.","Trừu tượng hóa khoa học.","Quan sát thống kê.","Hệ thống hóa."],c:1,g:"Đây là định nghĩa về phương pháp trừu tượng hoá khoa học (Xem trang 28, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Tiếp cận bản chất gắn với tiến trình hình thành, phát triển của các quan hệ xã hội là nội dung của phương pháp:",o:["Lôgic kết hợp với lịch sử.","Trừu tượng hóa khoa học.","Quan sát thống kê.","Hệ thống hóa."],c:0,g:"Phương pháp Lôgic - Lịch sử nghiên cứu hiện tượng theo tiến trình thời gian để rút ra quy luật."},
+{t:"Chức năng mở rộng sự hiểu biết về quan hệ kinh tế, triển vọng và xu hướng phát triển là chức năng:",o:["Nhận thức.","Thực tiễn.","Tư tưởng.","Phương pháp luận."],c:0,g:"Chức năng nhận thức giúp mở rộng sự hiểu biết của chủ thể (Xem trang 30, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chức năng giúp thực hiện hoạt động kinh tế phù hợp với quy luật khách quan là chức năng:",o:["Nhận thức.","Thực tiễn.","Tư tưởng.","Phương pháp luận."],c:1,g:"Vận dụng vào đời sống và hoạt động thực tế thuộc về chức năng thực tiễn (Xem trang 31, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Cung cấp nền tảng lý luận khoa học cho việc tiếp cận các khoa học kinh tế khác là chức năng:",o:["Nhận thức.","Thực tiễn.","Tư tưởng.","Phương pháp luận."],c:3,g:"Kinh tế chính trị là nền tảng lý luận cho các môn kinh tế chuyên ngành (Xem trang 32, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Góp phần xây dựng thế giới quan khoa học, hướng tới giải phóng con người là chức năng:",o:["Nhận thức.","Thực tiễn.","Tư tưởng.","Phương pháp luận."],c:2,g:"Xây dựng niềm tin và hướng tới xã hội tốt đẹp thuộc chức năng tư tưởng (Xem trang 31, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."},
+{t:"Chức năng phương pháp luận của Kinh tế chính trị Mác – Lênin thể hiện ở:",o:["Nền tảng lý luận khoa học cho việc tiếp cận các khoa học kinh tế khác.","Cơ sở lý luận để phát triển các ngành kinh tế.","Cơ sở khoa học để đánh giá các bộ môn khoa học khác.","Kiến thức kinh tế cơ bản để vận dụng vào thực tiễn cuộc sống."],c:0,g:"Đây là biểu hiện cốt lõi của chức năng phương pháp luận (Xem trang 32, giáo trình Kinh tế chính trị Mác – Lênin, 2021)."}
+];
+// State
+// ans[i]: null = chưa làm, number = đã chọn, 'skip' = bỏ qua
+let cur = 0;
+let ans = new Array(Q.length).fill(null);
+let showSum = false;
+
+// Timer
+let totalSec = 60 * 60; // 60 phút
+let timerInterval = setInterval(()=>{
+  if(totalSec <= 0){ clearInterval(timerInterval); finishQuiz(); return; }
+  totalSec--;
+  const m = String(Math.floor(totalSec/60)).padStart(2,'0');
+  const s = String(totalSec%60).padStart(2,'0');
+  const el = document.getElementById('timer-txt');
+  if(el) el.textContent = m+':'+s;
+}, 1000);
+
+function getTabClass(i){
+  const a = ans[i];
+  const active = i===cur ? ' active' : '';
+  if(a === null) return 'tab-item'+active;
+  if(a === 'skip' || a === 'unanswered' || a === 'hint') return 'tab-item answered-skip'+active;
+  if(!a.revealed) return 'tab-item'+active; // đã chọn nhưng chưa reveal → coi như chưa làm
+  if(a.choice === Q[i].c) return 'tab-item answered-ok'+active;
+  return 'tab-item answered-ng'+active;
+}
+
+function renderTabs(){
+  const wrap = document.getElementById('tabs-wrap');
+  wrap.innerHTML = Q.map((_,i)=>`<div class="${getTabClass(i)}" onclick="goTo(${i})">Câu ${i+1}</div>`).join('');
+  setTimeout(()=>{
+    const tabs = wrap.querySelectorAll('.tab-item');
+    if(tabs[cur]) tabs[cur].scrollIntoView({block:'nearest',inline:'center'});
+  }, 30);
+}
+
+function renderProgress(){
+  const done = ans.filter(a=>a && (a==='skip' || a==='unanswered' || a==='hint' || a.revealed)).length;
+  const el = document.getElementById('prog-info');
+  if(el) el.textContent = done + ' / ' + Q.length + ' câu';
+  const bar = document.getElementById('prog-bar');
+  if(!bar) return;
+  // Mỗi câu một đoạn nhỏ: đúng=xanh lá, sai=đỏ, chưa làm/bỏ qua=xám nhạt
+  const segW = (100 / Q.length).toFixed(4) + '%';
+  bar.innerHTML = Q.map((_,i)=>{
+    const a = ans[i];
+    let color = '#e0e0e0'; // chưa làm / bỏ qua = trắng
+    if(a === 'unanswered'){
+      color = '#e53935'; // nộp bài mà chưa làm = đỏ
+    } else if(a && a !== 'skip' && a !== 'unanswered' && a !== 'hint' && a.revealed){
+      color = a.choice === Q[i].c ? '#43a047' : '#e53935';
+    }
+    return `<div class="prog-seg" style="width:${segW};background:${color}"></div>`;
+  }).join('');
+}
+
+function renderQ(){
+  if(showSum){ renderSum(); return; }
+  const q = Q[cur];
+  // ans[cur]: null = chưa làm, {choice: number, revealed: bool} = đã chọn, 'skip' = bỏ qua
+  const a = ans[cur];
+  const isSkip = a === 'unanswered';
+  const isHint = a === 'hint'; // bấm xem đáp án mà không chọn
+  const isChosen = a !== null && a !== 'skip' && a !== 'unanswered' && a !== 'hint';
+  const isRevealed = isChosen && a.revealed;
+  const choice = isChosen ? a.choice : null;
+
+  // Chỉ hiện đúng/sai khi đã revealed (tức đã bấm sang câu khác sau khi chọn)
+  let explain = '';
+  if(isRevealed){
+    if(choice === q.c){
+      explain = `<div class="explain-box correct-box"><span class="explain-icon">✅</span><div class="explain-content"><div class="explain-label">Chính xác!</div><div class="explain-text">${q.g}</div></div></div>`;
+    } else {
+      explain = `<div class="explain-box wrong-box"><span class="explain-icon">❌</span><div class="explain-content"><div class="explain-label">Chưa đúng — Đáp án: ${q.o[q.c]}</div><div class="explain-text">${q.g}</div></div></div>`;
+    }
+  } else if(isHint){
+    explain = `<div class="explain-box"><span class="explain-icon">💡</span><div class="explain-content"><div class="explain-label">Đáp án đúng</div><div class="explain-text"><strong>${q.o[q.c]}</strong><br>${q.g}</div></div></div>`;
+  }
+
+  // Lock options: nếu đã skip hoặc đã revealed thì không cho chọn nữa
+  // Nếu đã chọn nhưng chưa revealed: vẫn hiện lựa chọn nhưng chưa tô màu đúng/sai
+  const locked = isSkip || isRevealed || isHint;
+
+  const opts = q.o.map((o,i)=>{
+    let cls = 'opt-item';
+    if(locked) cls += ' disabled';
+    if(isRevealed){
+      if(i === q.c) cls += ' selected-ok';
+      else if(i === choice && choice !== q.c) cls += ' selected-ng';
+    } else if(isHint){
+      if(i === q.c) cls += ' show-correct';
+    } else if(isChosen && i === choice){
+      // Đã chọn nhưng chưa revealed: tô xanh nhạt nhưng chưa show đúng/sai
+      cls += ' selected-pending';
+    }
+    const click = !locked ? `onclick="pick(${i})"` : '';
+    const numLabel = ['1','2','3','4'][i];
+    return `<div class="${cls}" ${click}><div class="opt-num">${numLabel}</div><span class="opt-text">${o}</span></div>`;
+  }).join('');
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="q-wrap">
+      <div class="q-number">Câu ${cur+1} / ${Q.length}</div>
+      <div class="q-text">${q.t}</div>
+      <div class="options">${opts}</div>
+      ${explain}
+      <div class="pb-safe"></div>
+    </div>
+    <div class="fnav">
+      <button class="nav-btn btn-prev" onclick="prev()" ${cur===0?'disabled':''}>
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="fnav-center" onclick="toggleGrid()">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#1565C0" stroke-width="2"/></svg>
+        Câu ${cur+1} / ${Q.length}
+      </div>
+      <button class="nav-btn btn-next" onclick="next()">
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  `;
+
+  renderTabs();
+  renderProgress();
+  // Hiện nút Đáp án chỉ khi câu chưa làm/chưa revealed và chưa hint
+  const fab = document.getElementById('fab-ans');
+  if(fab){
+    const _a = ans[cur];
+    const canHint = !showSum && (_a === null || (_a && _a !== 'skip' && _a !== 'unanswered' && _a !== 'hint' && !_a.revealed));
+    fab.classList.toggle('hidden', !canHint);
+  }
+  setTimeout(renderMath, 50);
+}
+
+function renderSum(){
+  const ok = ans.filter((a,i)=>a && a!=='skip' && a.revealed && a.choice===Q[i].c).length;
+  const ng = ans.filter((a,i)=>a && a!=='skip' && a.revealed && a.choice!==Q[i].c).length;
+  const sk = ans.filter(a=>a===null||a==='skip'||a==='unanswered'||a==='hint').length;
+  const pct = Math.round(ok/Q.length*100);
+  const pass = ok >= Math.ceil(Q.length*0.8);
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="sum-wrap">
+      <div class="sum-emoji">${pass?'🎉':'📖'}</div>
+      <div class="sum-score">${ok}/${Q.length}</div>
+      <div class="sum-sub">${pass?'Xuất sắc! Bạn nắm vững nội dung.':'Cần ôn thêm để nắm chắc hơn nhé.'}</div>
+      <div class="sum-grid">
+        <div class="sum-card"><div class="sum-num ok-c">${ok}</div><div class="sum-lbl">Câu đúng</div></div>
+        <div class="sum-card"><div class="sum-num ng-c">${ng}</div><div class="sum-lbl">Câu sai</div></div>
+        <div class="sum-card"><div class="sum-num skip-c">${sk}</div><div class="sum-lbl">Bỏ qua</div></div>
+        <div class="sum-card"><div class="sum-num pct-c">${pct}%</div><div class="sum-lbl">Điểm số</div></div>
+      </div>
+      <button class="sum-btn sum-btn-p" onclick="restart()">Làm lại từ đầu</button>
+      <button class="sum-btn sum-btn-o" onclick="review()">Xem lại câu trả lời</button>
+    </div>
+  `;
+  renderTabs();
+  renderProgress();
+}
+
+// Helper: reveal câu hiện tại (đánh dấu đã chuyển câu)
+function revealCurrent(){
+  const a = ans[cur];
+  if(a && a !== 'skip' && a !== 'unanswered' && a !== 'hint' && !a.revealed){
+    ans[cur] = {choice: a.choice, revealed: true};
+  }
+}
+
+// Helper: skip câu nếu chưa chọn gì
+function skipIfEmpty(){
+  if(ans[cur] === null) ans[cur] = 'skip';
+  // hint = đã xem đáp án, giữ nguyên (không skip)
+}
+
+function pick(i){
+  const a = ans[cur];
+  if(a && a !== 'skip' && a !== 'unanswered' && a !== 'hint' && a.revealed) return;
+  ans[cur] = {choice: i, revealed: false};
+  renderQ();
+}
+
+function prev(){
+  if(cur === 0) return;
+  // Reveal câu hiện tại nếu đã chọn, skip nếu chưa
+  revealCurrent();
+  cur--;
+  showSum = false;
+  renderQ();
+}
+
+function next(){
+  // Reveal câu hiện tại nếu đã chọn, skip nếu chưa
+  revealCurrent();
+  if(cur < Q.length - 1){
+    cur++;
+    renderQ();
+  } else {
+    showSum = true;
+    renderSum();
+  }
+}
+
+function goTo(i){
+  if(i === cur && !showSum){ closeGridDirect(); return; }
+  revealCurrent();
+  skipIfEmpty();
+  cur = i;
+  showSum = false;
+  renderQ();
+  closeGridDirect();
+}
+
+function openConfirm(){
+  const done = ans.filter(a => a !== null && a !== 'skip').length;
+  const skip = ans.filter(a => a === null || a === 'skip').length;
+  const sub = document.getElementById('confirm-sub');
+  if(skip > 0){
+    sub.innerHTML = `Đã làm <strong>${done}/${Q.length}</strong> câu, còn <strong>${skip}</strong> câu chưa trả lời.`;
+  } else {
+    sub.innerHTML = `Đã hoàn thành <strong>tất cả ${Q.length} câu</strong>. Sẵn sàng nộp!`;
+  }
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+function closeConfirm(){
+  document.getElementById('confirm-overlay').classList.remove('show');
+}
+function confirmFinish(){
+  closeConfirm();
+  finishQuiz();
+}
+
+function finishQuiz(){
+  revealCurrent();
+  ans = ans.map(a => {
+    if(a === null) return 'unanswered'; // chưa làm → đỏ trên thanh
+    if(a === 'skip') return 'skip';     // bỏ qua → trắng
+    if(!a.revealed) return {choice: a.choice, revealed: true};
+    return a;
+  });
+  showSum = true;
+  renderSum();
+}
+
+function restart(){
+  ans = new Array(Q.length).fill(null);
+  cur = 0; showSum = false;
+  totalSec = 60*60;
+  renderQ();
+}
+
+function review(){
+  showSum = false; cur = 0; renderQ();
+}
+
+function showHint(){
+  const q = Q[cur];
+  const a = ans[cur];
+  // Nếu đã chọn rồi thì reveal luôn, nếu chưa thì đánh dấu hint
+  if(a && a !== 'skip' && a !== 'unanswered' && !a.revealed){
+    ans[cur] = {choice: a.choice, revealed: true};
+  } else if(a === null){
+    ans[cur] = 'hint'; // xem đáp án mà không chọn
+  }
+  renderQ();
+}
+
+function toggleGrid(){
+  const ov = document.getElementById('grid-overlay');
+  const grid = document.getElementById('q-grid');
+  grid.innerHTML = Q.map((_,i)=>{
+    const a = ans[i];
+    let cls = 'q-dot';
+    if(i===cur && !showSum) cls += ' cur';
+    else if(a===null) cls += '';
+    else if(a==='skip') cls += ' skip';
+    else if(!a.revealed) cls += ''; // chọn rồi nhưng chưa qua câu
+    else if(a.choice===Q[i].c) cls += ' ok';
+    else cls += ' ng';
+    return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+  }).join('');
+  ov.classList.add('show');
+}
+
+function closeGrid(e){
+  if(e.target === document.getElementById('grid-overlay')) closeGridDirect();
+}
+
+function closeGridDirect(){
+  document.getElementById('grid-overlay').classList.remove('show');
+}
+
+function renderMath(){
+  if(typeof renderMathInElement === 'function'){
+    renderMathInElement(document.getElementById('main-content'), {
+      delimiters: [{left:"$",right:"$",display:false}],
+      throwOnError: false
+    });
+  }
+}
+
+// Init
+renderQ();
+</script>
+
+<script>
+// Nút back Android -> về trang chủ
+function goHome() {
+  window.location.href = '../index.html';
+}
+
+// Cách 1: history API (hoạt động trong WebView thường)
+window.addEventListener('load', function() {
+  history.pushState({ page: 'quiz' }, '', '');
+});
+window.addEventListener('popstate', function(e) {
+  goHome();
+});
+
+// Cách 2: Capacitor backbutton event (fallback)
+document.addEventListener('deviceready', function() {
+  document.addEventListener('backbutton', function(e) {
+    e.preventDefault();
+    goHome();
+  }, false);
+}, false);
+</script>
+</body>
+</html>

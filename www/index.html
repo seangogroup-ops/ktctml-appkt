@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SNG EDU – Hệ Thống Ôn Tập Online</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #004a99;
+  --blue2: #0062cc;
+  --dark: #003366;
+  --bg: #f0f4fa;
+  --white: #ffffff;
+  --border: #dde5f0;
+  --text: #1e293b;
+  --muted: #64748b;
+  --gold: #f59e0b;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  font-family: 'Sora', 'Segoe UI', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  color: var(--text);
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, var(--dark) 0%, var(--blue) 60%, #1565c0 100%);
+  padding: 36px 20px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255,255,255,0.07) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(255,255,255,0.04) 0%, transparent 50%);
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 0; right: 0;
+  height: 40px;
+  background: var(--bg);
+  border-radius: 40px 40px 0 0;
+}
+
+
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.92);
+  font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px;
+  margin-bottom: 16px;
+  position: relative; z-index: 1;
+}
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 2px rgba(74,222,128,0.35);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 2px rgba(74,222,128,0.3); }
+  50%      { box-shadow: 0 0 0 6px rgba(74,222,128,0.1); }
+}
+
+.hero h1 {
+  font-size: clamp(21px, 5.5vw, 34px);
+  font-weight: 800; color: #fff;
+  line-height: 1.25; letter-spacing: -0.5px;
+  position: relative; z-index: 1;
+  margin-bottom: 8px;
+}
+.hero-sub {
+  font-size: 13px; color: rgba(255,255,255,0.55);
+  position: relative; z-index: 1;
+}
+
+/* HEADER LOGO – góc trái cố định */
+.header-logo {
+  position: fixed; top: 15px; left: 15px;
+  text-decoration: none; z-index: 1000;
+}
+.logo-badge {
+  width: 45px; height: 45px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--blue), var(--dark));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 16px; color: #fff;
+  box-shadow: 0 4px 14px rgba(0,74,153,0.35);
+}
+
+/* MAIN */
+.main {
+  max-width: 560px; margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+.sec-title {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.file-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+
+.file-card {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 13px 16px;
+  text-decoration: none;
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: all 0.18s ease;
+  animation: fadeUp 0.4s both;
+}
+.file-card:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 6px 20px rgba(0,74,153,0.11);
+  transform: translateY(-2px);
+}
+.file-card:active { transform: scale(0.985); opacity: 0.9; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.f-icon {
+  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px;
+  background: #eff6ff; border: 1px solid #dbeafe;
+}
+.file-card.special .f-icon { background: #fffbeb; border-color: #fde68a; }
+
+.f-info { flex: 1; min-width: 0; }
+.f-name { font-weight: 600; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.f-sub  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.btn-open {
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--blue), var(--blue2));
+  color: #fff; font-size: 10px; font-weight: 700;
+  padding: 7px 14px; border-radius: 8px;
+  white-space: nowrap; letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(0,74,153,0.2);
+}
+.file-card.special .btn-open {
+  background: linear-gradient(135deg, #d97706, var(--gold));
+  box-shadow: 0 2px 8px rgba(245,158,11,0.25);
+}
+
+/* NOTICE */
+.notice {
+  background: #fff8f0; border: 1px solid #fde3c8;
+  border-radius: 12px; padding: 11px 15px;
+  font-size: 12px; color: #92400e;
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 22px;
+}
+
+footer {
+  text-align: center; padding: 22px 16px;
+  font-size: 12px; color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--blue); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- Logo góc trái cố định như code gốc -->
+<a href="https://www.sngedu.site/" class="header-logo">
+  <div class="logo-badge">SNG</div>
+</a>
+
+<div class="hero">
+  <div class="hero-badge"><span class="dot"></span>Hệ thống Online</div>
+  <h1>Ôn Tập Kinh Tế<br>Chính Trị Mac-Lênin</h1>
+  <p class="hero-sub">Trắc nghiệm theo chương · Bổ sung hàng năm · Đề thi thử</p>
+</div>
+
+<main class="main">
+  <div class="notice">ℹ️ Thêm trắc nghiệm miễn phí — không mua bán</div>
+
+  <div class="sec-title">Nội dung theo chương</div>
+  <div class="file-list" id="chapterList"></div>
+
+  <div class="sec-title">Bổ sung & Đề thi</div>
+  <div class="file-list" id="bonusList"></div>
+</main>
+
+<footer>SNG © <strong>H.N.TấnHải</strong> · <a href="https://www.sngedu.site/">sngedu.site</a></footer>
+
+<script>
+const chapters = [
+  { label:"Chương 1",      sub:"Câu 1 – 60",    file:"1-60",    icon:"📘" },
+  { label:"Chương 2 · P1", sub:"Câu 61 – 110",  file:"61-110",  icon:"📗" },
+  { label:"Chương 2 · P2", sub:"Câu 111 – 160", file:"111-160", icon:"📗" },
+  { label:"Chương 3 · P1", sub:"Câu 161 – 200", file:"161-200", icon:"📙" },
+  { label:"Chương 3 · P2", sub:"Câu 201 – 240", file:"201-240", icon:"📙" },
+  { label:"Chương 3 · P3", sub:"Câu 241 – 280", file:"241-280", icon:"📙" },
+  { label:"Chương 4",      sub:"Câu 281 – 340", file:"281-340", icon:"📕" },
+  { label:"Chương 5",      sub:"Câu 341 – 370", file:"341-370", icon:"📒" },
+  { label:"Chương 6",      sub:"Câu 371 – 400", file:"371-400", icon:"📒" },
+];
+const bonus = [
+  { label:"Bổ sung 2022 – 2023",   sub:"Câu hỏi bổ sung",          file:"bosung_2022-2023",  icon:"📋" },
+  { label:"Bổ sung 2023 – 2024",   sub:"Câu hỏi bổ sung",          file:"bosung_2023-2024",  icon:"📋" },
+  { label:"Bổ sung 2024 – 2025",   sub:"Câu hỏi bổ sung",          file:"bosung_2024-2025",  icon:"📋" },
+  { label:"Đề thi thử Tổng hợp",   sub:"Random – tổng hợp tất cả", file:"DETHITHU_radomDe",  icon:"🎯", special:true },
+];
+
+function buildCard(item, delay) {
+  const a = document.createElement('a');
+  a.className = 'file-card' + (item.special ? ' special' : '');
+  // ← Mở thẳng file như code gốc, không dùng modal hay bất kỳ JS nào chặn
+  a.href   = 'KTCT/' + item.file + '.html';
+  
+  
+  a.style.animationDelay = delay + 'ms';
+  a.innerHTML = `
+    <div class="f-icon">${item.icon}</div>
+    <div class="f-info">
+      <div class="f-name">${item.label}</div>
+      <div class="f-sub">${item.sub}</div>
+    </div>
+    <div class="btn-open">MỞ NGAY</div>
+  `;
+  return a;
+}
+
+const cEl = document.getElementById('chapterList');
+const bEl = document.getElementById('bonusList');
+chapters.forEach((it, i) => cEl.appendChild(buildCard(it, i * 50)));
+bonus.forEach((it, i)    => bEl.appendChild(buildCard(it, i * 50)));
+</script>
+</body>
+</html>
